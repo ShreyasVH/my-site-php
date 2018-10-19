@@ -16,7 +16,7 @@ use app\helpers\AssetHelper;
 //$di->set('config', function() use($config){
 //    return $config;
 //});
-var_dump(getenv('log_dir_rel_path'));die;
+var_dump(getenv());die;
 $di->set('view', function() {
     $view = new View();
     $view->setViewsDir(APP_PATH . 'app/views/');
