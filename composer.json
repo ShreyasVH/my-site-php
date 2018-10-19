@@ -1,0 +1,7 @@
+{
+  "require": {
+    "ext-bcmath": "*",
+    "ext-mcrypt": "*",
+    "ext-phalcon": "^3.4.1"
+  }
+}
