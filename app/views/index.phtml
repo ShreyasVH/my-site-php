@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--meta data-->
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE; chrome=1">
+        <!--icon-->
+        <link rel="icon" type="image/ico" href="/images/icon.ico">
+        <!--title-->
+        <title>
+            <?php echo $title; ?>
+        </title>
+
+        <!--css-->
+        <?php $this->assets->outputCss('header'); ?>
+
+    </head>
+    <body>
+        <!--header starts-->
+        <?php $this->partial('shared/header'); ?>
+        <!--header ends-->
+
+        <!--common js-->
+        <?php $this->assets->outputJs('body'); ?>
+
+        <!--content starts-->
+        <div>
+            <?php echo $this->getContent(); ?>
+        </div>
+
+
+        <!--breadcrumbs-->
+        <!--page title-->
+        <!--content ends-->
+
+        <!--footer starts-->
+        <?php $this->partial('shared/footer'); ?>
+        <!--specific js-->
+        <?php $this->assets->outputJs('footer'); ?>
+        <!--footer ends-->
+    </body>
+</html>

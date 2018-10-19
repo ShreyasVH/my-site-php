@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+        <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE; chrome=1" />
+        <link rel="icon" type="image/ico" href="/images/icon.ico">
+        <title>Error Page</title>
+
+        <style>
+            .error_box {
+                padding:40px;
+                height: 600px;
+                text-align: center;
+            }
+
+            .error_box h1 {
+                color: #008BCF;
+            }
+
+            #apology {
+                padding:40px;
+                font-size: 20px;
+                color: #666;
+            }
+
+            #error_code {
+                margin:10px 60px 10px 60px;
+                background-color: #F4F4F4;
+                padding:40px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div class='container error_box'>
+            <h1>Oops! something went wrong.</h1>
+            <p id='apology'>
+                We regret the inconvenience caused, our team has been notified about the issue. <br/>
+                We appreciate your patience and support in making us a better product.
+            </p>
+            <?php if(isset($e)):?>
+                <p id='error_code'>
+                    <strong>Error:</strong><br/>
+                    Message: <?php echo $e->getMessage(); ?><br/>
+                    Trace: <?php echo $e->getTraceAsString(); ?>
+
+                    <br/><br/>
+                </p>
+            <?php endif;?>
+        </div>
+    </body>
+</html>

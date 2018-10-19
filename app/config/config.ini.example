@@ -1,0 +1,9 @@
+[application]
+log_dir_rel_path =
+
+[apiEndpoint]
+minimal =
+normal  =
+
+[mode]
+default =

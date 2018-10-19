@@ -1,4 +1,4 @@
 vendor/
-app/configs/config.ini
+app/config/config.ini
 TODO.txt
 .idea/
