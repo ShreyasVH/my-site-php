@@ -8,16 +8,14 @@
 use app\constants\Constants;
 use Phalcon\Config\Adapter\Ini as ConfigIni;
 use Phalcon\Mvc\View;
-use Phalcon\Session\Adapter\Files as Session;
 use Phalcon\Mvc\Dispatcher;
-use Phalcon\Logger\Adapter\File as FileAdapter;
 use app\helpers\AssetHelper;
 
-$config = new ConfigIni(APP_PATH . 'app/config/config.ini');
-
-$di->set('config', function() use($config){
-    return $config;
-});
+//$config = new ConfigIni(APP_PATH . 'app/config/config.ini');
+//
+//$di->set('config', function() use($config){
+//    return $config;
+//});
 
 $di->set('view', function() {
     $view = new View();
