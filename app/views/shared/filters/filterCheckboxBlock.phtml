@@ -1,0 +1,9 @@
+<?php foreach($filterValues[$filterName] as $index => $value): ?>
+    <?php $checked = ((isset($filters[$filterName])) && (in_array($value['id'], $filters[$filterName])) ? 'checked' : ''); ?>
+    <div>
+        <label>
+            <input <?php echo $checked; ?> type="checkbox" name="<?php echo $filterName . '[]'; ?>" value="<?php echo $value['id']; ?>">
+            <?php echo $value['name']; ?>
+        </label>
+    </div>
+<?php endforeach; ?>

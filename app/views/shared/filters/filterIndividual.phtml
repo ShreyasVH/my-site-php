@@ -1,0 +1,24 @@
+<?php
+    $isFilterApplied = (array_key_exists($filterName, $filters) && is_array($filters[$filterName]));
+    $displayRule = (($isFilterApplied) ? '' : 'display:none;');
+?>
+
+<div class="panel panel-default jsFilterDiv" data-filter="<?php echo $filterName; ?>">
+    <div class="panel-heading">
+        <a data-toggle="collapse" data-parent="#accordion" href="<?php echo '#filters_' . $filterName; ?>">
+            <h4 class="panel-title">
+                <?php echo $filterSnippet['filterLabel']; ?>
+                <div class="applied-filter" style="<?php echo $displayRule; ?>"></div>
+                <i class="glyphicon glyphicon-chevron-down filters_collapse_btn"></i>
+            </h4>
+        </a>
+    </div>
+    <div id="<?php echo 'filters_' . $filterName; ?>" class="panel-collapse collapse jsSuggestionWrap">
+        <div class="panel-body">
+            <?php
+                $this->partial('shared/filters/clearFilter');
+                $this->partial('shared/filters/filter' . ucfirst($filterSnippet['filterType']) . 'Block');
+            ?>
+        </div>
+    </div>
+</div>

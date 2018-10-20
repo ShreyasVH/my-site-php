@@ -1,0 +1,18 @@
+<?php
+    $min = ((array_key_exists($filterName, $filters)) ? $filters[$filterName][0] : '');
+    $max = ((array_key_exists($filterName, $filters)) ? $filters[$filterName][1] : '');
+?>
+
+<div>
+    <label>
+        Min :
+        <input type="number" class="form-control min" name="<?php echo $filterName . '[]'; ?>" value="<?php echo $min; ?>">
+    </label>
+</div>
+<div>
+    <label>
+        Max :
+        <input type="number" class="form-control max" name="<?php echo $filterName . '[]'; ?>" value="<?php echo $max; ?>">
+    </label>
+</div>
+<div class="range-slider" data-min="<?php echo $filterValues[$filterName]['min']; ?>" data-max="<?php echo $filterValues[$filterName]['max']; ?>" data-step="<?php echo $filterValues[$filterName]['step']; ?>"></div>

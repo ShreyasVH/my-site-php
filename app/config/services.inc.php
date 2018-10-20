@@ -6,17 +6,16 @@
  */
 
 use app\constants\Constants;
-use Phalcon\Config\Adapter\Ini as ConfigIni;
+use app\helpers\Api;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use app\helpers\AssetHelper;
+use Phalcon\Logger\Adapter\File as FileAdapter;
+use Phalcon\Session\Adapter\Files as Session;
 
-//$config = new ConfigIni(APP_PATH . 'app/config/config.ini');
-//
-//$di->set('config', function() use($config){
-//    return $config;
-//});
-var_dump(getenv('log_dir_rel_path'));die;
+$dotenv = new Dotenv\Dotenv(APP_PATH);
+$dotenv->load();
+
 $di->set('view', function() {
     $view = new View();
     $view->setViewsDir(APP_PATH . 'app/views/');
@@ -29,6 +28,25 @@ $di->set('dispatcher', function () {
     return $dispatcher;
 });
 
+$di->setShared('session', function () {
+    $session = new Session();
+    $session->start();
+    return $session;
+});
+
 $di->set('assetHelper', function() {
     return new AssetHelper();
+});
+
+$di->set('api', function () {
+    return new Api();
+});
+
+$di->set('logger', function() {
+    $log_dir = APP_PATH . getenv('LOG_PATH');
+    $filename = 'app_log_' . @date('Y_m_d') . '.txt';
+
+    $logger = new FileAdapter($log_dir . $filename);
+
+    return $logger;
 });

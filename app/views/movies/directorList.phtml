@@ -1,0 +1,44 @@
+<div class="container">
+	<ul class="breadcrumb">
+		<li>
+			<a href="/">
+				Home
+			</a>
+		</li>
+		<li>
+			<a href="/movies/dashboard">
+				Movie Mania
+			</a>
+		</li>
+		<li class="active">
+			Directors Database
+		</li>
+	</ul>
+
+	<div class="title">
+		<h1 class="page-header">Directors Database</h1>
+	</div>
+
+	<div style="position:fixed;bottom:30px;right:75px;border:2px solid black;padding:10px;border-radius:20px;background-color:#0BBFB4;z-index:10">
+		<?php foreach($director_list_alpha as $alpha => $directors): ?>
+			<h5 style="display:inline"><a href="<?php echo '#alpha-' . $alpha; ?>" class="smooth-scroll" style="color:white"><?php echo $alpha; ?></a></h5>&nbsp;
+		<?php endforeach; ?>
+	</div>
+
+	<div style="margin-bottom:30px">
+		<?php foreach($director_list_alpha as $alpha => $director_list): ?>
+			<h3 id="<?php echo 'alpha-' . $alpha; ?>" class="page-header">
+				<?php echo $alpha; ?>
+			</h3>
+			<div class="row">
+				<?php foreach($director_list as $director): ?>
+					<div class="col-md-4">
+						<a href="<?php echo '/movies/browseMovies?directors[]=' . $director->id . '&order=year DESC'; ?>" target="_blank">
+							<?php echo $director->name; ?>
+						</a>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</div>

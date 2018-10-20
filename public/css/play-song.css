@@ -1,0 +1,51 @@
+.song-details {
+    text-align: center;
+    height: 498px;
+    width: 302px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.song-details img {
+    height: 300px;
+    width: 200px;
+}
+
+@media (min-width : 480px) {
+    .song-details {
+        height: 498px;
+        width: 302px;
+    }
+}
+
+.song-details .title {
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+
+.song-details p {
+    margin: 0;
+    /*padding: 0 20%;*/
+}
+
+.song-details hr {
+    margin: 5px 0;
+    clear: both;
+}
+
+.song-details .modal-footer {
+    padding: 0;
+    position: absolute;
+    bottom: 0;
+}
+
+.song-details .modal-header {
+    background-color: #1ABC9C;
+    color: white;
+    border-radius: 6px 6px 0 0;
+    padding: 0 15px 5px 15px;
+}
+
+.song-details .modal-header .close {
+    color: white;
+}

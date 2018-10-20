@@ -7,6 +7,7 @@
 
 namespace app\controllers;
 
+use app\helpers\Api;
 use app\helpers\AssetHelper;
 use app\models\Resource;
 use Phalcon\Mvc\Controller;
@@ -14,6 +15,7 @@ use Phalcon\Mvc\Dispatcher;
 
 /**
  * @property AssetHelper assetHelper
+ * @property Api api
  */
 class BaseController extends Controller
 {

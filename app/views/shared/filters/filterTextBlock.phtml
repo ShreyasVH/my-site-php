@@ -1,0 +1,5 @@
+<?php
+    $text = ((array_key_exists($filterName, $filters)) ? $filters[$filterName][0] : '');
+?>
+
+<input type="text" class="form-control" name="<?php echo $filterName . '[]'; ?>" value="<?php echo $text; ?>">

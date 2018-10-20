@@ -1,0 +1,54 @@
+<?php
+    use app\constants\Constants;
+?>
+
+<div class="filters">
+    <div class="filters-header-wrap">
+        <span class="filters-header">
+            Filters
+        </span>
+        <?php
+            $displayRuleForClearAllFilters = ((empty($filters)) ? 'display: none' : '');
+        ?>
+        <a class="clear-filter jsClearAllFilters" href="javascript:void(0);" style="<?php echo $displayRuleForClearAllFilters; ?>">
+            Clear All
+        </a>
+    </div>
+
+    <form name="apply-filters-form">
+        <div class="panel-group" id="accordion">
+            <?php
+                $filtersForDisplay = Constants::getMovieAttributes();
+                $filtersForDisplay = array_filter($filtersForDisplay, function($value) {
+                    return ((!isset($value['isFilterEnabled'])) || (isset($value['isFilterEnabled']) && !empty($value['isFilterEnabled'])));
+                });
+
+                foreach($filtersForDisplay as $filterName => $filterSnippet)
+                {
+                    $this->partial('shared/filters/filterIndividual');
+                }
+            ?>
+
+            <?php if(false): ?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#filters_deleted">
+                            <h4 class="panel-title">
+                                Deleted
+                                <i class="glyphicon glyphicon-chevron-down filters_collapse_btn"></i>
+                            </h4>
+                        </a>
+                    </div>
+                    <div id="filters_deleted" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <div class="apply-filters">
+                <input type="submit" class="btn btn-primary form-control" value="Apply Filters">
+            </div>
+        </div>
+    </form>
+</div>

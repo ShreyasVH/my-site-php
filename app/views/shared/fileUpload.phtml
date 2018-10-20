@@ -1,0 +1,44 @@
+<?php
+/**
+ * Author: shreyas.hande
+ * Date: 8/19/18
+ * Time: 1:53 PM
+ */
+    $id = ((!empty($fileId)) ? $fileId : 'fileUpload');
+    $name = ((!empty($name)) ? $name : 'file-upload');
+    $fileName = ((!empty($fileName)) ? $fileName : 'No file chosen');
+?>
+
+<div class="form-group form-field">
+    <input type="hidden" name="maxSize" value="<?php echo $maxFileSize; ?>">
+    <input type="hidden" name="allowedExt" value="<?php echo $allowedExtensions; ?>">
+    <div class="col-md-12">
+        <label class="control-label">
+        <span class="label-title">
+            <?php echo $label . ':'; ?>
+        </span>
+        <span class="label-description">
+            <?php echo $description; ?>
+        </span>
+            <?php if(!empty($errorMsg)): ?>
+                <span class="errorMsg">
+                <?php echo $errorMsg; ?>
+            </span>
+            <?php endif; ?>
+        </label>
+        <div class="custom-file-upload jsCustomFileUploadWrapper">
+            <input type="file" id="movieImage" name="movie-image" class="form-control" val="">
+            <label for="movieImage">
+                <button type="button" class="btn btn-default jsUploadButton">
+                    <i class="glyphicon glyphicon-cloud-upload"></i>
+                    <span class="jsUploadText">
+                        <?php echo $uploadText; ?>
+                    </span>
+                </button>
+            <span class="jsFileText">
+                <?php echo $fileName; ?>
+            </span>
+            </label>
+        </div>
+    </div>
+</div>

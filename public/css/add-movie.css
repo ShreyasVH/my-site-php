@@ -1,0 +1,81 @@
+.add-movie-form .form-field, .edit-movie-form .form-field {
+	position: relative;
+	/*width: 362px;*/
+}
+
+.add-movie-form .form-field input:focus, .edit-movie-form .form-field input:focus {
+	/*outline: none;*/
+}
+
+.picked-item.actor {
+	background-color: #00AD7C;
+}
+
+.picked-item.director {
+	background-color: #FF7F50;
+}
+
+.add-movie-form .form-group .control-label {
+    text-align: initial;
+}
+
+form.form-horizontal.add-movie-form {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form .title {
+    text-align: center;
+    color: white;
+    padding: 5px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    /* font-family: vampire; */
+    /* font-size: 33px; */
+}
+
+form.add-form .title {
+    background-color: #0E7CF4;
+}
+
+form.edit-form .title {
+    background-color: #34495E;
+}
+
+form .title h2 {
+    font-family: vampire;
+    font-size: 33px;
+}
+
+.add-movie-form .container {
+	width: 100%;
+	padding: 0px 30px;
+}
+
+.add-movie-form {
+	border: 1px solid #D0D5D4;
+	border-radius: 7px 7px 0px 0px;
+	margin-bottom: 20px;
+}
+
+.form-field span.label-description {
+    display: block;
+    font-weight: 400;
+    color: #8F9392;
+    font-size: small;
+}
+
+.add-movie-form .form-group {
+	margin-bottom:0px;
+}
+
+.add-movie-form .form-field .radio, .add-movie-form .form-field .radio-inline {
+	padding-top: 0px;
+}
+
+.add-movie-form .action-btns {
+    padding: 20px 0px;
+}

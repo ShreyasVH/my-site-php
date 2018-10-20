@@ -1,0 +1,58 @@
+<div class="container my-container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li class="active">
+            Movie Mania
+        </li>
+    </ul>
+
+    <div class="title">
+        <h1 class="page-header">
+            The Movie Database
+        </h1>
+    </div>
+
+    <div class="movie-category movies-by-language">
+        <h3 class="list-heading">
+            Movies by Language:
+        </h3>
+        <table class="table table-bordered table-hover" align="center">
+            <thead>
+            <tr class="row">
+                <th>
+                    Language
+                </th>
+                <th>
+                    No of Movies
+                </th>
+                <th>
+                    Size (in GB)
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($movieDbList as $movieDb): ?>
+                <?php $size = round((float)$movieDb->size / (1024*1024*1024) , 3); ?>
+                <tr class="row">
+                    <th>
+                        <a href="<?php echo '/movies/browseMovies?language[]=' . $movieDb->language_id; ?>" title="<?php echo $movieDb->language . ' Movie Database'; ?>">
+                            <?php echo $movieDb->language; ?>
+                        </a>
+                    </th>
+                    <td>
+                        <?php echo $movieDb->count; ?>
+                    </td>
+                    <td>
+                        <?php echo $size . "<br /> (" . $movieDb->size . ")"; ?>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+

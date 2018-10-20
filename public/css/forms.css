@@ -1,0 +1,60 @@
+.form-field.error span.errorMsg {
+    display: block;
+}
+
+.form-field.error span.label-description {
+    display: none;
+}
+
+.form-field.error input, .form-field.error select {
+    border: 1px solid red;
+}
+
+form .auto-suggest-input {
+    position: relative;
+    clear: both;
+}
+
+.picked-item {
+    border: 1px solid white;
+    padding: 2px 5px 2px 6px;
+    border-radius: 13px;
+    color: white;
+    margin-bottom: 1px;
+    display: inline-block;
+}
+
+.picked-item-list {
+    margin-top: 10px;
+}
+
+.picked-item .remove-item {
+    color:inherit;
+}
+
+.picked-item-list[data-type="movie"] .picked-item{
+    background-color: #34495E;
+}
+
+.picked-item-list[data-type="actor"] .picked-item{
+    background-color: #00AD7C;
+}
+
+.picked-item-list[data-type="director"] .picked-item{
+    background-color: #FF7F50;
+}
+
+.picked-item-list[data-type="singer"] .picked-item{
+    background-color: #AA85F1;
+}
+
+.picked-item-list[data-type="composer"] .picked-item{
+    background-color: #5DADE2;
+}
+
+.picked-item-list[data-type="lyricist"] .picked-item{
+    background-color: #FA8AD0;
+}
+
+
+

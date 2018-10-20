@@ -1,0 +1,56 @@
+<div class="container my-container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li class="active">
+            Audio Box
+        </li>
+    </ul>
+
+    <div class="title">
+        <h1 class="page-header">
+            The Songs Database
+        </h1>
+    </div>
+
+    <div class="movie-category movies-by-language">
+        <h3 class="list-heading">
+            Songs by Language:
+        </h3>
+        <table class="table table-bordered table-hover" align="center">
+            <thead>
+            <tr class="row">
+                <th>
+                    Language
+                </th>
+                <th>
+                    No of Songs
+                </th>
+                <th>
+                    Size (in MB)
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach($songs_by_languages as $language_snippet): ?>
+                <tr class="row">
+                    <th>
+                        <a href="<?php echo '/songs/browseSongs?language=' . $language_snippet->language; ?>" title="<?php echo $language_snippet->language; ?> Songs Database">
+                            <?php echo $language_snippet->language; ?>
+                        </a>
+                    </th>
+                    <td>
+                        <?php echo $language_snippet->count; ?>
+                    </td>
+                    <td>
+                        <?php echo (round(((float) $language_snippet->size / (1024 * 1024)), 3)) . "<br /> (" . $language_snippet->size . ")"; ?>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+</div>

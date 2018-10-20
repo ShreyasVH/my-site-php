@@ -8,7 +8,17 @@
 namespace app\models;
 
 
-class BaseModel
-{
+use app\helpers\Api;
+use Phalcon\Di;
+use Phalcon\Mvc\Model;
 
+class BaseModel extends Model
+{
+    /**
+     * @return Api
+     */
+    public static function getAPISource()
+    {
+        return Di::getDefault()->get('api');
+    }
 }

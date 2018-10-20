@@ -8,9 +8,11 @@
 namespace app\helpers;
 
 use app\constants\Constants;
+use app\enums\Gender;
 use app\models\CssSnippet;
 use app\models\JsSnippet;
 use app\models\Resource;
+use app\models\Song;
 
 class AssetHelper extends BaseHelper
 {
@@ -21,9 +23,118 @@ class AssetHelper extends BaseHelper
     public function __construct()
     {
         $this->pageCssMap = [
+            'movies' => [
+                'actorCombinations' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/forms.css'),
+                    new CssSnippet('/css/card.css')
+                ],
+                'actorMovies' => [
+                    new CssSnippet('/css/card.css')
+                ],
+                'addActor' => [
+                    new CssSnippet('/css/add-actor.css')
+                ],
+                'addDirector' => [
+                    new CssSnippet('/css/add-actor.css')
+                ],
+                'addMovie' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
+                'browseMovies' => [
+                    new CssSnippet('/css/jquery-ui.min.css'),
+                    new CssSnippet('/css/forms.css'),
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/filters.css')
+                ],
+                'deletedMovies' => [
+                    new CssSnippet('/css/card.css')
+                ],
+                'directorMovies' => [
+                    new CssSnippet('/css/card.css')
+                ],
+                'editMovie' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
+                'movieDetail' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/movie-detail.css')
+                ],
+                'yearMovies' => [
+                    new CssSnippet('/css/card.css')
+                ]
+            ],
+            'songs' => [
+                'addSong' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
+                'browseSongs' => [
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/play-song.css'),
+                    new CssSnippet('/css/browse-songs.css')
+                ],
+                'composerSongs' => [
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/play-song.css')
+                ],
+                'editSong' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
+                'lyricistSongs' => [
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/play-song.css')
+                ],
+                'singerSongs' => [
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/play-song.css')
+                ],
+                'songDetail' => [
+                    new CssSnippet('/css/song-detail.css'),
+                    new CssSnippet('/css/play-song.css')
+                ],
+                'yearSongs' => [
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/play-song.css')
+                ]
+            ]
         ];
 
         $this->pageJsMap = [
+            'movies' => [
+                'browseMovies' => [
+                    new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER),
+                    new JsSnippet('/js/data-manipulation.js', Resource::POSITION_FOOTER)
+                ]
+            ],
+            'songs' => [
+                'browseSongs' => [
+                    new JsSnippet('/js/play-song.js', Resource::POSITION_FOOTER)
+                ],
+                'composerSongs' => [
+                    new JsSnippet('/js/play-song.js', Resource::POSITION_FOOTER)
+                ],
+                'lyricistSongs' => [
+                    new JsSnippet('/js/play-song.js', Resource::POSITION_FOOTER)
+                ],
+                'singerSongs' => [
+                    new JsSnippet('/js/play-song.js', Resource::POSITION_FOOTER)
+                ],
+                'songDetail' => [
+                    new JsSnippet('/js/play-song.js', Resource::POSITION_FOOTER)
+                ],
+                'yearSongs' => [
+                    new JsSnippet('/js/play-song.js', Resource::POSITION_FOOTER)
+                ]
+            ]
         ];
     }
 
@@ -32,8 +143,8 @@ class AssetHelper extends BaseHelper
         $common_css_array = [
             new CssSnippet('/css/bootstrap.min.css'),
             new CssSnippet('/css/mystyles.css')
-//            new CssSnippet('/css/fonts.css')
         ];
+
         $specific_css_array = $this->_getPageSpecificCssFiles($controller, $action);
         $css_files = array_merge($common_css_array, $specific_css_array);
         /** @var CssSnippet[] $css_files */
@@ -92,5 +203,47 @@ class AssetHelper extends BaseHelper
     public static function getFileWithFootprint($filePath)
     {
         return $filePath . self::getFootprint($filePath);
+    }
+
+    public static function getImage($filename, $context, $params = array())
+    {
+        $filename .= '.jpg';
+        switch($context)
+        {
+            case Constants::CONTEXT_ARTIST :
+                $folder = Constants::IMAGES_FOLDER . Constants::IMAGES_FOLDER_ARTIST;
+                if($params['gender'] == Gender::MALE)
+                {
+                    $default_file = Constants::DEFAULT_IMAGE_ARTIST_MALE;
+                }
+                else
+                {
+                    $default_file = Constants::DEFAULT_IMAGE_ARTIST_FEMALE;
+                }
+                break;
+            case Constants::CONTEXT_MOVIE :
+                $folder = Constants::IMAGES_FOLDER . Constants::IMAGES_FOLDER_MOVIE;
+                $default_file = Constants::DEFAULT_IMAGE_MOVIE;
+                break;
+
+        }
+
+        $file_path = Constants::PUBLIC_FOLDER . $folder . $filename;
+        $default_file_path = $folder . $default_file;
+
+        if(file_exists($file_path))
+        {
+            return self::getFileWithFootprint('/' . $folder . $filename);
+        }
+        return self::getFileWithFootprint('/' . $default_file_path);
+    }
+
+    /**
+     * @param Song $song
+     * @return string
+     */
+    public static function getSongUrl($song)
+    {
+        return DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $song->movie->language->name . DIRECTORY_SEPARATOR . $song->name . '.mp3';
     }
 }

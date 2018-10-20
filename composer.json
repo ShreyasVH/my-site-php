@@ -2,6 +2,7 @@
   "require": {
     "ext-bcmath": "*",
     "ext-mcrypt": "*",
-    "ext-phalcon": "^3.4.1"
+    "ext-phalcon": "^3.4.1",
+    "vlucas/phpdotenv": "*"
   }
 }

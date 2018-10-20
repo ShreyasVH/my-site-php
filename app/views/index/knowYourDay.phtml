@@ -1,0 +1,60 @@
+<div class="container">
+	<div class="title know-your-day">
+		<h2>Know Your Day</h2>
+	</div>
+
+	<?php if(isset($day)) { ?>
+		<div class="container">
+			<h4 class="success-msg">The entered date is <strong><?php echo $day; ?></strong></h4>
+			<p><a href="knowYourDay">Try another date</a></p>
+			<?php die; ?>
+		</div>
+	<?php } ?>
+	<?php if(isset($_GET['response'])) { ?>
+		<div class="container">
+			<h4 class="error-msg">Error!! Please enter valid date, month and year.</h4>
+		</div>
+	<?php } ?>
+
+	<p>Enter the details of the date below:</p>
+
+	<form method="POST" action="">
+		<div class="row">
+			<div><label>Date:</label><span class="error-msg">*</span></div>
+			<span>Enter date</span>
+			<div><input type="text" name="date" placeholder="" size="60" /></div>
+		</div><br />
+
+		<div class="row">
+			<div><label>Month:</label><span class="error-msg">*</span></div>
+			<span>Select month</span>
+			<div>
+				<input type="radio" name="month" value="0" /> Jan
+				<input type="radio" name="month" value="1" /> Feb
+				<input type="radio" name="month" value="2" /> Mar
+				<input type="radio" name="month" value="3" /> Apr
+				<input type="radio" name="month" value="4" /> May
+				<input type="radio" name="month" value="5" /> Jun
+				<input type="radio" name="month" value="6" /> Jul
+				<input type="radio" name="month" value="7" /> Aug
+				<input type="radio" name="month" value="8" /> Sep
+				<input type="radio" name="month" value="9" /> Oct
+				<input type="radio" name="month" value="10" /> Nov
+				<input type="radio" name="month" value="11" /> Dec
+			</div>
+		</div>
+		<br />
+
+		<div class="row">
+			<div><label>Year:</label><span class="error-msg">*</span></div>
+			<span>Enter year</span>
+			<div><input type="text" name="year" placeholder="" size="60" /></div>
+		</div>
+		<br />
+
+		<div class="row clearfix">
+			<div><input class="btn btn-default" type="submit" name="submit" value=" Know your Day " /></div>
+		</div>
+		<br />
+	</form>
+</div>

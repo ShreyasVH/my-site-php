@@ -1,0 +1,20 @@
+.carousel {
+    margin-bottom: 50px;
+}
+
+.carousel .carousel-indicators {
+    bottom: -65px;
+}
+
+.carousel .carousel-inner {
+    overflow: visible;
+}
+
+.carousel .carousel-inner .item .carousel-caption {
+    bottom: -70px;
+}
+
+.carousel .carousel-inner .item .carousel-caption h3 {
+    color: #203f6d;
+    font-family: extra-ornamental, serif;
+}

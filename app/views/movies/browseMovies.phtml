@@ -1,0 +1,141 @@
+<?php
+use app\constants\Constants;
+use app\enums\Mode;
+use app\utils\CommonUtils;
+?>
+
+<div class="container">
+    <div class="row">
+        <ul class="breadcrumb">
+            <li>
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="/movies/dashboard">
+                    Movie Mania
+                </a>
+            </li>
+            <li class="active">
+                Browse Movies
+            </li>
+        </ul>
+    </div>
+
+    <?php if(Mode::NORMAL == CommonUtils::getCurrentMode() && !($this->request->isAjax())): ?>
+        <div class="row">
+            <?php $this->partial('shared/carousel'); ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="row">
+        <div class="title">
+            <h1 class="page-header">
+                Browse Movies
+            </h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-3 col-lg-3 col-xs-6 col-sm-12 add-movie">
+                <a class="btn btn-primary" href="<?php echo '/movies/addMovie'; ?>" target="_blank">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add Movie
+                </a>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xs-6 col-sm-4">
+                <p class="movie-count">
+                    <strong class="jsTotalCount">
+                        <?php echo $totalCount; ?>
+                    </strong>
+                    movies
+                </p>
+            </div>
+            <div class="col-md-4 col-lg-3 col-xs-7 col-sm-6">
+                <div class="dropdown jsCustomDropdown">
+                    <input type="text" name="search" class="form-control mandatory jsCustomDropdownInput" autocomplete="off" placeholder="Search Movie" data-type="movie" />
+                    <ul class="suggestions-list dropdown-menu" id="search_movie_dropdown"></ul>
+                </div>
+            </div>
+            <div class="col-md-2 col-lg-3 col-xs-5 col-sm-2">
+                <?php
+                $sortAttributes = array_filter(Constants::getMovieAttributes(), function($attribute) {
+                    return (isset($attribute['isSortEnabled']) && !empty($attribute['isSortEnabled']));
+                });
+                $orderArray = [2, 1, 3, 4];
+                array_multisort($orderArray, $sortAttributes);
+
+                $currentSortType = array_keys($sortMap)[0];
+                $currentSortOrder = $sortMap[$currentSortType];
+                $currentSortText = $sortAttributes[$currentSortType]['sortLabel'] . ' ' . $currentSortOrder;
+                ?>
+                <div class="sort-dropdown dropdown">
+                    <button class="btn btn-default pull-right" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-sort-by-attributes"></i>
+                        Sort By:
+                        <span class="visible-lg sort-display jsSortDisplay" data-sortType="<?php echo $currentSortType; ?>" data-sortOrder="<?php echo $currentSortOrder; ?>">
+							<?php echo $currentSortText; ?>
+						</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <?php foreach($sortAttributes as $sortType => $attribute): ?>
+                            <li>
+                                <?php $sortOrders = [
+                                    'ASC' => 'glyphicon glyphicon-chevron-up',
+                                    'DESC' => 'glyphicon glyphicon-chevron-down'
+                                ]; ?>
+                                <span class="col-md-6 jsSortLabel">
+									<?php echo $attribute['sortLabel']; ?>
+								</span>
+                                <?php foreach($sortOrders as $sortOrder => $arrowClass): ?>
+                                    <a href="javascript:void(0);" class="col-md-3 jsSort" data-sortType="<?php echo $sortType; ?>" data-sortOrder="<?php echo $sortOrder; ?>">
+                                        <i class="<?php echo $arrowClass; ?>"></i>
+                                    </a>
+                                <?php endforeach; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="row">
+                <div class="hidden-xs col-sm-4 col-md-3 col-lg-3">
+                    <?php $this->partial('movies/filters'); ?>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
+                    <div class="row movie-list clearfix jsMovieContainer">
+                        <?php foreach($movieList as $movie): ?>
+                            <?php $this->partial('movies/movieCard'); ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var offset = <?php echo $offset; ?>;
+    var totalCount = <?php echo $totalCount; ?>
+
+    $(document).ready(function() {
+        <?php if(isset($filterValues['actors']['values']) && !empty($filterValues['actors']['values'])): ?>
+        <?php foreach($filterValues['actors']['values'] as $index => $actor): ?>
+        Suggestions.pickSuggestion('<?php echo $actor->name; ?>', '<?php echo $actor->id; ?>', 'actor');
+        <?php endforeach; ?>
+        <?php endif; ?>
+
+        <?php if(isset($filterValues['directors']['values']) && !empty($filterValues['directors']['values'])): ?>
+        <?php foreach($filterValues['directors']['values'] as $index => $director): ?>
+        Suggestions.pickSuggestion('<?php echo $director->name; ?>', '<?php echo $director->id; ?>', 'director');
+        <?php endforeach; ?>
+        <?php endif; ?>
+    });
+</script>

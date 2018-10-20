@@ -1,0 +1,184 @@
+<?php
+
+use app\constants\Constants;
+use app\helpers\AssetHelper;
+	use app\models\Movie;
+	use app\models\Artist;
+
+	/** @var Movie $movie */
+?>
+
+<div class="container">
+	<ul class="breadcrumb">
+		<li>
+			<a href="/">
+				Home
+			</a>
+		</li>
+
+		<li>
+			<a href="/movies/dashboard">
+				Movie Mania
+			</a>
+		</li>
+
+		<li class="active">
+			<?php echo $movie->name; ?>
+		</li>
+	</ul>
+
+	<div class="title">
+		<h1 class="page-header">
+            <?php echo $movie->name; ?>
+        </h1>
+	</div>
+	<div class="movie-image" style="text-align: center">
+		<img
+            class="img-rounded"
+            src="<?php echo AssetHelper::getImage($movie->id, Constants::CONTEXT_MOVIE); ?>"
+            style="max-height:1024px;max-width:720px"
+        >
+	</div>
+
+	<table style="margin-top:50px;margin-bottom:20px;width:100%">
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Director:
+            </td>
+			<td class="col-sm-10 col-md-10">
+				<div class="row actor-list">
+					<?php foreach($movie->directors as $director): ?>
+						<div class="col-md-2 actor-info">
+							<img
+                                class="img-thumbnail hidden-xs"
+                                src="<?php echo AssetHelper::getImage($director->id, Constants::CONTEXT_ARTIST, array('gender' => $director->gender)); ?>"
+                            >
+							<a
+                                class="actor-name"
+                                href="<?php echo '/movies/browseMovies?directors[]=' . $director->id . '&order=year DESC'; ?>"
+                                target="_blank"
+                            >
+								<p>
+                                    <?php echo $director->name; ?>
+                                </p>
+							</a>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Actors:
+            </td>
+			<td class="col-sm-10 col-md-10">
+				<div class="row actor-list">
+					<?php foreach($movie->actors as $actor): ?>
+						<div class="col-md-2 col-sm-4 actor-info">
+							<img
+                                class="img-thumbnail hidden-xs"
+                                src="<?php echo AssetHelper::getImage($actor->id, Constants::CONTEXT_ARTIST, array('gender' => $actor->gender)); ?>"
+                            >
+							<a
+                                class="actor-name"
+                                href="<?php echo '/movies/browseMovies?actors[]=' . $actor->id . '&order=year DESC'; ?>"
+                                target="_blank"
+                            >
+								<p>
+                                    <?php echo $actor->name; ?>
+                                </p>
+							</a>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Year:
+            </td>
+			<td class="col-sm-10 col-md-10">
+                <a
+                    href="<?php echo '/movies/browseMovies?year[]=' . $movie->year . '&year[]=' . $movie->year; ?>"
+                    target="_blank"
+                >
+                    <?php echo $movie->year ;?>
+                </a>
+            </td>
+		</tr>
+
+		<?php $size = round((float)$movie->size / (1024*1024) , 3); ?>
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Size:
+            </td>
+			<td class="col-sm-10 col-md-10">
+                <?php echo $size . ' MB ( ' . $movie->size . ' ) ' ;?>
+            </td>
+		</tr>
+
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Format:
+            </td>
+			<td class="col-sm-10 col-md-10">
+                <?php echo $movie->format->name; ?>
+            </td>
+		</tr>
+
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Quality:
+            </td>
+			<td class="col-sm-10 col-md-10">
+                <?php echo ucwords($movie->quality) ;?>
+            </td>
+		</tr>
+
+		<?php $has_subtitles = $movie->subtitles? 'Yes' : 'No'; ?>
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Has Subtitles?
+            </td>
+			<td class="col-sm-10 col-md-10">
+                <?php echo $has_subtitles ;?>
+            </td>
+		</tr>
+
+		<?php $seen_in_theatre = $movie->seen_in_theatre? 'Yes' : 'No'; ?>
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Seen in Theatre?
+            </td>
+			<td class="col-sm-10 col-md-10">
+                <?php echo $seen_in_theatre ;?>
+            </td>
+		</tr>
+
+		<tr>
+			<td class="col-sm-2 col-md-2">
+                Basename:
+            </td>
+			<td class="col-sm-10 col-md-10">
+                <?php echo $movie->basename ;?>
+            </td>
+		</tr>
+
+		<tr>
+			<td class="movie-card">
+				<div class="movie-name hidden">
+                    <?php echo $movie->name; ?>
+                </div>
+				<a
+                    class="btn btn-warning edit-movie"
+                    href="<?php echo '/movies/editMovie?id=' . $movie->id; ?>"
+                    target="_blank"
+                    style="margin-top: 20px;color:white;"
+                >
+					<i class="glyphicon glyphicon-pencil"></i>
+					&nbsp;&nbsp;Edit Movie
+				</a>
+			</td>
+		</tr>
+	</table>
+</div>

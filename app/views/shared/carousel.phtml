@@ -1,0 +1,22 @@
+<div class="carousel slide" data-interval="1000" id="my_carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#my_carousel" data-slide-to="0" class="active"></li>
+        <li data-target="#my_carousel" data-slide-to="1"></li>
+        <li data-target="#my_carousel" data-slide-to="2"></li>
+        <li data-target="#my_carousel" data-slide-to="3"></li>
+        <li data-target="#my_carousel" data-slide-to="4"></li>
+    </ol>
+    <div class="carousel-inner">
+        <?php for($i = 0; $i < count($carousel_src); $i++): ?>
+        <?php if($i == 0): ?>
+        <div class="item active">
+            <?php else: ?>
+            <div class="item">
+                <?php endif; ?>
+                <img src="<?php echo $carousel_src[$i]; ?>">
+            </div>
+            <?php endfor; ?>
+            <a class="carousel-control left" href="#my_carousel" data-slide="prev"><span class="icon-prev"></span></a>
+            <a class="carousel-control right" href="#my_carousel" data-slide="next"><span class="icon-next"></span></a>
+        </div>
+    </div>

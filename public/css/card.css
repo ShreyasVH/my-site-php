@@ -1,0 +1,104 @@
+.movie-card {
+	text-align: center;
+	font-weight: bold;
+}
+
+.movie-card .movie-name {
+	margin-top: 5px;
+	min-height: 40px;
+}
+
+.movie-card .card:hover .img-thumbnail {
+	opacity:0.2;
+}
+
+.movie-card .card .img-thumbnail{
+	/*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);*/
+	/*transition: 0.5s;*/
+	height: 360px;
+	width: 240px;
+}
+
+.movie-card .card .card-img-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 240px;
+    height: 360px;
+}
+
+.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
+	width: 129px;
+	height: 172px;
+}
+
+.movie-card .card:hover .card-img-overlay{
+	border: 5px solid #5bc0de;
+	border-radius: 5px;
+	cursor: pointer;
+	display: block;
+}
+.movie-card .card .card-img-overlay .movie-details {
+	padding: 5px;
+}
+
+.movie-card .card .card-img-overlay .controls{
+    position: absolute;
+    bottom: 0;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.movie-card .card .card-img-overlay .controls a {
+	padding: 0.6em;
+	color:white;
+}
+
+@media (min-width: 768px) {
+	.movie-card .card .img-thumbnail, .movie-card .card .card-img-overlay {
+		height: 180px;
+		width: 135px;
+	}
+
+	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
+		width: 219px;
+		height: 292px;
+	}
+
+	.movie-card .card .card-img-overlay .controls a {
+		padding: 0.6em 1.5em;
+	}
+}
+
+@media (min-width: 992px) {
+	.movie-card .card .img-thumbnail, .movie-card .card .card-img-overlay {
+		height: 200px;
+		width: 150px;
+	}
+
+	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
+		width: 210px;
+		height: 280px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.movie-card .card .img-thumbnail, .movie-card .card .card-img-overlay {
+		height: 252px;
+		width: 189px;
+	}
+
+	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
+		width: 165px;
+		height: 220px;
+	}
+
+	.movie-card .card .card-img-overlay .controls a {
+		padding: 0.6em 1em;
+	}
+}
