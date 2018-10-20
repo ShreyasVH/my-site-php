@@ -13,8 +13,8 @@ use app\helpers\AssetHelper;
 use Phalcon\Logger\Adapter\File as FileAdapter;
 use Phalcon\Session\Adapter\Files as Session;
 
-$dotenv = new Dotenv\Dotenv(APP_PATH);
-$dotenv->load();
+//$dotenv = new Dotenv\Dotenv(APP_PATH);
+//$dotenv->load();
 
 $di->set('view', function() {
     $view = new View();
