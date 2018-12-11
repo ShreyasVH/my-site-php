@@ -28,7 +28,7 @@ class Api extends BaseHelper
         $postdata = json_encode($postdata, JSON_UNESCAPED_SLASHES);
         if(CommonUtils::isDebugMode())
         {
-            $this->logger->debug('Calling POST API. URL : ' . $url . ' Payload : ' . $postdata);
+            // $this->logger->debug('Calling POST API. URL : ' . $url . ' Payload : ' . $postdata);
         }
 
         $ch = curl_init();
@@ -45,14 +45,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            $this->logger->debug('Finished executing POST API. URL : ' . $url);
+            // $this->logger->debug('Finished executing POST API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            $this->logger->critical('ERROR!! - POST API URL : ' . $url . ' Payload : ' . $postdata . ' Status : ' . $status . ' Response : ' . $result);
+            // $this->logger->critical('ERROR!! - POST API URL : ' . $url . ' Payload : ' . $postdata . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);
@@ -67,7 +67,7 @@ class Api extends BaseHelper
     {
         $url = $this->_getEndpoint() . $url;
         if(CommonUtils::isDebugMode())
-        $this->logger->debug('Calling GET API. URL : ' . $url);
+        // $this->logger->debug('Calling GET API. URL : ' . $url);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url );
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 30000);
@@ -79,14 +79,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            $this->logger->debug('Finished executing GET API. URL : ' . $url);
+            // $this->logger->debug('Finished executing GET API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            $this->logger->critical('ERROR!! - GET API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
+            // $this->logger->critical('ERROR!! - GET API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);
@@ -102,7 +102,7 @@ class Api extends BaseHelper
         $url = $this->_getEndpoint() . $url;
         if(CommonUtils::isDebugMode())
         {
-            $this->logger->debug('Calling DELETE API. URL : ' . $url);
+            // $this->logger->debug('Calling DELETE API. URL : ' . $url);
         }
 
         $ch = curl_init();
@@ -115,14 +115,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            $this->logger->debug('Finished executing DELETE API. URL : ' . $url);
+            // $this->logger->debug('Finished executing DELETE API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            $this->logger->critical('ERROR!! - DELETE API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
+            // $this->logger->critical('ERROR!! - DELETE API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);
@@ -139,7 +139,7 @@ class Api extends BaseHelper
         $putdata = json_encode($putdata, JSON_UNESCAPED_SLASHES);
         if(CommonUtils::isDebugMode())
         {
-            $this->logger->debug('Calling PUT API. URL : ' . $url . ' Payload : ' . $putdata);
+            // $this->logger->debug('Calling PUT API. URL : ' . $url . ' Payload : ' . $putdata);
         }
 
         $ch = curl_init();
@@ -156,14 +156,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            $this->logger->debug('Finished executing PUT API. URL : ' . $url);
+            // $this->logger->debug('Finished executing PUT API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            $this->logger->critical('ERROR!! - PUT API URL : ' . $url . ' Payload : ' . $putdata . ' Status : ' . $status . ' Response : ' . $result);
+            // $this->logger->critical('ERROR!! - PUT API URL : ' . $url . ' Payload : ' . $putdata . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);

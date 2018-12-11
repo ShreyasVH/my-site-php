@@ -24,14 +24,14 @@ class ArtistsController extends BaseController
             if($response['status'] == 200)
             {
                 $artist = json_decode($response['result']);
-                $this->logger->info('Added New Artist. Name : ' . $artist->name);
+                // $this->logger->info('Added New Artist. Name : ' . $artist->name);
                 $output['success'] = true;
                 $output['artist'] = $artist;
                 $output['context'] = $this->request->getPost('context');
             }
             else
             {
-                $this->logger->critical('Error adding artist: ' . ucwords($this->request->getPost('name')) . ' . Error: ' . $response['result']);
+                // $this->logger->critical('Error adding artist: ' . ucwords($this->request->getPost('name')) . ' . Error: ' . $response['result']);
                 $output['success'] = false;
                 $output['error'] = $response['result'];
             }

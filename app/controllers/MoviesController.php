@@ -231,13 +231,13 @@ class MoviesController extends BaseController
             if($response['status'] == 200)
             {
                 $movie = json_decode($response['result']);
-                $this->logger->info($movie->name . ' added. Id : ' . $movie->id);
+                // $this->logger->info($movie->name . ' added. Id : ' . $movie->id);
                 $this->flashSession->success('Movie added to the database');
                 $redirectUrl = '/movies/editMovie?id=' . $movie->id . '&source=addMovie';
             }
             else
             {
-                $this->logger->critical('Error adding movie: ' . $this->request->getPost('movie-name') . ' . Error: ' . $response['result']);
+                // $this->logger->critical('Error adding movie: ' . $this->request->getPost('movie-name') . ' . Error: ' . $response['result']);
                 $this->flashSession->error('Error adding movie. Error: ' . $response['result']);
             }
 
@@ -289,12 +289,12 @@ class MoviesController extends BaseController
                 if($response['status'] == 200)
                 {
                     $movie = json_decode($response['result']);
-                    $this->logger->info('Edited movie. id : ' . $movie->id);
+                    // $this->logger->info('Edited movie. id : ' . $movie->id);
                     $this->flashSession->success('Edited the movie successfully');
                 }
                 else
                 {
-                    $this->logger->critical('Error editing movie. Movie Id : ' . $id . ' . Error: ' . $response['result']);
+                    // $this->logger->critical('Error editing movie. Movie Id : ' . $id . ' . Error: ' . $response['result']);
                     $this->flashSession->error('Error editing movie. Error: ' . $response['result']);
                 }
             }
@@ -309,10 +309,10 @@ class MoviesController extends BaseController
                     $filename = $id . '.' . $file->getExtension();
                     $isSuccess = $file->moveTo(Constants::PUBLIC_FOLDER . Constants::IMAGES_FOLDER . Constants::IMAGES_FOLDER_MOVIE . $filename);
                     $isSuccess = move_uploaded_file($file->getTempName(), Constants::PUBLIC_FOLDER . Constants::IMAGES_FOLDER . Constants::IMAGES_FOLDER_MOVIE . $filename);
-                    $this->logger->info($file->getTempName());
+                    // $this->logger->info($file->getTempName());
                     if(!$isSuccess)
                     {
-                        $this->logger->critical('Error saving image for movie. Image : ' . $filename);
+                        // $this->logger->critical('Error saving image for movie. Image : ' . $filename);
                     }
                 }
             }
@@ -440,7 +440,7 @@ class MoviesController extends BaseController
             if($response['status'] != 200)
             {
                 $output['success'] = false;
-                $this->logger->critical('Error restoring movie: ' . $id . '. Error: ' . $response['result']);
+                // $this->logger->critical('Error restoring movie: ' . $id . '. Error: ' . $response['result']);
             }
 
             $this->response->setContentType('application/json', 'UTF-8');

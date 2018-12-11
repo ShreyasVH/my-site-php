@@ -298,12 +298,12 @@ class SongsController extends BaseController
             if($response['status'] == 200)
             {
                 $song = json_decode($response['result']);
-                $this->logger->info($song->name . ' added. Id : ' . $song->id);
+                // $this->logger->info($song->name . ' added. Id : ' . $song->id);
                 $this->flashSession->success('Song added to the database');
             }
             else
             {
-                $this->logger->critical('Error adding song: ' . $this->request->getPost('name') . ' . Error: ' . $response['result']);
+                // $this->logger->critical('Error adding song: ' . $this->request->getPost('name') . ' . Error: ' . $response['result']);
                 $this->flashSession->error('Error adding song. Error: ' . $response['result']);
             }
         }
@@ -335,12 +335,12 @@ class SongsController extends BaseController
             if($response['status'] == 200)
             {
                 $song = json_decode($response['result']);
-                $this->logger->info('Edited song. id : ' . $song->id);
+                // $this->logger->info('Edited song. id : ' . $song->id);
                 $this->flashSession->success('Edited the song successfully');
             }
             else
             {
-                $this->logger->critical('Error editing song. Song Id : ' . $id . ' . Error: ' . $response['result']);
+                // $this->logger->critical('Error editing song. Song Id : ' . $id . ' . Error: ' . $response['result']);
                 $this->flashSession->error('Error editing song. Error: ' . $response['result']);
             }
             $this->response->redirect('/songs/editSong?id=' . $id);
