@@ -1,0 +1,37 @@
+<div class="container">
+	<ul class="breadcrumb">
+		<li>
+			<a href="/">
+				Home
+			</a>
+		</li>
+		<li>
+			<a href="/movies/dashboard">
+				Movie Mania
+			</a>
+		</li>
+		<li class="active">
+			Years Database
+		</li>
+	</ul>
+
+	<div class="title">
+		<h1 class="page-header">Years Database</h1>
+	</div>
+
+	<div style="margin-bottom:30px">
+		<?php foreach($decades as $decade => $year_snippets): ?>
+			<h3 class="page-header"><?php echo $decade; ?></h3>
+			<div class="row">
+				<?php foreach($year_snippets as $year_snippet): ?>
+					<div class="col-md-1">
+						<a href="<?php echo '/movies/browseMovies?year[]=' . $year_snippet->year . '&year[]=' . $year_snippet->year; ?>" target="_blank">
+							<?php echo $year_snippet->year; ?>
+						</a>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php endforeach; ?>
+	</div>
+
+</div>

@@ -2,3 +2,4 @@ vendor/
 app/config/config.ini
 TODO.txt
 .idea/
+.env

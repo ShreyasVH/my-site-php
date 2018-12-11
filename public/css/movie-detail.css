@@ -1,0 +1,14 @@
+.actor-list .actor-info {
+    padding: 4px 0px;
+    text-align: center;
+}
+
+.actor-list .actor-info img {
+    max-width: 100%;
+    height: 155px;
+}
+
+a.actor-name p
+{
+    min-height:40px;
+}

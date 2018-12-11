@@ -1,0 +1,23 @@
+<?php
+    use app\models\Artist;
+    use app\utils\CommonUtils;
+
+    /** @var Artist[] $artists */
+?>
+
+<?php foreach($artists as $artist): ?>
+    <li>
+        <a href="javascript:Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($artist->name); ?>', '<?php echo $artist->id; ?>', '<?php echo $this->request->getQuery('context'); ?>'); ">
+            <?php echo $artist->name; ?>
+        </a>
+    </li>
+<?php endforeach; ?>
+
+<li>
+    <a href="#" class="add-new-artist" data-context="<?php echo $this->request->getQuery('context'); ?>">
+        <?php echo 'Add '; ?>
+        <span class="new-artist">
+            <?php echo $this->request->getQuery('keyword'); ?>
+        </span>
+    </a>
+</li>

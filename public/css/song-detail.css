@@ -1,0 +1,21 @@
+.song-attribute .attribute-key {
+    font-weight: bold;
+}
+
+.artists .attribute-value {
+    text-align: center;
+}
+
+.artists .row {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.action-btns {
+    text-align: center;
+    margin: 10px;
+}
+
+.action-btns a {
+    color: white;
+}

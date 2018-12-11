@@ -17,6 +17,7 @@ $directories = [
     APP_PATH . 'app/config/',
     APP_PATH . 'app/constants/',
     APP_PATH . 'app/controllers/',
+    APP_PATH . 'app/enums/',
     APP_PATH . 'app/helpers/',
     APP_PATH . 'app/models/',
     APP_PATH . 'app/utils/'
@@ -28,9 +29,11 @@ $namespaces = [
     'app\\config' => APP_PATH . 'app/config',
     'app\\constants' => APP_PATH . 'app/constants',
     'app\\controllers' => APP_PATH . 'app/controllers',
+    'app\\enums' => APP_PATH . 'app/enums',
     'app\\helpers' => APP_PATH . 'app/helpers',
     'app\\models' => APP_PATH . 'app/models',
     'app\\utils' => APP_PATH . 'app/utils',
+    'Dotenv' => APP_PATH . 'vendor/vlucas/phpdotenv/src'
 ];
 
 $loader->registerNamespaces($namespaces)->register();

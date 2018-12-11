@@ -1,0 +1,359 @@
+<?php
+	use app\models\Format;
+	use app\models\Language;
+	use app\models\Movie;
+    use app\utils\CommonUtils;
+
+    /** @var Movie $movie */
+
+	$uploadImageText = (('addMovie' == $source) ? 'Upload' : 'Update');
+	$fileName = (('addMovie' == $source) ? '' : (file_exists(PUBLIC_FOLDER . IMAGES_FOLDER . IMAGES_FOLDER_MOVIE . $movie->id . '.jpg') ? $movie->id . '.jpg' : ''));
+?>
+
+<div class="container">
+	<ul class="breadcrumb">
+		<li>
+			<a href="/">
+				Home
+			</a>
+		</li>
+
+		<li>
+			<a href="/movies/dashboard">
+				Movie Mania
+			</a>
+		</li>
+
+		<li>
+			<a href="<?php echo '/movies/movieDetail?id=' . $movie->id; ?>">
+				<?php echo $movie->name; ?>
+			</a>
+		</li>
+
+		<li class="active">
+			Edit Movie
+		</li>
+	</ul>
+	<form class="form-horizontal add-movie-form edit-form" name="edit-movie-form" method="POST" action="/movies/editMovie" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="<?php echo $id; ?>">
+		<input type="hidden" name="source" value="<?php echo $source; ?>">
+		<div class="">
+			<div class="title">
+				<h2>
+					Edit Movie
+				</h2>
+				<p>
+					Edit the details of the movie
+				</p>
+			</div>
+			<div class="container">
+				<?php if('addMovie' != $source): ?>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Name:
+									</span>
+									<span class="mandatory-label"></span>
+									<span class="label-description">
+										Enter the name of the movie
+									</span>
+									<span class="errorMsg">
+										Please enter valid name
+									</span>
+								</label>
+								<div class="col-md-12">
+									<input type="text" name="movie-name" class="form-control" autocomplete="off" tabindex="1" value="<?php echo $movie->name; ?>">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Size:
+									</span>
+									<span class="mandatory-label"></span>
+									<span class="label-description">
+										Enter the size of the movie in bits (Ex:12,345,678)
+									</span>
+									<span class="errorMsg">
+										Please enter valid size
+									</span>
+								</label>
+								<div class="col-md-12">
+									<input type="text" name="movie-size" class="form-control" autocomplete="off" tabindex="1" value="<?php echo $movie->size; ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Language:
+									</span>
+									<span class="mandatory-label"></span>
+									<span class="label-description">
+										Select the language of the movie.
+									</span>
+									<span class="errorMsg">
+										Please select language
+									</span>
+								</label>
+								<div class="col-md-12">
+									<select class="form-control" name="movie-language" tabindex="1">
+										<?php foreach(Language::getAllLanguages() as $language): ?>
+											<?php $selected = (($movie->language->id == $language->id) ? 'selected' : ''); ?>
+											<option value="<?php echo $language->id; ?>" <?php echo $selected; ?>>
+												<?php echo $language->name; ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Format:
+									</span>
+									<span class="mandatory-label"></span>
+									<span class="label-description">
+										Select the format of the movie.
+									</span>
+									<span class="errorMsg">
+										Please select format
+									</span>
+								</label>
+								<div class="col-md-12">
+									<select class="form-control" name="movie-format" tabindex="1">
+										<?php foreach(Format::getAllFormats() as $format): ?>
+											<?php $selected = (($movie->format->id == $format->id) ? 'selected' : ''); ?>
+											<option value="<?php echo $format->id; ?>" <?php echo $selected; ?>>
+												<?php echo $format->name; ?>
+											</option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row jsSuggestionWrap">
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Directors:
+									</span>
+									<span class="mandatory-label"></span>
+									<span class="label-description">
+										Enter the names of the director of the movie
+									</span>
+									<span class="errorMsg">
+										Please select director
+									</span>
+								</label>
+								<div class="col-md-12">
+									<div class="auto-suggest-input dropdown jsCustomDropdown">
+										<input class="form-control jsCustomDropdownInput" type="text" autocomplete="off" size="50" tabindex="1" data-type="artist" />
+										<ul class="suggestions-list dropdown-menu"></ul>
+									</div>
+									<div class="picked-item-list" data-type="director"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Year of release:
+									</span>
+									<span class="mandatory-label"></span>
+									<span class="label-description">
+										Enter the year of release of the movie
+									</span>
+									<span class="errorMsg">
+										Please enter valid year
+									</span>
+								</label>
+								<div class="col-md-12">
+									<input type="number" name="movie-year" class="form-control" autocomplete="off" tabindex="1" value="<?php echo $movie->year; ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row jsSuggestionWrap">
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Actors:
+									</span>
+									<span class="mandatory-label"></span>
+									<span class="label-description">
+										Enter the name of the actors of the movie
+									</span>
+									<span class="errorMsg">
+										Please select actors
+									</span>
+								</label>
+								<div class="col-md-12">
+									<div class="auto-suggest-input dropdown jsCustomDropdown">
+										<input class="form-control jsCustomDropdownInput" type="text" autocomplete="off" size="50" tabindex="1" data-type="artist" />
+										<ul class="suggestions-list dropdown-menu"></ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6"></div>
+						<div class="col-md-12 picked-item-list" data-type="actor"></div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Subtitles:
+									</span>
+									<span class="label-description">
+										Does the movie have subtitles?
+									</span>
+								</label>
+								<div class="col-md-12">
+									<div class="radio">
+										<label class="radio-inline">
+											<input type="radio" name="movie-subtitles" value="1" tabindex="1" <?php if($movie->subtitles) echo 'checked'; ?> />
+											Yes
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="movie-subtitles" value="0" tabindex="1" <?php if(!$movie->subtitles) echo 'checked'; ?> />
+											No
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Viewed:
+									</span>
+									<span class="label-description">
+										Is the movie seen by me?
+									</span>
+								</label>
+								<div class="col-md-12">
+									<div class="radio">
+										<label class="radio-inline">
+											<input type="radio" name="movie-seen" value="1" tabindex="1" <?php if($movie->seen_in_theatre) echo 'checked'; ?>>
+											Yes
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="movie-seen" value="0" tabindex="1" <?php if(!$movie->seen_in_theatre) echo 'checked'; ?>>
+											No
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Quality:
+									</span>
+									<span class="label-description">
+										What is the quality of the print of the movie?
+									</span>
+								</label>
+								<div class="col-md-12">
+									<div class="radio">
+										<label class="radio-inline">
+											<input type="radio" name="movie-quality" value="good" tabindex="1" <?php if($movie->quality == 'good') echo 'checked'; ?> />
+											Good
+										</label>
+										<label class="radio-inline">
+											<input type="radio" name="movie-quality" value="normal" tabindex="1" <?php if($movie->quality == 'normal') echo 'checked'; ?> />
+											Normal
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group form-field">
+								<label class="control-label col-md-12">
+									<span class="label-title">
+										Basename:
+									</span>
+									<span class="label-description">
+										Enter the basename of the movie
+									</span>
+								</label>
+								<div class="col-md-12">
+									<input type="text" name="movie-basename" class="form-control" autocomplete="off" tabindex="1" value="<?php echo $movie->basename; ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php endif; ?>
+				<div class="row">
+					<div class="col-md-6">
+						<?php $this->partial('shared/fileUpload', [
+							'name' => 'movie-image',
+							'id' => 'imageUpload',
+							'label' => 'Cover Image',
+							'description' => 'Enter the image for the movie',
+							'uploadText' => $uploadImageText,
+							'errorMsg' => 'Image should be of .jpg with max size 300kb.',
+							'maxFileSize' => (300 * 1024 * 1024),
+							'allowedExtensions' => 'jpg',
+							'fileName' => $fileName
+						]); ?>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group form-field action-btns">
+						<div class="col-md-4">
+						</div>
+						<div class="col-md-3">
+							<input type="submit" name="reset" class="form-control btn btn-primary" value="Edit Movie" tabindex="1">
+						</div>
+						<div class="col-md-5">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<?php
+	$this->partial('shared/addArtistPopup');
+?>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		<?php foreach($movie->actors as $actor): ?>
+			Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($actor->name); ?>', '<?php echo $actor->id; ?>', 'actor');
+		<?php endforeach; ?>
+
+		<?php foreach($movie->directors as $director): ?>
+			Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($director->name); ?>', '<?php echo $director->id; ?>', 'director');
+		<?php endforeach; ?>
+
+		$(document).on('submit', 'form[name="edit-movie-form"]', function(e) {
+			if(!forms.validateForms.isAddMovieFormValid($(this)))
+			{
+				e.preventDefault();
+			}
+		});
+	});
+</script>

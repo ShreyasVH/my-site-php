@@ -1,0 +1,43 @@
+<?php
+
+use app\constants\Constants;
+use app\helpers\AssetHelper;
+use app\models\Movie;
+
+/** @var Movie $movie */
+?>
+<div class="col-md-4 col-sm-4 col-xs-12 col-lg-3 movie-card jsMovieCard" data-id="<?php echo $movie->id; ?>">
+    <div class="card">
+        <img src="<?php echo AssetHelper::getImage($movie->id, Constants::CONTEXT_MOVIE); ?>" class="img-thumbnail" alt="<?php echo $movie->name; ?>">
+        <div class="card-img-overlay">
+            <div class="movie-details">
+                <p class="movie-format">
+                    <?php echo $movie->format->name; ?>
+                </p>
+                <p class="movie-year">
+                    <?php echo $movie->year; ?>
+                </p>
+                <p class="movie-size">
+                    <?php echo $movie->size; ?>
+                </p>
+                <?php if($movie->subtitles): ?>
+                    <p class="movie-subtitles">
+                        <i class="glyphicon glyphicon-subtitles"></i>
+                    </p>
+                <?php endif; ?>
+            </div>
+            <div class="controls">
+                <?php $this->partial('movies/movieActionButtons'); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <a href="<?php echo '/movies/movieDetail?id=' . $movie->id; ?>" target="_blank" class="jsShowMovieDetail">
+                <p class="movie-name">
+                    <?php echo $movie->name; ?>
+                </p>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<?php
+
+use app\enums\Status;
+use app\models\Movie;
+
+/** @var Movie $movie */
+?>
+<?php if(Status::fromString($movie->status) != Status::DELETED): ?>
+    <a class="btn btn-warning edit-movie" href="<?php echo '/movies/editMovie?id=' . $movie->id; ?>" target="_blank">
+        <i class="glyphicon glyphicon-pencil"></i>
+    </a>
+    <a class="btn btn-danger remove-movie" data-id="<?php echo $movie->id; ?>">
+        <i class="glyphicon glyphicon-trash"></i>
+    </a>
+<?php else: ?>
+    <a class="btn btn-success jsRestoreMovie" data-id="<?php echo $movie->id; ?>">
+        <i class="glyphicon glyphicon-refresh"></i>
+        Restore
+    </a>
+<?php endif; ?>

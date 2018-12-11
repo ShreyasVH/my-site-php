@@ -1,0 +1,37 @@
+.container .add-individual-form {
+  border: 1px solid black;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 500px;
+}
+
+.add-individual-form h3 {
+	text-align: center;
+  background-color: #0E7CF4;
+  color: white;
+  padding: 20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-family: vampire;
+	font-size: 33px;
+}
+
+.add-individual-form .form-group .radio {
+	padding: 7px 0px 7px 25px;
+	border-radius: 5px;
+}
+
+.add-individual-form .form-group .radio .radio-inline {
+	padding-top: 0px;
+}
+
+.add-individual-form form {
+	padding-top: 15px;
+}
+
+.add-individual-form label.control-label {
+	padding-top: 0px;
+}

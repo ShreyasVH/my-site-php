@@ -1,0 +1,94 @@
+<div class="container my-container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="/movies/dashboard">
+                Movie Mania
+            </a>
+        </li>
+        <li class="active">
+            Actor Combinations
+        </li>
+    </ul>
+
+    <div class="title">
+        <h1 class="page-header">Actor Combinations</h1>
+    </div>
+
+    <div class="jsSuggestionWrap">
+        <form name="actor-combinations-form" class="form-inline">
+            <div class="form-group auto-suggest-input dropdown jsCustomDropdown">
+                <label>Actors:</label>
+                <input type="text" class="form-control jsCustomDropdownInput" data-type="artist" name="" />
+                <ul class="suggestions-list dropdown-menu" id="actors_suggestions"></ul>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary form-control" value="SEARCH" />
+            </div>
+            <div class="form-group">
+                <a href="javascript:void(0);" class="jsClearActorsList">Clear List</a>
+            </div>
+
+            <div class="picked-item-list" data-type="actor"></div>
+        </form>
+    </div>
+
+    <div class="jsMovieListWrap" style="display: none;">
+        <div class="row db-options">
+            <div class="movie-count">
+                <p><strong class="jsMovieCount"><?php echo count($movieList); ?></strong> movies found.</p>
+            </div>
+        </div>
+
+        <?php if(count($movieList) > 0): ?>
+            <div class="movie-list clearfix">
+                <?php foreach($movieList as $movie): ?>
+                    <?php $this->partial('movies/movieCard'); ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(document).on('submit', 'form[name="actor-combinations-form"]', function(e) {
+            e.preventDefault();
+            getActorCombinationMovies();
+        });
+
+        $(document).on('click', '.jsClearActorsList', function(e) {
+            e.preventDefault();
+            $('.picked-item-list').html('');
+            $('input[data-type="artist"]').focus();
+        });
+
+        function getActorCombinationMovies()
+        {
+            if($('input[name="actors[]"]').length == 0)
+            {
+                $('input[data-type="artist"]').addClass('empty');
+                return false;
+            }
+            $.ajax({
+                type : "POST",
+                url : "/movies/actorCombinations",
+                data : new FormData($('form[name="actor-combinations-form"]')[0]),
+                cache : false,
+                processData : false,
+                contentType : false,
+                success : function(data)
+                {
+                    var html = $(data).find('.jsMovieListWrap').html();
+                    $('.jsMovieListWrap').html(html).show();
+
+                }
+            });
+        }
+    });
+</script>

@@ -1,0 +1,53 @@
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="/songs/dashboard">
+                Audio Box
+            </a>
+        </li>
+        <li class="active">
+            Singers Database
+        </li>
+    </ul>
+
+    <div class="title">
+        <h1 class="page-header">Singers Database</h1>
+    </div>
+
+    <div style="position:fixed;bottom:30px;right:75px;border:2px solid black;padding:10px;border-radius:20px;background-color:#0BBFB4;z-index:10">
+        <?php foreach($singer_list_alpha as $alpha => $singers_list): ?>
+            <h5 style="display:inline">
+                <a href="<?php echo '#alpha-' . $alpha; ?>" class="smooth-scroll" style="color:white">
+                    <?php echo $alpha; ?>
+                </a>
+            </h5>
+            &nbsp;
+        <?php endforeach; ?>
+    </div>
+
+    <div style="margin-bottom:30px">
+        <?php foreach($singer_list_alpha as $alpha => $singers_list): ?>
+            <h1 id="<?php echo 'alpha-' . $alpha; ?>" class="page-header">
+                <?php echo $alpha; ?>
+                <small>
+                    (<?php echo count($singers_list); ?>)
+                </small>
+            </h1>
+            <div class="row">
+                <?php foreach($singers_list as $singer): ?>
+                    <div class="col-md-3">
+                        <a href="<?php echo '/songs/singerSongs?id=' . $singer->id; ?>" target="_blank">
+                            <?php echo $singer->name; ?>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+

@@ -1,0 +1,121 @@
+<?php
+    use app\models\Language;
+
+    /** @var Language $language */
+?>
+
+<div class="container">
+    <div class="row">
+        <ul class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="/songs/dashboard">Audio Box</a></li>
+            <li class="active"><?php echo $language->name .  ' Songs Database'; ?></li>
+        </ul>
+    </div>
+
+    <div class="row hidden-xs">
+        <?php $this->partial('shared/carousel'); ?>
+    </div>
+
+    <div class="row">
+        <div class="title">
+            <h1 class="page-header"><?php echo $language->name .  ' Songs Database'; ?></h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <?php if(false): ?>
+            <div class="col-md-3 col-lg-3 col-xs-6 col-sm-12 add-movie">
+                <a class="btn btn-primary" href="/movies/addMovie?language=Kannada" target="_blank">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    Add Song
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <div class="col-md-3 col-lg-3 col-xs-6 col-sm-4">
+                <p class="movie-count">
+                    <strong><?php echo $song_count; ?></strong> songs
+                </p>
+            </div>
+
+            <?php if(false): ?>
+            <div class="col-md-4 col-lg-3 col-xs-7 col-sm-6">
+                <div class="dropdown">
+                    <input type="text" name="search" class="form-control mandatory jsCustomDropdownInput" autocomplete="off" placeholder="Search Song" data-type="movie" />
+                    <ul class="suggestions-list dropdown-menu" id="search_movie_dropdown"></ul>
+                </div>
+            </div>
+            <div class="col-md-2 col-lg-3 col-xs-5 col-sm-2">
+                <div class="sort-dropdown dropdown">
+                    <button class="btn btn-default pull-right" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-sort-by-attributes"></i>
+                        Sort By: <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <span class="col-md-6">Name</span>
+                            <a href="/movies/browseSongs?language=Kannada&order=name ASC" class="col-md-3">
+                                <i class="glyphicon glyphicon-chevron-up"></i>
+                            </a>
+                            <a href="/movies/browseSongs?language=Kannada&order=name DESC" class="col-md-3">
+                                <i class="glyphicon glyphicon-chevron-down"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="col-md-6">Year</span>
+                            <a href="/movies/browseSongs?language=Kannada&order=year ASC,id ASC" class="col-md-3">
+                                <i class="glyphicon glyphicon-chevron-up"></i>
+                            </a>
+                            <a href="/movies/browseSongs?language=Kannada&order=year DESC,id DESC" class="col-md-3">
+                                <i class="glyphicon glyphicon-chevron-down"></i>
+                            </a>
+                        </li>
+                        <li><span class="col-md-6">Size</span>
+                            <a href="/movies/browseSongs?language=Kannada&order=size ASC" class="col-md-3">
+                                <i class="glyphicon glyphicon-chevron-up"></i>
+                            </a>
+                            <a href="/movies/browseSongs?language=Kannada&order=size DESC" class="col-md-3">
+                                <i class="glyphicon glyphicon-chevron-down"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="movie-list clearfix">
+            <?php foreach($songsList as $song): ?>
+                <?php $this->partial('songs/songCard'); ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <?php if($totalPages > 1): ?>
+        <div class="row">
+            <div class="page-no container">
+                <span><strong style="padding:10px;">Go to Page: </strong></span>
+                <?php if($page != 1): ?>
+                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language->name . '&order=' . $order . '&page=1'; ?>"> &lt;&lt; First</a>
+                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language->name . '&order=' . $order . '&page=' . ($page - 1); ?>">&lt; Prev</a>
+                <?php endif; ?>
+                <?php for($pageCount = 1; $pageCount <= $totalPages; $pageCount++): ?>
+                    <?php $pageClass = ($pageCount == $page) ? 'present-page' : ''; ?>
+                    <a class="<?php echo 'btn ' . (($pageCount == $page) ? 'present-page' : 'other-page'); ?>" href="<?php echo 'browseMovies?language=' . $language->name . '&order=' . $order . '&page=' . $pageCount; ?>">
+                        <?php echo $pageCount; ?>
+                    </a>
+                <?php endfor; ?>
+                <?php if($page < $totalPages): ?>
+                    <a class="btn other-page" href="<?php echo 'browseMovies?language=' . $language->name . '&order=' . $order . '&page=' . ($page + 1); ?>"> Next &gt;</a>
+                    <a class="btn other-page" href="<?php echo 'browseMovies?language=' . $language->name . '&order=' . $order . '&page=' . $totalPages; ?>"> Last &gt;&gt;</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php $this->partial('songs/playSongPopup'); ?>

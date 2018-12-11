@@ -1,0 +1,32 @@
+<?php
+use app\models\Artist;
+
+/** @var Artist $lyricist */
+?>
+
+<div class="container">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/songs/dashboard">Audio Box</a></li>
+        <li><a href="/songs/lyricistList">Lyricists Database</a></li>
+        <li class="active"><?php echo 'Songs by ' . $lyricist->name; ?></li>
+    </ul>
+
+    <div class="title">
+        <h1 class="page-header"><?php echo $lyricist->name; ?></h1>
+    </div>
+
+    <div class="row db-options">
+        <div class="movie-count">
+            <p><strong><?php echo count($songList); ?></strong> songs found.</p>
+        </div>
+    </div>
+
+    <div class="movie-list clearfix">
+        <?php foreach($songList as $song): ?>
+            <?php $this->partial('songs/songCard'); ?>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+<?php $this->partial('songs/playSongPopup'); ?>
