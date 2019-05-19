@@ -1,13 +1,14 @@
 <?php
-	use app\models\Format;
-	use app\models\Language;
-	use app\models\Movie;
+
+    use app\models\Format;
+    use app\models\Language;
+    use app\models\Movie;
     use app\utils\CommonUtils;
 
     /** @var Movie $movie */
 
 	$uploadImageText = (('addMovie' == $source) ? 'Upload' : 'Update');
-	$fileName = (('addMovie' == $source) ? '' : (file_exists(PUBLIC_FOLDER . IMAGES_FOLDER . IMAGES_FOLDER_MOVIE . $movie->id . '.jpg') ? $movie->id . '.jpg' : ''));
+	$fileName = (('addMovie' == $source) ? '' : $movie->imageUrl);
 ?>
 
 <div class="container">

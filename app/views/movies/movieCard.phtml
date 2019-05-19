@@ -8,7 +8,7 @@ use app\models\Movie;
 ?>
 <div class="col-md-4 col-sm-4 col-xs-12 col-lg-3 movie-card jsMovieCard" data-id="<?php echo $movie->id; ?>">
     <div class="card">
-        <img src="<?php echo AssetHelper::getImage($movie->id, Constants::CONTEXT_MOVIE); ?>" class="img-thumbnail" alt="<?php echo $movie->name; ?>">
+        <img src="<?php echo $movie->imageUrl; ?>" class="img-thumbnail" alt="<?php echo $movie->name; ?>">
         <div class="card-img-overlay">
             <div class="movie-details">
                 <p class="movie-format">

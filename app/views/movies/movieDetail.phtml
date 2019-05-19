@@ -35,7 +35,7 @@ use app\helpers\AssetHelper;
 	<div class="movie-image" style="text-align: center">
 		<img
             class="img-rounded"
-            src="<?php echo AssetHelper::getImage($movie->id, Constants::CONTEXT_MOVIE); ?>"
+            src="<?php echo $movie->imageUrl; ?>"
             style="max-height:1024px;max-width:720px"
         >
 	</div>
