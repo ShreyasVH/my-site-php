@@ -10,6 +10,7 @@ namespace app\controllers;
 use app\helpers\Api;
 use app\helpers\AssetHelper;
 use app\models\Resource;
+use app\utils\CommonUtils;
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
 
@@ -28,10 +29,13 @@ class BaseController extends Controller
         $js_files = $this->assetHelper->getJsFiles($dispatcher->getControllerName(), $dispatcher->getActionName());
 
         $headerCss = $this->assets->collection('header');
+        $headerCss->setPrefix(CommonUtils::getProtocol() . $this->request->getServerName());
 
         $bodyJs = $this->assets->collection('body');
+        $bodyJs->setPrefix(CommonUtils::getProtocol() . $this->request->getServerName());
 
         $footerJs = $this->assets->collection('footer');
+        $footerJs->setPrefix(CommonUtils::getProtocol() . $this->request->getServerName());
 
         foreach($css_files as $index => $file)
         {
