@@ -54,7 +54,7 @@ foreach($movieIds as $index => $movieId)
         'id' => (int) $movieId,
         'imageUrl' => $imageUrl
     ];
-var_dump($payload);die;
+
     $response = $apiHelper->put('movies/movie', $payload);
 
     if(200 != $response['status'])
