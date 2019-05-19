@@ -15,7 +15,7 @@ use Phalcon\Session\Adapter\Files as Session;
 
 if('127.0.0.1' === $_SERVER['SERVER_ADDR'])
 {
-    $dotenv = new Dotenv\Dotenv(APP_PATH);
+    $dotenv = Dotenv\Dotenv::create(APP_PATH);
     $dotenv->load();
 }
 
