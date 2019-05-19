@@ -95,7 +95,7 @@ class MoviesController extends BaseController
             $carousel_src = array();
             foreach($carousel_movies as $index => $movie)
             {
-                $carousel_src[$index] = AssetHelper::getImage($movie->id, Constants::CONTEXT_MOVIE);
+                $carousel_src[$index] = $movie->imageUrl;
             }
 
             $this->view->carousel_src = $carousel_src;
@@ -308,7 +308,6 @@ class MoviesController extends BaseController
                 {
                     $filename = $id . '.' . $file->getExtension();
                     $isSuccess = $file->moveTo(Constants::PUBLIC_FOLDER . Constants::IMAGES_FOLDER . Constants::IMAGES_FOLDER_MOVIE . $filename);
-                    $isSuccess = move_uploaded_file($file->getTempName(), Constants::PUBLIC_FOLDER . Constants::IMAGES_FOLDER . Constants::IMAGES_FOLDER_MOVIE . $filename);
                     // $this->logger->info($file->getTempName());
                     if(!$isSuccess)
                     {

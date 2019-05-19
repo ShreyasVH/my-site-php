@@ -36,4 +36,18 @@ class CommonUtils extends Component
     {
         return str_replace('"', '\"', str_replace("'", "\'", $string));
     }
+
+    public static function getProtocol()
+    {
+        return ((self::isSecureRequest()) ? 'https://' : 'http://');
+    }
+
+    public static function isSecureRequest()
+    {
+        return (
+            (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1))
+            ||
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+        );
+    }
 }

@@ -33,7 +33,8 @@ $namespaces = [
     'app\\helpers' => APP_PATH . 'app/helpers',
     'app\\models' => APP_PATH . 'app/models',
     'app\\utils' => APP_PATH . 'app/utils',
-    'Dotenv' => APP_PATH . 'vendor/vlucas/phpdotenv/src'
+    'Dotenv' => APP_PATH . 'vendor/vlucas/phpdotenv/src',
+    'PhpOption' => APP_PATH . 'vendor/phpoption/phpoption/src/PhpOption'
 ];
 
 $loader->registerNamespaces($namespaces)->register();
