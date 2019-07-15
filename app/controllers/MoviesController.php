@@ -11,6 +11,7 @@ namespace app\controllers;
 use app\constants\Constants;
 use app\enums\Mode;
 use app\enums\Status;
+use app\helpers\Api;
 use app\helpers\AssetHelper;
 use app\models\Artist;
 use app\models\Format;
@@ -270,33 +271,25 @@ class MoviesController extends BaseController
             if('addMovie' != $source)
             {
                 $payload = array(
-                    'id' => (int) $id,
+                    'id' => (int)$id,
                     'name' => $this->request->getPost('movie-name'),
                     'languageId' => $this->request->getPost('movie-language'),
-                    'size' => str_replace(",","",$this->request->getPost('movie-size')),
+                    'size' => str_replace(",", "", $this->request->getPost('movie-size')),
                     'formatId' => $this->request->getPost('movie-format'),
                     'quality' => $this->request->getPost('movie-quality'),
-                    'year' => ((int) $this->request->getPost('movie-year')),
+                    'year' => ((int)$this->request->getPost('movie-year')),
                     'subtitles' => filter_var($this->request->getPost('movie-subtitles'), FILTER_VALIDATE_BOOLEAN),
                     'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
                     'basename' => explode('.txt', $this->request->getPost('movie-basename'))[0],
                     'actorIds' => $this->request->getPost('actors'),
                     'directorIds' => $this->request->getPost('directors')
                 );
-
-                $response = $this->api->put('movies/movie', $payload);
-
-                if($response['status'] == 200)
-                {
-                    $movie = json_decode($response['result']);
-                    // $this->logger->info('Edited movie. id : ' . $movie->id);
-                    $this->flashSession->success('Edited the movie successfully');
-                }
-                else
-                {
-                    // $this->logger->critical('Error editing movie. Movie Id : ' . $id . ' . Error: ' . $response['result']);
-                    $this->flashSession->error('Error editing movie. Error: ' . $response['result']);
-                }
+            }
+            else
+            {
+                $payload = [
+                    'id' => $id,
+                ];
             }
 
             if($this->request->hasFiles())
@@ -307,14 +300,47 @@ class MoviesController extends BaseController
                 if('' != $file->getName())
                 {
                     $filename = $id . '.' . $file->getExtension();
-                    $isSuccess = $file->moveTo(Constants::PUBLIC_FOLDER . Constants::IMAGES_FOLDER . Constants::IMAGES_FOLDER_MOVIE . $filename);
-                    // $this->logger->info($file->getTempName());
-                    if(!$isSuccess)
+
+                    $fields = [
+                        'folderName' => 'movies'
+                    ];
+
+                    $fileObjects = [
+                        [
+                            'name' => $filename,
+                            'path' => $file->getTempName()
+                        ]
+                    ];
+
+                    $files = [];
+                    foreach($fileObjects as $index => $fileObject)
                     {
-                        // $this->logger->critical('Error saving image for movie. Image : ' . $filename);
+                        $fileContent = file_get_contents($fileObject['path']);
+                        $files[$fileObject['name']] = $fileContent;
+                    }
+                    $uploadResponse = $this->api->uploadFile($fields, $files);
+                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
+                    {
+                        $decodedResponse = json_decode($uploadResponse['result'], true);
+                        $payload['imageUrl'] = $decodedResponse['url'];
                     }
                 }
             }
+
+            $response = $this->api->put('movies/movie', $payload);
+
+            if($response['status'] == 200)
+            {
+//                    $movie = json_decode($response['result']);
+                // $this->logger->info('Edited movie. id : ' . $movie->id);
+                $this->flashSession->success('Edited the movie successfully');
+            }
+            else
+            {
+                // $this->logger->critical('Error editing movie. Movie Id : ' . $id . ' . Error: ' . $response['result']);
+                $this->flashSession->error('Error editing movie. Error: ' . $response['result']);
+            }
+
 
             $redirectUrl = (('addMovie' == $source) ? ('/movies/addMovie') : ('/movies/editMovie?id=' . $id));
 
