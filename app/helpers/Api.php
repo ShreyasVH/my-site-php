@@ -175,4 +175,59 @@ class Api extends BaseHelper
             'status' => $status
         );
     }
+
+    public function uploadFile($fields, $files)
+    {
+        $url = getenv('UPLOAD_API_ENDPOINT') . 'upload/file';
+
+        $boundary = uniqid();
+        $delimiter = '-------------' . $boundary;
+
+        $payload = $this->_buildPayloadForUpload($boundary, $fields, $files);
+        $curlHandle = curl_init();
+        curl_setopt_array($curlHandle, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POST => 1,
+            CURLOPT_POSTFIELDS => $payload,
+            CURLOPT_HTTPHEADER => array(
+                "Content-Type: multipart/form-data; boundary=" . $delimiter,
+                "Content-Length: " . strlen($payload)
+            )
+        ));
+        $response = curl_exec($curlHandle);
+        $status = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+        curl_close($curlHandle);
+        return [
+            'status' => $status,
+            'result' => $response
+        ];
+    }
+
+    private function _buildPayloadForUpload($boundary, $fields, $files)
+    {
+        $data = '';
+        $eol = "\r\n";
+
+        $delimiter = '-------------' . $boundary;
+
+        foreach ($fields as $name => $content)
+        {
+            $data .= "--" . $delimiter . $eol . 'Content-Disposition: form-data; name="' . $name . "\"" . $eol . $eol . $content . $eol;
+        }
+
+
+        foreach ($files as $name => $content)
+        {
+            $data .= "--" . $delimiter . $eol . 'Content-Disposition: form-data; name="' . $name . '"; filename="' . $name . '"' . $eol . 'Content-Transfer-Encoding: binary' . $eol;
+            $data .= $eol;
+            $data .= $content . $eol;
+        }
+        $data .= "--" . $delimiter . "--".$eol;
+
+        return $data;
+    }
 }
