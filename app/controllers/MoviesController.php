@@ -292,6 +292,8 @@ class MoviesController extends BaseController
                 ];
             }
 
+            $imageUrl = getenv('MOVIES_DEFAULT_IMAGE_URL');
+
             if($this->request->hasFiles())
             {
                 $uploaded_files = $this->request->getUploadedFiles();
@@ -322,10 +324,12 @@ class MoviesController extends BaseController
                     if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
                     {
                         $decodedResponse = json_decode($uploadResponse['result'], true);
-                        $payload['imageUrl'] = $decodedResponse['url'];
+                        $imageUrl = $decodedResponse['url'];
                     }
                 }
             }
+
+            $payload['imageUrl'] = $imageUrl;
 
             $response = $this->api->put('movies/movie', $payload);
 
