@@ -1,0 +1,132 @@
+<?php
+
+use app\models\Artist;
+use app\models\Format;
+use app\models\Language;
+use app\models\Movie;
+use app\utils\CommonUtils;
+
+/** @var Artist $artist */
+?>
+
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="/movies/dashboard">
+                Movie Mania
+            </a>
+        </li>
+
+        <li class="active">
+            Edit Artist
+        </li>
+    </ul>
+    <form class="form-horizontal add-movie-form edit-form" name="edit-artist-form" method="POST" action="/artists/edit" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+        <div class="">
+            <div class="title">
+                <h2>
+                    Edit Artist
+                </h2>
+                <p>
+                    Edit the details of the artist
+                </p>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+                                <span class="label-title">
+                                    Name:
+                                </span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+                                    Enter the name of the artist
+                                </span>
+                                <span class="errorMsg">
+                                    Please enter valid name
+                                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" name="artist-name" class="form-control" autocomplete="off" tabindex="1" value="<?php echo $artist->name; ?>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+                                <span class="label-title">
+                                    Gender:
+                                </span>
+                                <span class="label-description">
+                                    Gender of the Artist
+                                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <div class="radio">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="artist-gender" value="M" tabindex="1" <?php if('M' === $artist->gender) echo 'checked'; ?> />
+                                        Male
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="artist-gender" value="F" tabindex="1" <?php if('F' === $artist->gender) echo 'checked'; ?> />
+                                        Female
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php $this->partial('shared/fileUpload', [
+                            'name' => 'artist-image',
+                            'id' => 'imageUpload',
+                            'label' => 'Cover Image',
+                            'description' => 'Enter the image for the artist',
+                            'uploadText' => 'Upload',
+                            'errorMsg' => 'Image should be of .jpg with max size 300kb.',
+                            'maxFileSize' => (300 * 1024 * 1024),
+                            'allowedExtensions' => 'jpg',
+                            'fileName' => $artist->imageUrl
+                        ]); ?>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group form-field action-btns">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" name="reset" class="form-control btn btn-primary" value="Edit Artist" tabindex="1">
+                        </div>
+                        <div class="col-md-5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<?php
+$this->partial('shared/addArtistPopup');
+?>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(document).on('submit', 'form[name="edit-movie-form"]', function(e) {
+            if(!forms.validateForms.isEditArtistFormValid($(this)))
+            {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

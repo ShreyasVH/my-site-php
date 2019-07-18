@@ -23,6 +23,13 @@ class AssetHelper extends BaseHelper
     public function __construct()
     {
         $this->pageCssMap = [
+            'artists' => [
+                'edit' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ]
+            ],
             'movies' => [
                 'actorCombinations' => [
                     new CssSnippet('/css/add-movie.css'),

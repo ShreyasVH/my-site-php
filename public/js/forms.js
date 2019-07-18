@@ -239,6 +239,27 @@ var forms = {
 			}
 
 			return !errorsPresent;
+		},
+
+		isEditArtistFormValid : function(form)
+		{
+			var errorsPresent = false;
+
+			if(forms.Validation.isInputFieldEmpty(form.find('input[name="artist-name"]')))
+			{
+				form.find('input[name="artist-name"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(errorsPresent)
+			{
+				$('html, body').animate({
+						scrollTop : $(form.find('.error')[0]).offset().top
+					}, 300
+				);
+			}
+
+			return !errorsPresent;
 		}
 	}
 };
