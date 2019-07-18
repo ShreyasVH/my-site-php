@@ -18,6 +18,7 @@ use app\models\Format;
 use app\models\Language;
 use app\models\Movie;
 use app\utils\CommonUtils;
+use Phalcon\Http\Request\File;
 
 class MoviesController extends BaseController
 {
@@ -292,10 +293,15 @@ class MoviesController extends BaseController
                 ];
             }
 
-            $imageUrl = getenv('MOVIES_DEFAULT_IMAGE_URL');
+            $imageUrl = '';
+            if('addMovie' === $source)
+            {
+                $imageUrl = getenv('MOVIES_DEFAULT_IMAGE_URL');
+            }
 
             if($this->request->hasFiles())
             {
+                /** @var File[] $uploaded_files */
                 $uploaded_files = $this->request->getUploadedFiles();
                 $file = $uploaded_files[0];
 
@@ -328,8 +334,10 @@ class MoviesController extends BaseController
                     }
                 }
             }
-
-            $payload['imageUrl'] = $imageUrl;
+            if(!empty($imageUrl))
+            {
+                $payload['imageUrl'] = $imageUrl;
+            }
 
             $response = $this->api->put('movies/movie', $payload);
 
