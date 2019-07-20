@@ -19,7 +19,7 @@
 		?>
 		<li>
 			<a href="<?php echo $href; ?>" target="_blank">
-				<img class="hidden-xs" src="<?php echo AssetHelper::getImage($movie->id, CONTEXT_MOVIE); ?>" width="50" height="75" alt="<?php echo $movie->name;?>">
+				<img class="hidden-xs" src="<?php echo $movie->imageUrl; ?>" width="50" height="75" alt="<?php echo $movie->name;?>">
 				<?php echo $movie->name; ?>
 			</a>
 		</li>

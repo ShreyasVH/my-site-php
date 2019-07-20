@@ -3,3 +3,4 @@ app/config/config.ini
 TODO.txt
 .idea/
 .env
+.DS_Store
