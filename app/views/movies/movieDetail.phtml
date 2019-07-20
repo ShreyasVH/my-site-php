@@ -51,7 +51,7 @@ use app\helpers\AssetHelper;
 						<div class="col-md-2 actor-info">
 							<img
                                 class="img-thumbnail hidden-xs"
-                                src="<?php echo AssetHelper::getImage($director->id, Constants::CONTEXT_ARTIST, array('gender' => $director->gender)); ?>"
+                                src="<?php echo $director->imageUrl; ?>"
                             >
 							<a
                                 class="actor-name"
@@ -77,7 +77,7 @@ use app\helpers\AssetHelper;
 						<div class="col-md-2 col-sm-4 actor-info">
 							<img
                                 class="img-thumbnail hidden-xs"
-                                src="<?php echo AssetHelper::getImage($actor->id, Constants::CONTEXT_ARTIST, array('gender' => $actor->gender)); ?>"
+                                src="<?php echo $actor->imageUrl; ?>"
                             >
 							<a
                                 class="actor-name"
