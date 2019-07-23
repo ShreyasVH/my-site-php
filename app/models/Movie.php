@@ -9,7 +9,6 @@ namespace app\models;
 
 
 use app\constants\Constants;
-use app\utils\Logger;
 
 class Movie extends BaseModel
 {
@@ -68,8 +67,6 @@ class Movie extends BaseModel
     {
         $movie = null;
         $response = self::getAPISource()->get('movies/movie/id/' . $id);
-        Logger::debug($response['result']);
-//        echo 'here';die;
         if($response['status'] == 200)
         {
             $movie = json_decode($response['result']);
