@@ -29,7 +29,7 @@ class CommonUtils extends Component
 
     public static function isDebugMode()
     {
-        return false;
+        return filter_var(getenv('IS_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN);
     }
 
     public static function formatStringWithEscapeChars($string)
