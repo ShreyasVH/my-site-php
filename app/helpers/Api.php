@@ -9,12 +9,23 @@ namespace app\helpers;
 
 
 use app\utils\CommonUtils;
+use app\utils\Logger;
 
 class Api extends BaseHelper
 {
-    private function _getEndpoint()
+    private function _getEndpoint($type = 'DEFAULT')
     {
-        return getenv('ENDPOINT_' . CommonUtils::getCurrentMode());
+
+        switch($type)
+        {
+            case 'LOGGER':
+                $endpoint = getenv('LOGGER_API_ENDPOINT');
+                break;
+            case 'DEFAULT':
+                $endpoint = getenv('ENDPOINT_' . CommonUtils::getCurrentMode());
+                break;
+        }
+        return $endpoint;
     }
 
     /**
@@ -22,13 +33,13 @@ class Api extends BaseHelper
      * @param array $postdata
      * @return array
      */
-    public function post($url, $postdata)
+    public function post($url, $postdata, $type = "DEFAULT")
     {
-        $url = $this->_getEndpoint() . $url;
+        $url = $this->_getEndpoint($type) . $url;
         $postdata = json_encode($postdata, JSON_UNESCAPED_SLASHES);
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Calling POST API. URL : ' . $url . ' Payload : ' . $postdata);
+             Logger::error('Calling POST API. URL : ' . $url . ' Payload : ' . $postdata);
         }
 
         $ch = curl_init();
@@ -45,14 +56,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Finished executing POST API. URL : ' . $url);
+            Logger::debug('Finished executing POST API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            // $this->logger->critical('ERROR!! - POST API URL : ' . $url . ' Payload : ' . $postdata . ' Status : ' . $status . ' Response : ' . $result);
+            Logger::error('ERROR!! - POST API URL : ' . $url . ' Payload : ' . $postdata . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);
@@ -63,12 +74,12 @@ class Api extends BaseHelper
         );
     }
 
-    public function get($url)
+    public function get($url, $type = 'DEFAULT')
     {
-        $url = $this->_getEndpoint() . $url;
+        $url = $this->_getEndpoint($type) . $url;
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Calling GET API. URL : ' . $url);
+            Logger::debug('Calling GET API. URL : ' . $url);
         }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url );
@@ -81,14 +92,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Finished executing GET API. URL : ' . $url);
+            Logger::debug('Finished executing GET API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            // $this->logger->critical('ERROR!! - GET API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
+            Logger::error('ERROR!! - GET API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);
@@ -99,12 +110,12 @@ class Api extends BaseHelper
         );
     }
 
-    public function delete($url)
+    public function delete($url, $type = 'DEFAULT')
     {
-        $url = $this->_getEndpoint() . $url;
+        $url = $this->_getEndpoint($type) . $url;
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Calling DELETE API. URL : ' . $url);
+            Logger::debug('Calling DELETE API. URL : ' . $url);
         }
 
         $ch = curl_init();
@@ -117,14 +128,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Finished executing DELETE API. URL : ' . $url);
+            Logger::debug('Finished executing DELETE API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            // $this->logger->critical('ERROR!! - DELETE API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
+            Logger::error('ERROR!! - DELETE API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);
@@ -135,13 +146,13 @@ class Api extends BaseHelper
         );
     }
 
-    public function put($url, $putdata)
+    public function put($url, $putdata, $type = 'DEFAULT')
     {
-        $url = $this->_getEndpoint() . $url;
+        $url = $this->_getEndpoint($type) . $url;
         $putdata = json_encode($putdata, JSON_UNESCAPED_SLASHES);
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Calling PUT API. URL : ' . $url . ' Payload : ' . $putdata);
+            Logger::debug('Calling PUT API. URL : ' . $url . ' Payload : ' . $putdata);
         }
 
         $ch = curl_init();
@@ -158,14 +169,14 @@ class Api extends BaseHelper
 
         if(CommonUtils::isDebugMode())
         {
-            // $this->logger->debug('Finished executing PUT API. URL : ' . $url);
+            Logger::debug('Finished executing PUT API. URL : ' . $url);
         }
 
         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         if($status != 200)
         {
-            // $this->logger->critical('ERROR!! - PUT API URL : ' . $url . ' Payload : ' . $putdata . ' Status : ' . $status . ' Response : ' . $result);
+            Logger::error('ERROR!! - PUT API URL : ' . $url . ' Payload : ' . $putdata . ' Status : ' . $status . ' Response : ' . $result);
         }
 
         curl_close($ch);
@@ -200,6 +211,10 @@ class Api extends BaseHelper
         ));
         $response = curl_exec($curlHandle);
         $status = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
+        if(200 !== $status)
+        {
+            Logger::error('ERROR!! - File Upload API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $response);
+        }
         curl_close($curlHandle);
         return [
             'status' => $status,
