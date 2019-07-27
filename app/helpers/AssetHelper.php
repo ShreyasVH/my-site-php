@@ -149,6 +149,7 @@ class AssetHelper extends BaseHelper
     {
         $common_css_array = [
             new CssSnippet('/css/bootstrap.min.css'),
+            new CssSnippet('/css/fonts.css'),
             new CssSnippet('/css/mystyles.css')
         ];
 
