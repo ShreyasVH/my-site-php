@@ -224,7 +224,8 @@ class MoviesController extends BaseController
                 'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
                 'basename' => explode('.txt', $this->request->getPost('movie-basename'))[0],
                 'actorIds' => $this->request->getPost('actors'),
-                'directorIds' => $this->request->getPost('directors')
+                'directorIds' => $this->request->getPost('directors'),
+                'imageUrl' => getenv('MOVIES_DEFAULT_IMAGE_URL')
             );
 
             $response = $this->api->post('movies/movie', $payload);
