@@ -18,7 +18,8 @@ class ArtistsController extends BaseController
         {
             $payload = array(
                 "name" => ucwords($this->request->getPost('name')),
-                "gender" => $this->request->getPost('gender')
+                "gender" => $this->request->getPost('gender'),
+                'imageUrl' => getenv('ARTISTS_DEFAULT_IMAGE_URL_' . $this->request->getPost('gender'))
             );
 
             $response = $this->api->post('artists/artist', $payload);
