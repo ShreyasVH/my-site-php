@@ -88,6 +88,9 @@ var dataManipulation = {
             {
                 $('.jsClearAllFilters').hide();
             }
+            else {
+                $('.jsClearAllFilters').show();
+            }
         },
 
         updateUrl : function(url, filters, sortMap)
