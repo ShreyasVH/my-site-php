@@ -25,6 +25,8 @@ class Constants
     const DEFAULT_SONG_LANGUAGE = 'Kannada';
     const DEFAULT_SONGS_PER_PAGE = 24;
 
+    const DEFAULT_ORDER_CARDS = 'name ASC';
+
     const CONTEXT_MOVIE = 'movie';
     const CONTEXT_ARTIST = 'artist';
 
@@ -45,6 +47,18 @@ class Constants
     const MOVIE_ATTRIBUTE_STATUS = 'status';
     const MOVIE_ATTRIBUTE_ACTORS = 'actors';
     const MOVIE_ATTRIBUTE_DIRECTORS = 'directors';
+
+    const CARD_ATTRIBUTE_ID = 'id';
+    const CARD_ATTRIBUTE_NAME = 'name';
+    const CARD_ATTRIBUTE_LEVEL = 'level';
+    const CARD_ATTRIBUTE_ATTRIBUTE = 'attribute';
+    const CARD_ATTRIBUTE_TYPE = 'type';
+    const CARD_ATTRIBUTE_ATTACK = 'attack';
+    const CARD_ATTRIBUTE_DEFENSE = 'defense';
+    const CARD_ATTRIBUTE_CARD_TYPE = 'cardType';
+    const CARD_ATTRIBUTE_CARD_SUB_TYPES = 'cardSubTypes';
+    const CARD_ATTRIBUTE_RARITY = 'rarity';
+    const CARD_ATTRIBUTE_LIMIT_TYPE = 'limitType';
 
     const FILTER_TYPE_CHECKBOX = 'checkbox';
     const FILTER_TYPE_SEARCH = 'search';
@@ -117,8 +131,84 @@ class Constants
         ]
     ];
 
+    private static $cardAttributes = [
+        self::CARD_ATTRIBUTE_ID => [
+            'filterLabel' => 'Id',
+            'filterType' => self::FILTER_TYPE_SEARCH,
+            'isFilterEnabled' => false,
+            'isSortEnabled' => true,
+            'sortLabel' => 'Created'
+        ],
+        self::CARD_ATTRIBUTE_NAME => [
+            'filterLabel' => 'Name',
+            'filterType' => self::FILTER_TYPE_SEARCH,
+            'isFilterEnabled' => false,
+            'isSortEnabled' => true,
+            'sortLabel' => 'Name'
+        ],
+        self::CARD_ATTRIBUTE_LEVEL => [
+            'filterLabel' => 'Level',
+            'filterType' => self::FILTER_TYPE_RANGE,
+            'isSortEnabled' => true,
+            'sortLabel' => 'Level'
+        ],
+        self::CARD_ATTRIBUTE_ATTRIBUTE => [
+            'filterLabel' => 'Attribute',
+            'filterType' => self::FILTER_TYPE_CHECKBOX
+        ],
+        self::CARD_ATTRIBUTE_TYPE => [
+            'filterLabel' => 'Type',
+            'filterType' => self::FILTER_TYPE_CHECKBOX
+        ],
+        self::CARD_ATTRIBUTE_ATTACK => [
+            'filterLabel' => 'Attack',
+            'filterType' => self::FILTER_TYPE_RANGE,
+            'isSortEnabled' => true,
+            'sortLabel' => 'Attack',
+        ],
+        self::CARD_ATTRIBUTE_DEFENSE => [
+            'filterLabel' => 'Defense',
+            'filterType' => self::FILTER_TYPE_RANGE,
+            'isSortEnabled' => true,
+            'sortLabel' => 'Defense',
+        ],
+        self::CARD_ATTRIBUTE_CARD_TYPE => [
+            'filterLabel' => 'Card Type',
+            'filterType' => self::FILTER_TYPE_CHECKBOX
+        ],
+        self::CARD_ATTRIBUTE_CARD_SUB_TYPES => [
+            'filterLabel' => 'Card SubType',
+            'filterType' => self::FILTER_TYPE_CHECKBOX
+        ],
+        self::CARD_ATTRIBUTE_RARITY => [
+            'filterLabel' => 'Rarity',
+            'filterType' => self::FILTER_TYPE_CHECKBOX
+        ],
+        self::CARD_ATTRIBUTE_LIMIT_TYPE => [
+            'filterLabel' => 'LimitType',
+            'filterType' => self::FILTER_TYPE_CHECKBOX
+        ]
+    ];
+
     public static function getMovieAttributes()
     {
         return self::$movieAttributes;
+    }
+
+    public static function getCardAttributes()
+    {
+        return self::$cardAttributes;
+    }
+
+    public static function getCardAttribute($key)
+    {
+        $cardAttribute = null;
+
+        if(array_key_exists($key, self::$cardAttributes))
+        {
+            $cardAttribute = self::$cardAttributes[$key];
+        }
+
+        return $cardAttribute;
     }
 }

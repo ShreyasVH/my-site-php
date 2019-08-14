@@ -30,6 +30,13 @@ class AssetHelper extends BaseHelper
                     new CssSnippet('/css/forms.css')
                 ]
             ],
+            'cards' => [
+                'browse' => [
+                    new CssSnippet('/css/jquery-ui.min.css'),
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/filters.css')
+                ]
+            ],
             'movies' => [
                 'actorCombinations' => [
                     new CssSnippet('/css/add-movie.css'),
@@ -116,6 +123,12 @@ class AssetHelper extends BaseHelper
         ];
 
         $this->pageJsMap = [
+            'cards' => [
+                'browse' => [
+                    new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER),
+                    new JsSnippet('/js/data-manipulation.js', Resource::POSITION_FOOTER)
+                ]
+            ],
             'movies' => [
                 'browseMovies' => [
                     new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER),

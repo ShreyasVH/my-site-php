@@ -18,7 +18,6 @@
     <form name="apply-filters-form">
         <div class="panel-group" id="accordion">
             <?php
-                $filtersForDisplay = Constants::getMovieAttributes();
                 $filtersForDisplay = array_filter($filtersForDisplay, function($value) {
                     return ((!isset($value['isFilterEnabled'])) || (isset($value['isFilterEnabled']) && !empty($value['isFilterEnabled'])));
                 });
