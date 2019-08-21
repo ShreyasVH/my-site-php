@@ -5,6 +5,12 @@ namespace app\controllers;
 
 
 use app\constants\Constants;
+use app\enums\cards\Attribute;
+use app\enums\cards\CardSubType;
+use app\enums\cards\CardType;
+use app\enums\cards\LimitType;
+use app\enums\cards\Rarity;
+use app\enums\cards\Type;
 use app\models\Card;
 
 class CardsController extends BaseController
@@ -25,17 +31,6 @@ class CardsController extends BaseController
         elseif($this->request->isPost())
         {
             $filterParams = array_filter($this->request->getPost(), function($value) {
-                return is_array($value) && !empty(array_filter($value, function($v) {
-                        return ("" != $v);
-                    }));
-            });
-            $filters = array_filter($this->request->getPost(), function($value) {
-                return is_array($value) && !empty(array_filter($value, function($v) {
-                        return ("" != $v);
-                    }));
-            });
-
-            $rangeFilters = array_filter($this->request->getPost(), function($value) {
                 return is_array($value) && !empty(array_filter($value, function($v) {
                         return ("" != $v);
                     }));
@@ -110,8 +105,8 @@ class CardsController extends BaseController
                 'max' => 12,
                 'step' => 1
             ],
-            Constants::CARD_ATTRIBUTE_ATTRIBUTE => Card::getAllAttributes(),
-            Constants::CARD_ATTRIBUTE_TYPE => Card::getAllTypes(),
+            Constants::CARD_ATTRIBUTE_ATTRIBUTE => Attribute::getAllValuesAsIdValueObjects(),
+            Constants::CARD_ATTRIBUTE_TYPE => Type::getAllValuesAsIdValueObjects(),
             Constants::CARD_ATTRIBUTE_ATTACK => [
                 'min' => -50,
                 'max' => 5000,
@@ -122,10 +117,10 @@ class CardsController extends BaseController
                 'max' => 5000,
                 'step' => 50
             ],
-            Constants::CARD_ATTRIBUTE_CARD_TYPE => Card::getAllCardTypes(),
-            Constants::CARD_ATTRIBUTE_CARD_SUB_TYPES => Card::getAllCardSubTypes(),
-            Constants::CARD_ATTRIBUTE_RARITY => Card::getAllRarities(),
-            Constants::CARD_ATTRIBUTE_LIMIT_TYPE => Card::getAllLimitTypes()
+            Constants::CARD_ATTRIBUTE_CARD_TYPE => CardType::getAllValuesAsIdValueObjects(),
+            Constants::CARD_ATTRIBUTE_CARD_SUB_TYPES => CardSubType::getAllValuesAsIdValueObjects(),
+            Constants::CARD_ATTRIBUTE_RARITY => Rarity::getAllValuesAsIdValueObjects(),
+            Constants::CARD_ATTRIBUTE_LIMIT_TYPE => LimitType::getAllValuesAsIdValueObjects()
         ];
         $this->view->filterValues = $filterValues;
 

@@ -27,6 +27,8 @@ class Api extends BaseHelper
             case 'DEFAULT':
                 $endpoint = getenv('ENDPOINT_' . CommonUtils::getCurrentMode());
                 break;
+            default:
+                $endpoint = '';
         }
         return $endpoint;
     }
@@ -34,6 +36,7 @@ class Api extends BaseHelper
     /**
      * @param string $url
      * @param array $postdata
+     * @param string $type
      * @return array
      */
     public function post($url, $postdata, $type = 'DEFAULT')

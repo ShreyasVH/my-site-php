@@ -44,4 +44,22 @@ class BaseEnum
         $reflector = new ReflectionClass(get_called_class());
         return $reflector->getConstants();
     }
+
+    public static function getAllValuesAsIdValueObjects()
+    {
+        $objects = [];
+
+        $reflector = new ReflectionClass(get_called_class());
+        $values = $reflector->getConstants();
+
+        foreach($values as $name => $id)
+        {
+            $objects[] = [
+                'id' => $id,
+                'name' => $name
+            ];
+        }
+
+        return $objects;
+    }
 }
