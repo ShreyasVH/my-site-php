@@ -9,6 +9,11 @@ use app\models\Card;
 <div class="col-md-4 col-sm-4 col-xs-12 col-lg-3 movie-card jsMovieCard" data-id="<?php echo $card->id; ?>">
     <div class="card">
         <img src="<?php echo $card->imageUrl; ?>" class="img-thumbnail" alt="<?php echo $card->name; ?>">
+        <div class="card-img-overlay">
+            <div class="controls">
+                <?php $this->partial('cards/actionButtons'); ?>
+            </div>
+        </div>
     </div>
     <div class="col-md-12">
         <div class="row">
