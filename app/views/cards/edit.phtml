@@ -413,6 +413,8 @@ $this->partial('shared/addArtistPopup');
 
 <script type="text/javascript">
     $(document).ready(function() {
+        cardActions.toggleAdditionalFields('<?php echo $card->cardType->name; ?>');
+
         var pickedItemListForCardSubTypes = $('select[name="cardSubType"]').closest('.jsMultiSelectWrap').find('.picked-item-list');
 
         <?php foreach($card->cardSubTypes as $cardSubType): ?>
