@@ -31,11 +31,21 @@ class AssetHelper extends BaseHelper
                 ]
             ],
             'cards' => [
+                'add' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
                 'browse' => [
                     new CssSnippet('/css/jquery-ui.min.css'),
                     new CssSnippet('/css/card.css'),
                     new CssSnippet('/css/filters.css')
-                ]
+                ],
+                'edit' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
             ],
             'movies' => [
                 'actorCombinations' => [
@@ -124,10 +134,16 @@ class AssetHelper extends BaseHelper
 
         $this->pageJsMap = [
             'cards' => [
+                'add' => [
+                    new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
+                ],
                 'browse' => [
                     new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER),
                     new JsSnippet('/js/data-manipulation.js', Resource::POSITION_FOOTER)
-                ]
+                ],
+                'edit' => [
+                    new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
+                ],
             ],
             'movies' => [
                 'browseMovies' => [

@@ -12,6 +12,7 @@ use app\enums\cards\LimitType;
 use app\enums\cards\Rarity;
 use app\enums\cards\Type;
 use app\models\Card;
+use Phalcon\Http\Request\File;
 
 class CardsController extends BaseController
 {
@@ -141,4 +142,205 @@ class CardsController extends BaseController
         }
     }
 
+    public function addAction()
+    {
+        $this->view->title = 'Add Card';
+        if($this->request->isGet())
+        {
+
+        }
+        else if($this->request->isPost())
+        {
+            $name = $this->request->getPost('name');
+            $cardType = $this->request->getPost('cardType');
+
+            $payload = [
+                'name' => $name,
+                'description' => $this->request->getPost('description'),
+                'cardType' => $this->request->getPost('cardType'),
+                'cardSubTypes' => $this->request->getPost('cardSubTypes'),
+                'rarity' => $this->request->getPost('rarity'),
+                'limitType' => $this->request->getPost('limitType')
+            ];
+
+            if(CardType::MONSTER == $cardType)
+            {
+                $payload['level'] = $this->request->getPost('level');
+                $payload['type'] = $this->request->getPost('type');
+                $payload['attribute'] = $this->request->getPost('attribute');
+                $payload['attack'] = $this->request->getPost('attack');
+                $payload['defense'] = $this->request->getPost('defense');
+            }
+
+            $imageUrl = getenv('DUEL_LINKS_DEFAULT_IMAGE_URL');
+
+            if($this->request->hasFiles())
+            {
+                /** @var File[] $uploaded_files */
+                $uploaded_files = $this->request->getUploadedFiles();
+                $file = $uploaded_files[0];
+
+                if('' != $file->getName())
+                {
+                    $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($name));
+                    $version = 1;
+
+                    if($version > 1)
+                    {
+                        $formattedName = $formattedName . '_' . $version;
+                    }
+
+                    $filename = $formattedName . '.' . $file->getExtension();
+
+                    $fields = [
+                        'folderName' => 'cards'
+                    ];
+
+                    $fileObjects = [
+                        [
+                            'name' => $filename,
+                            'path' => $file->getTempName()
+                        ]
+                    ];
+
+                    $files = [];
+                    foreach($fileObjects as $index => $fileObject)
+                    {
+                        $fileContent = file_get_contents($fileObject['path']);
+                        $files[$fileObject['name']] = $fileContent;
+                    }
+                    $uploadResponse = $this->api->uploadFile($fields, $files);
+                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
+                    {
+                        $decodedResponse = json_decode($uploadResponse['result'], true);
+                        $imageUrl = $decodedResponse['url'];
+                    }
+                }
+            }
+
+            if(!empty($imageUrl))
+            {
+                $payload['imageUrl'] = $imageUrl;
+            }
+
+            $response = $this->api->post('cards', $payload, 'DUEL_LINKS');
+            if($response['status'] == 200)
+            {
+                $this->flashSession->success('Card added to the database');
+            }
+            else
+            {
+                $this->flashSession->error('Error adding card. Error: ' . $response['result']);
+            }
+        }
+
+    }
+
+    public function editAction()
+    {
+        $this->view->title = 'Edit Card';
+        if($this->request->isGet())
+        {
+            $this->view->id = $id = $this->request->getQuery('id');
+            $card = null;
+            $startTime = time();
+            while((null == $card) || ((time() - $startTime) > 15))
+            {
+                $card = Card::getById($id);
+            }
+
+            $this->view->card = $card;
+        }
+        else if($this->request->isPost())
+        {
+            $id = $this->request->getPost('id');
+            $name = $this->request->getPost('name');
+            $cardType = $this->request->getPost('cardType');
+
+            $payload = [
+                'id' => $id,
+                'name' => $name,
+                'description' => $this->request->getPost('description'),
+                'cardType' => $this->request->getPost('cardType'),
+                'cardSubTypes' => $this->request->getPost('cardSubTypes'),
+                'rarity' => $this->request->getPost('rarity'),
+                'limitType' => $this->request->getPost('limitType')
+            ];
+
+            if(CardType::MONSTER == $cardType)
+            {
+                $payload['level'] = $this->request->getPost('level');
+                $payload['type'] = $this->request->getPost('type');
+                $payload['attribute'] = $this->request->getPost('attribute');
+                $payload['attack'] = $this->request->getPost('attack');
+                $payload['defense'] = $this->request->getPost('defense');
+            }
+
+
+            var_dump($this->request->getPost());
+            var_dump($this->request->getUploadedFiles());
+            $imageUrl = $this->request->getPost('image', null, getenv('DUEL_LINKS_DEFAULT_IMAGE_URL'));
+
+            if($this->request->hasFiles())
+            {
+                /** @var File[] $uploaded_files */
+                $uploaded_files = $this->request->getUploadedFiles();
+                $file = $uploaded_files[0];
+
+                if('' != $file->getName())
+                {
+                    $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($name));
+                    $version = 1;
+
+                    if($version > 1)
+                    {
+                        $formattedName = $formattedName . '_' . $version;
+                    }
+
+                    $filename = $formattedName . '.' . $file->getExtension();
+
+                    $fields = [
+                        'folderName' => 'cards'
+                    ];
+
+                    $fileObjects = [
+                        [
+                            'name' => $filename,
+                            'path' => $file->getTempName()
+                        ]
+                    ];
+
+                    $files = [];
+                    foreach($fileObjects as $index => $fileObject)
+                    {
+                        $fileContent = file_get_contents($fileObject['path']);
+                        $files[$fileObject['name']] = $fileContent;
+                    }
+                    $uploadResponse = $this->api->uploadFile($fields, $files);
+                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
+                    {
+                        $decodedResponse = json_decode($uploadResponse['result'], true);
+                        $imageUrl = $decodedResponse['url'];
+                    }
+                }
+            }
+
+            if(!empty($imageUrl))
+            {
+                $payload['imageUrl'] = $imageUrl;
+            }
+//            var_dump($payload);die;
+
+            $response = $this->api->put('cards', $payload, 'DUEL_LINKS');
+            if($response['status'] == 200)
+            {
+                $this->flashSession->success('Card updated successfully');
+            }
+            else
+            {
+                $this->flashSession->error('Error updating card. Error: ' . $response['result']);
+            }
+            $this->response->redirect('/cards/edit?id=' . $id);
+        }
+    }
 }

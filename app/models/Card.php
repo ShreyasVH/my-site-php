@@ -122,4 +122,15 @@ class Card extends BaseModel
 
         return $limitTypes;
     }
+
+    public static function getById($id)
+    {
+        $card = null;
+        $response = self::getAPISource()->get('cards/' . $id, 'DUEL_LINKS');
+        if($response['status'] == 200)
+        {
+            $card = json_decode($response['result']);
+        }
+        return $card;
+    }
 }

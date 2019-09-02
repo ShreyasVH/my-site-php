@@ -1,0 +1,444 @@
+<?php
+
+use app\enums\cards\Attribute;
+use app\enums\cards\CardSubType;use app\enums\cards\CardType;
+use app\enums\cards\LimitType;
+use app\enums\cards\Rarity;
+use app\enums\cards\Type;
+?>
+
+<div class="container my-container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="/cards/browse">
+                Let's Duel
+            </a>
+        </li>
+        <li class="active">
+            Edit Card
+        </li>
+    </ul>
+    <form class="form-horizontal add-movie-form edit-form" name="add-card-form" method="POST" action="/cards/edit"  enctype="multipart/form-data">
+        <input
+            name="id"
+            type="hidden"
+            value="<?php echo $id; ?>"
+        />
+        <div class="">
+            <div class="title">
+                <h2>Edit Card</h2>
+                <p>
+                    Enter the details for the card
+                </p>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Name:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Enter the name of the card
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid name
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" name="name" class="form-control" autocomplete="off" tabindex="1" value="<?php echo $card->name; ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Description:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Enter the description of the card
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid description
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <textarea name="description" class="form-control" tabindex="1"><?php echo $card->description; ?></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									CardType:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Select the cardType of the card.
+								</span>
+                                <span class="errorMsg">
+				                	Please select cardType
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="cardType" tabindex="1">
+                                    <option value="default">
+                                        -- Select CardType --
+                                    </option>
+                                    <?php foreach(CardType::getAllValuesAsIdValueObjects() as $cardType): ?>
+                                        <?php $selected = (($cardType['id'] === $card->cardType->id) ? 'selected' : ''); ?>
+                                        <option
+                                            value="<?php echo $cardType['id']; ?>"
+                                            <?php echo $selected; ?>
+                                        >
+                                            <?php echo $cardType['name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Level:
+								</span>
+                                <span class="label-description">
+									Enter the level of the card
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid level
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input
+                                    type="number"
+                                    name="level"
+                                    class="form-control"
+                                    autocomplete="off"
+                                    tabindex="1"
+                                    min="1"
+                                    max="12"
+                                    step="1"
+                                    value="<?php echo ((CardType::MONSTER === $card->cardType->id) ? $card->level : '') ; ?>"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Attribute:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Select the attribute of the card.
+								</span>
+                                <span class="errorMsg">
+				                	Please select attribute
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="attribute" tabindex="1">
+                                    <option value="default">
+                                        -- Select Attribute --
+                                    </option>
+                                    <?php foreach(Attribute::getAllValuesAsIdValueObjects() as $attribute): ?>
+                                        <?php $selected = (($attribute['id'] === $card->attribute->id) ? 'selected' : ''); ?>
+                                        <option
+                                            value="<?php echo $attribute['id']; ?>"
+                                            <?php echo $selected; ?>
+                                        >
+                                            <?php echo $attribute['name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Type:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Select the type of the card.
+								</span>
+                                <span class="errorMsg">
+				                	Please select type
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="type" tabindex="1">
+                                    <option value="default">
+                                        -- Select Type --
+                                    </option>
+                                    <?php foreach(Type::getAllValuesAsIdValueObjects() as $type): ?>
+                                        <?php $selected = (($type['id'] === $card->type->id) ? 'selected' : ''); ?>
+                                        <option
+                                            value="<?php echo $type['id']; ?>"
+                                            <?php echo $selected; ?>
+                                        >
+                                            <?php echo $type['name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Attack:
+								</span>
+                                <span class="label-description">
+									Enter the attack of the card
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid attack
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input
+                                    type="number"
+                                    name="attack"
+                                    class="form-control"
+                                    autocomplete="off"
+                                    tabindex="1"
+                                    min="-50"
+                                    max="5000"
+                                    step="1"
+                                    value="<?php echo ((CardType::MONSTER === $card->cardType->id) ? $card->attack : '') ; ?>"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Defense:
+								</span>
+                                <span class="label-description">
+									Enter the defense of the card
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid defense
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input
+                                    type="number"
+                                    name="defense"
+                                    class="form-control"
+                                    autocomplete="off"
+                                    tabindex="1"
+                                    min="-50"
+                                    max="5000"
+                                    step="1"
+                                    value="<?php echo ((CardType::MONSTER === $card->cardType->id) ? $card->defense : '') ; ?>"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row jsSuggestionWrap jsMultiSelectWrap">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+                                    <span class="label-title">
+                                        CardSubType:
+                                    </span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+                                        Select the cardSubType of the card.
+                                    </span>
+                                <span class="errorMsg">
+                                        Please select cardSubType
+                                    </span>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control jsMultiSelect" name="cardSubType" tabindex="1">
+                                    <option value="default">
+                                        -- Select CardSubType --
+                                    </option>
+                                    <?php foreach(CardSubType::getAllValuesAsIdValueObjects() as $cardSubType): ?>
+                                        <option value="<?php echo $cardSubType['id']; ?>">
+                                            <?php echo $cardSubType['name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6"></div>
+                    <div class="col-md-12 picked-item-list" data-type="cardSubType"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Rarity:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Select the rarity of the card.
+								</span>
+                                <span class="errorMsg">
+				                	Please select rarity
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="rarity" tabindex="1">
+                                    <option value="default">
+                                        -- Select Rarity --
+                                    </option>
+                                    <?php foreach(Rarity::getAllValuesAsIdValueObjects() as $rarity): ?>
+                                        <?php $selected = (($rarity['id'] === $card->rarity->id) ? 'selected' : ''); ?>
+                                        <option
+                                            value="<?php echo $rarity['id']; ?>"
+                                            <?php echo $selected; ?>
+                                        >
+                                            <?php echo $rarity['name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									LimitType:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Select the limitType of the card.
+								</span>
+                                <span class="errorMsg">
+				                	Please select limitType
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="limitType" tabindex="1">
+                                    <option value="default">
+                                        -- Select LimitType --
+                                    </option>
+                                    <?php foreach(LimitType::getAllValuesAsIdValueObjects() as $limitType): ?>
+                                        <?php $selected = (($limitType['id'] === $card->limitType->id) ? 'selected' : ''); ?>
+                                        <option
+                                            value="<?php echo $limitType['id']; ?>"
+                                            <?php echo $selected; ?>
+                                        >
+                                            <?php echo $limitType['name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <input
+                        name="image"
+                        type="hidden"
+                        value="<?php echo ((isset($card->imageUrl) && !empty($card->imageUrl)) ? $card->imageUrl : ''); ?>"
+                    />
+                    <div class="col-md-12">
+                        <?php $this->partial('shared/fileUpload', [
+                            'name' => 'image',
+                            'id' => 'imageUpload',
+                            'label' => 'Cover Image',
+                            'description' => 'Enter the image for the card',
+                            'uploadText' => 'Update',
+                            'errorMsg' => 'Image should be of .jpg with max size 300kb.',
+                            'maxFileSize' => (300 * 1024 * 1024),
+                            'allowedExtensions' => 'jpg',
+                            'fileName' => ((isset($card->imageUrl) && !empty($card->imageUrl)) ? $card->imageUrl : '')
+                        ]); ?>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group form-field action-btns">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" name="reset" class="form-control btn btn-primary" value="Edit Card" tabindex="1">
+                        </div>
+                        <div class="col-md-5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<?php
+$this->partial('shared/addArtistPopup');
+?>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var pickedItemListForCardSubTypes = $('select[name="cardSubType"]').closest('.jsMultiSelectWrap').find('.picked-item-list');
+
+        <?php foreach($card->cardSubTypes as $cardSubType): ?>
+            pickedItemListForCardSubTypes.append('<span class="picked-item"><input type="hidden" value="' + '<?php echo $cardSubType->id ; ?>' + '" name="cardSubTypes[]">' + Miscellaneous.formatString('<?php echo $cardSubType->name; ?>') + ' <a href="javascript:void(0);" class="remove-item"><i class="glyphicon glyphicon-remove"></i></a></span>');
+        <?php endforeach; ?>
+
+        $(document).on('submit', 'form[name="edit-card-form"]', function(e) {
+            if(!forms.validateForms.isEditCardFormValid($(this)))
+            {
+                e.preventDefault();
+            }
+        });
+
+        $(document).on('change', '.jsMultiSelect', function() {
+            var value = $(this).val();
+            var option = $(this).find('option[value="' + value + '"]');
+            var parent = $(this).closest('.jsMultiSelectWrap');
+            var pickedItemList = parent.find('.picked-item-list');
+
+            if(pickedItemList.find('input[value="' + value + '"]').length == 0)
+            {
+                var markup = '<span class="picked-item"><input type="hidden" value="' + value + '" name="cardSubTypes[]">' + Miscellaneous.formatString(option.text().trim()) + ' <a href="javascript:void(0);" class="remove-item"><i class="glyphicon glyphicon-remove"></i></span>';
+                pickedItemList.append(markup);
+            }
+            $(this).val('default');
+        });
+
+    });
+</script>
