@@ -12,6 +12,7 @@ use app\enums\cards\LimitType;
 use app\enums\cards\Rarity;
 use app\enums\cards\Type;
 use app\models\Card;
+use app\models\Source;
 use Phalcon\Http\Request\File;
 
 class CardsController extends BaseController
@@ -342,5 +343,11 @@ class CardsController extends BaseController
             }
             $this->response->redirect('/cards/edit?id=' . $id);
         }
+    }
+
+    public function sourcesAction()
+    {
+        $this->view->title = 'Sources - Let\'s Duel';
+        $this->view->sources = Source::getAll();
     }
 }

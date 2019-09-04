@@ -1,0 +1,37 @@
+<div class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="/cards/browse">
+                Let's Duel
+            </a>
+        </li>
+        <li class="active">
+            Sources
+        </li>
+    </ul>
+
+    <div class="title">
+        <h1 class="page-header">
+            Sources
+        </h1>
+    </div>
+
+    <div style="margin-bottom:30px">
+        <ul>
+            <?php foreach($sources as $source): ?>
+                <li>
+                    <a href="#">
+                        <?php echo $source['name']; ?>
+                    </a>
+                </li>
+
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+</div>
