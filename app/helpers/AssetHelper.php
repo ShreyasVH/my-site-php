@@ -30,6 +30,29 @@ class AssetHelper extends BaseHelper
                     new CssSnippet('/css/forms.css')
                 ]
             ],
+            'cards' => [
+                'add' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
+                'addSource' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css'),
+                    new CssSnippet('/css/jquery-ui.min.css')
+                ],
+                'browse' => [
+                    new CssSnippet('/css/jquery-ui.min.css'),
+                    new CssSnippet('/css/card.css'),
+                    new CssSnippet('/css/filters.css')
+                ],
+                'edit' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css')
+                ],
+            ],
             'movies' => [
                 'actorCombinations' => [
                     new CssSnippet('/css/add-movie.css'),
@@ -116,6 +139,21 @@ class AssetHelper extends BaseHelper
         ];
 
         $this->pageJsMap = [
+            'cards' => [
+                'add' => [
+                    new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
+                ],
+                'addSource' => [
+                    new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER)
+                ],
+                'browse' => [
+                    new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER),
+                    new JsSnippet('/js/data-manipulation.js', Resource::POSITION_FOOTER)
+                ],
+                'edit' => [
+                    new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
+                ],
+            ],
             'movies' => [
                 'browseMovies' => [
                     new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER),

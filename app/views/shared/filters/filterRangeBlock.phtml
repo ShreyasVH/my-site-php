@@ -6,13 +6,29 @@
 <div>
     <label>
         Min :
-        <input type="number" class="form-control min" name="<?php echo $filterName . '[]'; ?>" value="<?php echo $min; ?>">
+        <input
+            type="number"
+            class="form-control min"
+            name="<?php echo $filterName . '[]'; ?>"
+            value="<?php echo $min; ?>"
+            min="<?php echo $filterValues[$filterName]['min']; ?>"
+            max="<?php echo $filterValues[$filterName]['max']; ?>"
+            step="<?php echo $filterValues[$filterName]['step']; ?>"
+        />
     </label>
 </div>
 <div>
     <label>
         Max :
-        <input type="number" class="form-control max" name="<?php echo $filterName . '[]'; ?>" value="<?php echo $max; ?>">
+        <input
+            type="number"
+            class="form-control max"
+            name="<?php echo $filterName . '[]'; ?>"
+            value="<?php echo $max; ?>"
+            min="<?php echo $filterValues[$filterName]['min']; ?>"
+            max="<?php echo $filterValues[$filterName]['max']; ?>"
+            step="<?php echo $filterValues[$filterName]['step']; ?>"
+        />
     </label>
 </div>
 <div class="range-slider" data-min="<?php echo $filterValues[$filterName]['min']; ?>" data-max="<?php echo $filterValues[$filterName]['max']; ?>" data-step="<?php echo $filterValues[$filterName]['step']; ?>"></div>

@@ -43,6 +43,11 @@
 	cursor: pointer;
 	display: block;
 }
+
+.movie-card.duel-links .card:hover .card-img-overlay{
+	margin-top: 17px;
+}
+
 .movie-card .card .card-img-overlay .movie-details {
 	padding: 5px;
 }
@@ -101,4 +106,27 @@
 	.movie-card .card .card-img-overlay .controls a {
 		padding: 0.6em 1em;
 	}
+}
+
+.card-rarity {
+	border-top-left-radius: 30%;
+	line-height: 15px;
+	width: 30%;
+	float: right;
+}
+
+.card-rarity.normal {
+	background-color: #DAD9DB;
+}
+
+.card-rarity.rare {
+	background: linear-gradient(to bottom, #90D2FB, #3C9EE7);
+}
+
+.card-rarity.super_rare {
+	background: linear-gradient(to bottom, #F2EE6D, #FFC300);
+}
+
+.card-rarity.ultra_rare {
+	background: linear-gradient(to bottom, #BB49DF, #00FBFF);
 }

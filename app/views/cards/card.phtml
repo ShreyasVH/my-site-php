@@ -1,0 +1,41 @@
+<?php
+
+use app\constants\Constants;
+use app\helpers\AssetHelper;
+use app\models\Card;
+
+/** @var Card $card */
+?>
+<div class="col-md-4 col-sm-4 col-xs-12 col-lg-3 movie-card jsMovieCard duel-links" data-id="<?php echo $card->id; ?>">
+    <div class="<?php echo 'card-rarity ' . strtolower($card->rarity->name); ?>">
+        <?php
+
+            $rarityName = $card->rarity->name;
+            $rarityParts = explode('_', $rarityName);
+
+            $rarityDisplayParts = [];
+            foreach($rarityParts as $rarityPart)
+            {
+                $rarityDisplayParts[] = strtoupper($rarityPart[0]);
+            }
+            echo implode('', $rarityDisplayParts);
+        ?>
+    </div>
+    <div class="card">
+        <img src="<?php echo $card->imageUrl; ?>" class="img-thumbnail" alt="<?php echo $card->name; ?>">
+        <div class="card-img-overlay">
+            <div class="controls">
+                <?php $this->partial('cards/actionButtons'); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row">
+            <a href="#" target="_blank" class="jsShowMovieDetail">
+                <p class="movie-name">
+                    <?php echo $card->name; ?>
+                </p>
+            </a>
+        </div>
+    </div>
+</div>

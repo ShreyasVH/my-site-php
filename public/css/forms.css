@@ -21,6 +21,7 @@ form .auto-suggest-input {
     border-radius: 13px;
     color: white;
     margin-bottom: 1px;
+    margin-left: 4px;
     display: inline-block;
 }
 
@@ -54,6 +55,16 @@ form .auto-suggest-input {
 
 .picked-item-list[data-type="lyricist"] .picked-item{
     background-color: #FA8AD0;
+}
+
+.picked-item-list[data-type="cardSubType"] .picked-item{
+    border: 1px solid #E74C3C;
+    color: #E74C3C;
+}
+
+.picked-item-list[data-type="card"] .picked-item{
+    border: 1px solid #E74C3C;
+    color: #E74C3C;
 }
 
 

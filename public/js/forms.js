@@ -260,6 +260,24 @@ var forms = {
 			}
 
 			return !errorsPresent;
+		},
+
+		isAddCardFormValid: function(form) {
+			var errorsPresent = false;
+
+			return !errorsPresent;
+		},
+
+		isEditCardFormValid: function(form) {
+			var errorsPresent = false;
+
+			return !errorsPresent;
+		},
+
+		isAddSourceFormValid: function(form) {
+			var errorsPresent = false;
+
+			return !errorsPresent;
 		}
 	}
 };

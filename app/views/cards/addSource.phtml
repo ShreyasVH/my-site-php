@@ -1,0 +1,165 @@
+<?php
+use app\enums\cards\Attribute;
+use app\enums\cards\CardSubType;use app\enums\cards\CardType;
+use app\enums\cards\LimitType;
+use app\enums\cards\Rarity;
+use app\enums\cards\SourceType;
+use app\enums\cards\Type;
+?>
+
+<div class="container my-container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="/">
+                Home
+            </a>
+        </li>
+        <li>
+            <a href="/cards/browse">
+                Let's Duel
+            </a>
+        </li>
+        <li class="active">
+            Add Card
+        </li>
+    </ul>
+    <form class="form-horizontal add-movie-form add-form" name="add-card-form" method="POST" action="/cards/addSource">
+        <div class="">
+            <div class="title">
+                <h2>Add Source</h2>
+                <p>Enter the details for adding a new source to a database</p>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Name:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Enter the name of the source
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid name
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" name="name" class="form-control" autocomplete="off" tabindex="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									SourceType:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Select the sourceType of the card.
+								</span>
+                                <span class="errorMsg">
+				                	Please select sourceType
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="type" tabindex="1">
+                                    <option value="default">
+                                        -- Select Sourceype --
+                                    </option>
+                                    <?php foreach(SourceType::getAllValuesAsIdValueObjects() as $sourceType): ?>
+                                        <option value="<?php echo $sourceType['id']; ?>">
+                                            <?php echo $sourceType['name']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Expiry:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Enter the expiry date of the source
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid expiry date
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" name="expiryDate" class="form-control" autocomplete="off" tabindex="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row jsSuggestionWrap">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Cards:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Enter the name of the cards of the movie
+								</span>
+                                <span class="errorMsg">
+									Please select cards
+								</span>
+                            </label>
+                            <div class="col-md-12 dropdown jsCustomDropdown">
+                                <div class="auto-suggest-input">
+                                    <input class="form-control jsCustomDropdownInput" type="text" autocomplete="off" size="50" tabindex="1" data-type="card" />
+                                    <ul class="suggestions-list dropdown-menu"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6"></div>
+                    <div class="col-md-12 picked-item-list" data-type="card"></div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group form-field action-btns">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="reset" name="reset" class="form-control btn btn-danger" value="Reset" tabindex="1">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="submit" name="reset" class="form-control btn btn-primary" value="Add Source" tabindex="1">
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('input[name="expiryDate"]').datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+
+        $(document).on('submit', 'form[name="add-source-form"]', function(e) {
+            if(!forms.validateForms.isAddSourceFormValid($(this)))
+            {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
