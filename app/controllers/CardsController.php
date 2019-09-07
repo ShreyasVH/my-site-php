@@ -277,9 +277,6 @@ class CardsController extends BaseController
                 $payload['defense'] = $this->request->getPost('defense');
             }
 
-
-            var_dump($this->request->getPost());
-            var_dump($this->request->getUploadedFiles());
             $imageUrl = $this->request->getPost('image', null, getenv('DUEL_LINKS_DEFAULT_IMAGE_URL'));
 
             if($this->request->hasFiles())
@@ -330,7 +327,6 @@ class CardsController extends BaseController
             {
                 $payload['imageUrl'] = $imageUrl;
             }
-//            var_dump($payload);die;
 
             $response = $this->api->put('cards', $payload, 'DUEL_LINKS');
             if($response['status'] == 200)
