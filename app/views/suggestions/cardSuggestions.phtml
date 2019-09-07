@@ -1,0 +1,18 @@
+<?php
+use app\models\Card;
+use app\utils\CommonUtils;
+
+/** @var Card $card */
+?>
+<?php if(count($cards) > 0): ?>
+    <?php foreach($cards as $card): ?>
+        <li>
+            <a href="<?php echo 'javascript:Suggestions.pickSuggestion(\'' . CommonUtils::formatStringWithEscapeChars($card->name) . '\',' . $card->id . ', \'card\');'; ?>">
+<!--                <img class="hidden-xs" src="--><?php //echo $movie->imageUrl; ?><!--" width="50" height="75" alt="--><?php //echo $movie->name;?><!--">-->
+                <?php echo $card->name; ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p style="padding: 5px">No results</p>
+<?php endif; ?>

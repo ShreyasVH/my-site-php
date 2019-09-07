@@ -350,4 +350,38 @@ class CardsController extends BaseController
         $this->view->title = 'Sources - Let\'s Duel';
         $this->view->sources = Source::getAll();
     }
+
+    public function addSourceAction()
+    {
+        if($this->request->isGet())
+        {
+            $this->view->title = 'Add Source - Let\'s Duel';
+        }
+        else if($this->request->isPost())
+        {
+            $payload = [
+                'name' => $this->request->getPost('name'),
+                'type' => $this->request->getPost('type'),
+                'cards' => $this->request->getPost('cards')
+            ];
+
+            $expiryDate = $this->request->getPost('expiryDate');
+            $expiryTime = $this->request->getPost('expiryTime', null, '00:00:00');
+
+            if(!empty($expiryDate) && !empty($expiryTime))
+            {
+                $payload['expiry'] = ($expiryDate . ' ' . $expiryTime);
+            }
+
+            $response = $this->api->post('cards/source', $payload, 'DUEL_LINKS');
+            if($response['status'] == 200)
+            {
+                $this->flashSession->success('Source created successfully');
+            }
+            else
+            {
+                $this->flashSession->error('Error creating source. Error: ' . $response['result']);
+            }
+        }
+    }
 }

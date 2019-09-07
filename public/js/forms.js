@@ -272,6 +272,12 @@ var forms = {
 			var errorsPresent = false;
 
 			return !errorsPresent;
+		},
+
+		isAddSourceFormValid: function(form) {
+			var errorsPresent = false;
+
+			return !errorsPresent;
 		}
 	}
 };

@@ -407,10 +407,6 @@ use app\enums\cards\Type;
     </form>
 </div>
 
-<?php
-$this->partial('shared/addArtistPopup');
-?>
-
 <script type="text/javascript">
     $(document).ready(function() {
         cardActions.toggleAdditionalFields('<?php echo $card->cardType->name; ?>');

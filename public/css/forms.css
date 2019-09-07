@@ -62,5 +62,10 @@ form .auto-suggest-input {
     color: #E74C3C;
 }
 
+.picked-item-list[data-type="card"] .picked-item{
+    border: 1px solid #E74C3C;
+    color: #E74C3C;
+}
+
 
 

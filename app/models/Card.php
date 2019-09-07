@@ -133,4 +133,20 @@ class Card extends BaseModel
         }
         return $card;
     }
+
+    /**
+     * @param string $keyword
+     * @return Card[]
+     */
+    public static function getByKeyword($keyword)
+    {
+        $cards = [];
+        $response = self::getAPISource()->get('cards/keyword/' . $keyword, 'DUEL_LINKS');
+        if($response['status'] == 200)
+        {
+            $cards = json_decode($response['result']);
+        }
+
+        return $cards;
+    }
 }
