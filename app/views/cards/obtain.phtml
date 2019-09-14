@@ -1,0 +1,36 @@
+<?php
+    use app\enums\cards\FoilType;
+?>
+<div class="add-individual-form">
+    <div>
+        <h3>Obtain Card</h3>
+    </div>
+    <form class="form-horizontal add-form" name="obtain-card-form" action="/cards/obtain" method="POST">
+        <input
+            type="hidden"
+            name="cardId"
+        >
+        <div class="form-group form-field">
+            <label class="control-label col-sm-3">Foil Type:<span class="mandatory-label"></span> </label>
+            <div class="col-sm-8">
+                <select class="form-control" name="foilType" tabindex="1">
+                    <option value="default">
+                        -- Select Foil Type --
+                    </option>
+                    <?php foreach(FoilType::getAllValuesAsIdValueObjects() as $foilType): ?>
+                        <option value="<?php echo $foilType['id']; ?>">
+                            <?php echo $foilType['name']; ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <span class="errorMsg">Please enter valid foil type</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-7">
+                <input class="btn btn-primary" type="submit" name="submit" value="Obtain">
+            </div>
+        </div>
+    </form>
+</div>

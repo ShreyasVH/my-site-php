@@ -1,29 +1,30 @@
-<?php if($this->flashSession->has()):?>
-    <div class="modal fade" id="notify_modal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <button type="button" class="popup-close" data-dismiss="modal"><i class="glyphicon">&times;</i></button>
-            <div class="modal-content" id="notify_content">
-                <?php if($this->flashSession->has('error')):?>
-                    <div class="alert alert-danger" align='center'>
-                        <strong>Error!</strong> <?php echo $this->flashSession->output(); ?>
-                    </div>
-                <?php elseif($this->flashSession->has('notice')): ?>
-                    <div class="alert alert-info" align='center'>
-                        <strong>Info!</strong> <?php echo $this->flashSession->output(); ?>
-                    </div>
-                <?php elseif($this->flashSession->has('success')): ?>
-                    <div class="alert alert-success" align='center'>
-                        <strong>Success!</strong> <?php echo $this->flashSession->output();?>
-                    </div>
-                <?php elseif($this->flashSession->has('warning')): ?>
-                    <div class="alert alert-warning" align='center'>
-                        <strong>Warning!</strong> <?php echo $this->flashSession->output();?>
-                    </div>
-                <?php endif; ?>
-            </div>
+<div class="modal fade" id="notify_modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <button type="button" class="popup-close" data-dismiss="modal"><i class="glyphicon">&times;</i></button>
+        <div class="modal-content" id="notify_content">
+            <?php if($this->flashSession->has('error')):?>
+                <div class="alert alert-danger" align='center'>
+                    <strong>Error!</strong> <?php echo $this->flashSession->output(); ?>
+                </div>
+            <?php elseif($this->flashSession->has('notice')): ?>
+                <div class="alert alert-info" align='center'>
+                    <strong>Info!</strong> <?php echo $this->flashSession->output(); ?>
+                </div>
+            <?php elseif($this->flashSession->has('success')): ?>
+                <div class="alert alert-success" align='center'>
+                    <strong>Success!</strong> <?php echo $this->flashSession->output();?>
+                </div>
+            <?php elseif($this->flashSession->has('warning')): ?>
+                <div class="alert alert-warning" align='center'>
+                    <strong>Warning!</strong> <?php echo $this->flashSession->output();?>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
+</div>
+
+<?php if($this->flashSession->has()):?>
     <script>
         setTimeout(function(){
             $("#notify_modal").modal('show');

@@ -7,3 +7,7 @@ use app\models\Card;
     <a class="btn btn-warning edit-movie" href="<?php echo '/cards/edit?id=' . $card->id; ?>" target="_blank">
         <i class="glyphicon glyphicon-pencil"></i>
     </a>
+
+    <a class="btn btn-success jsObtainCard" href="javascript:void(0);" data-cardId="<?php echo $card->id; ?>">
+        <i class="glyphicon glyphicon-share"></i>
+    </a>
