@@ -43,5 +43,7 @@ foreach($movieIds as $index => $movieId)
         echo "\n\tError while indexing movie. Payload: " . json_encode([]) . ". Response: " . $response['result'] . "\n";
     }
 
+    time_nanosleep(0, 500000);
+
     echo "\nProcessed Movie. " . ($index + 1) . "/" . $movieCount . "\n";
 }
