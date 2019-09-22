@@ -45,7 +45,8 @@ class AssetHelper extends BaseHelper
                 'browse' => [
                     new CssSnippet('/css/jquery-ui.min.css'),
                     new CssSnippet('/css/card.css'),
-                    new CssSnippet('/css/filters.css')
+                    new CssSnippet('/css/filters.css'),
+                    new CssSnippet('/css/add-actor.css')
                 ],
                 'edit' => [
                     new CssSnippet('/css/add-movie.css'),
@@ -148,7 +149,8 @@ class AssetHelper extends BaseHelper
                 ],
                 'browse' => [
                     new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER),
-                    new JsSnippet('/js/data-manipulation.js', Resource::POSITION_FOOTER)
+                    new JsSnippet('/js/data-manipulation.js', Resource::POSITION_FOOTER),
+                    new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER)
                 ],
                 'edit' => [
                     new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
@@ -217,7 +219,8 @@ class AssetHelper extends BaseHelper
             new JsSnippet('/js/jquery.js', Resource::POSITION_BODY),
             new JsSnippet('/js/bootstrap.min.js', Resource::POSITION_BODY),
             new JsSnippet('/js/myscripts.js', Resource::POSITION_BODY),
-            new JsSnippet('/js/forms.js', Resource::POSITION_BODY)
+            new JsSnippet('/js/forms.js', Resource::POSITION_BODY),
+            new JsSnippet('/js/notify.js', Resource::POSITION_BODY)
         ];
         $specific_js_array = $this->_getPageSpecificJsFiles($controller, $action);
         /** @var JsSnippet[] $js_files */

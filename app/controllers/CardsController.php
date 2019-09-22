@@ -380,4 +380,30 @@ class CardsController extends BaseController
             }
         }
     }
+
+    public function obtainAction()
+    {
+        if($this->request->isPost())
+        {
+            $cardId = $this->request->getPost('cardId');
+            $foilType = $this->request->getPost('foilType');
+
+            $payload = [
+                'cardId' => $cardId,
+                'glossType' => $foilType
+            ];
+
+            $apiResponse = $this->api->post('cards/myCards', $payload, 'DUEL_LINKS');
+
+            $response = [
+                'success' => (200 === $apiResponse['status']),
+                'response' => $apiResponse['result']
+            ];
+
+            $this->response->setContentType('application/json', 'UTF-8');
+            $outputContent = json_encode($response, JSON_UNESCAPED_SLASHES);
+            $this->response->setContent($outputContent);
+            return $this->response;
+        }
+    }
 }
