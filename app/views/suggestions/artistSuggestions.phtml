@@ -7,7 +7,7 @@
 
 <?php foreach($artists as $artist): ?>
     <li>
-        <a href="javascript:Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($artist->name); ?>', '<?php echo $artist->id; ?>', '<?php echo $this->request->getQuery('context'); ?>'); ">
+        <a href="javascript:Suggestions.pickSuggestion('<?php echo htmlspecialchars($artist->name); ?>', '<?php echo $artist->id; ?>', '<?php echo $this->request->getQuery('context'); ?>'); ">
             <?php echo $artist->name; ?>
         </a>
     </li>

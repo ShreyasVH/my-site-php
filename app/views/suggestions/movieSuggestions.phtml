@@ -10,7 +10,7 @@
 		<?php
 			if($this->request->hasQuery('context') && !empty($this->request->getQuery('context')))
 			{
-				$href = "javascript:Suggestions.pickSuggestion('" . CommonUtils::formatStringWithEscapeChars($movie->name) . "'," . $movie->id . ", 'movie')";
+				$href = "javascript:Suggestions.pickSuggestion('" . htmlspecialchars($movie->name) . "'," . $movie->id . ", 'movie')";
 			}
 			else
 			{
