@@ -278,6 +278,12 @@ var forms = {
 			var errorsPresent = false;
 
 			return !errorsPresent;
+		},
+
+		isEditSourceFormValid: function(form) {
+			var errorsPresent = false;
+
+			return !errorsPresent;
 		}
 	}
 };

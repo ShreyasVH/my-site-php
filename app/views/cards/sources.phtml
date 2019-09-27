@@ -28,6 +28,10 @@
                     <a href="#">
                         <?php echo $source['name']; ?>
                     </a>
+
+                    <a href="<?php echo '/cards/editSource?id=' . $source['id']; ?>" target="_blank">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </a>
                 </li>
 
             <?php endforeach; ?>

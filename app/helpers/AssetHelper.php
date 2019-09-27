@@ -53,6 +53,12 @@ class AssetHelper extends BaseHelper
                     new CssSnippet('/css/add-actor.css'),
                     new CssSnippet('/css/forms.css')
                 ],
+                'editSource' => [
+                    new CssSnippet('/css/add-movie.css'),
+                    new CssSnippet('/css/add-actor.css'),
+                    new CssSnippet('/css/forms.css'),
+                    new CssSnippet('/css/jquery-ui.min.css')
+                ],
             ],
             'movies' => [
                 'actorCombinations' => [
@@ -154,6 +160,9 @@ class AssetHelper extends BaseHelper
                 ],
                 'edit' => [
                     new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
+                ],
+                'editSource' => [
+                    new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER)
                 ],
             ],
             'movies' => [

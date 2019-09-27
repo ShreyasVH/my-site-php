@@ -16,4 +16,17 @@ class Source extends BaseModel
 
         return $sources;
     }
+
+    public static function getById($id)
+    {
+        $source = [];
+
+        $response = self::getAPISource()->get('cards/source/' . $id, 'DUEL_LINKS');
+        if($response['status'] == 200)
+        {
+            $source = json_decode($response['result'], true);
+        }
+
+        return $source;
+    }
 }

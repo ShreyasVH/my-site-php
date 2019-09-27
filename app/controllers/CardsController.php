@@ -381,6 +381,52 @@ class CardsController extends BaseController
         }
     }
 
+    public function editSourceAction()
+    {
+        if($this->request->isGet())
+        {
+            $this->view->title = 'Edit Source - Let\'s Duel';
+            $this->view->id = $id = $this->request->getQuery('id');
+            $source = null;
+            $startTime = time();
+            while((null == $source) || ((time() - $startTime) > 15))
+            {
+                $source = Source::getById($id);
+            }
+
+            $this->view->source = $source;
+        }
+        else if($this->request->isPost())
+        {
+            $id = $this->request->getPost('id');
+            $payload = [
+                'id' => $id,
+                'name' => $this->request->getPost('name'),
+                'type' => $this->request->getPost('type'),
+                'cards' => $this->request->getPost('cards')
+            ];
+
+            $expiryDate = $this->request->getPost('expiryDate');
+            $expiryTime = $this->request->getPost('expiryTime', null, '00:00:00');
+
+            if(!empty($expiryDate) && !empty($expiryTime))
+            {
+                $payload['expiry'] = ($expiryDate . ' ' . $expiryTime);
+            }
+
+            $response = $this->api->put('cards/source', $payload, 'DUEL_LINKS');
+            if($response['status'] == 200)
+            {
+                $this->flashSession->success('Source created successfully');
+            }
+            else
+            {
+                $this->flashSession->error('Error creating source. Error: ' . $response['result']);
+            }
+            $this->response->redirect('/cards/editSource?id=' . $id);
+        }
+    }
+
     public function obtainAction()
     {
         if($this->request->isPost())
