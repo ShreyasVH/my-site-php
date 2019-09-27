@@ -1,5 +1,6 @@
 <?php
     use app\enums\cards\SourceType;
+    use app\utils\CommonUtils;
 
     $expiry = (!empty($source['expiry']) ? date('Y-m-d', ($source['expiry'] / 1000)) : '');
 ?>
@@ -151,7 +152,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         <?php foreach($source['cards'] as $card): ?>
-        Suggestions.pickSuggestion('<?php echo htmlspecialchars($card['name']); ?>', '<?php echo $card['id']; ?>', 'card');
+        Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($card['name']); ?>', '<?php echo $card['id']; ?>', 'card');
         <?php endforeach; ?>
 
         $('input[name="expiryDate"]').datepicker({

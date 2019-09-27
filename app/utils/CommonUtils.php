@@ -34,7 +34,7 @@ class CommonUtils extends Component
 
     public static function formatStringWithEscapeChars($string)
     {
-        return str_replace('"', '\"', str_replace("'", "\'", $string));
+        return htmlspecialchars(str_replace('"', '\"', str_replace("'", "\'", $string)));
     }
 
     public static function getProtocol()

@@ -7,7 +7,7 @@ use app\utils\CommonUtils;
 <?php if(count($cards) > 0): ?>
     <?php foreach($cards as $card): ?>
         <li>
-            <a href="javascript:Suggestions.pickSuggestion('<?php echo htmlspecialchars($card->name); ?>', '<?php echo $card->id; ?>', 'card'); ">
+            <a href="javascript:Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($card->name); ?>', '<?php echo $card->id; ?>', 'card'); ">
 <!--                <img class="hidden-xs" src="--><?php //echo $movie->imageUrl; ?><!--" width="50" height="75" alt="--><?php //echo $movie->name;?><!--">-->
                 <?php echo $card->name; ?>
             </a>
