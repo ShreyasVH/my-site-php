@@ -53,7 +53,7 @@ use app\enums\cards\Type;
 				                </span>
                             </label>
                             <div class="col-md-12">
-                                <input type="text" name="name" class="form-control" autocomplete="off" tabindex="1" value="<?php echo $card->name; ?>">
+                                <input type="text" name="name" class="form-control" autocomplete="off" tabindex="1" value="<?php echo htmlspecialchars($card->name); ?>">
                             </div>
                         </div>
                     </div>
