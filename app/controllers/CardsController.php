@@ -288,7 +288,7 @@ class CardsController extends BaseController
                 if('' != $file->getName())
                 {
                     $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($name));
-                    $version = 1;
+                    $version = $this->request->getPost('version', null, 1);
 
                     if($version > 1)
                     {
@@ -444,6 +444,77 @@ class CardsController extends BaseController
             $response = [
                 'success' => (200 === $apiResponse['status']),
                 'response' => $apiResponse['result']
+            ];
+
+            $this->response->setContentType('application/json', 'UTF-8');
+            $outputContent = json_encode($response, JSON_UNESCAPED_SLASHES);
+            $this->response->setContent($outputContent);
+            return $this->response;
+        }
+    }
+
+    public function versionAction()
+    {
+        if($this->request->isPost())
+        {
+            $cardName = $this->request->getPost('cardName');
+            $foilType = $this->request->getPost('foilType');
+
+            $payload = [
+                'name' => $cardName
+            ];
+
+            $imageUrl = getenv('DUEL_LINKS_DEFAULT_IMAGE_URL');
+
+            if($this->request->hasFiles())
+            {
+                /** @var File[] $uploaded_files */
+                $uploaded_files = $this->request->getUploadedFiles();
+                $file = $uploaded_files[0];
+
+                if('' != $file->getName())
+                {
+                    $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($cardName));
+                    $formattedName = $formattedName . '_' . time();
+                    $filename = $formattedName . '.' . $file->getExtension();
+
+                    $fields = [
+                        'folderName' => 'cards'
+                    ];
+
+                    $fileObjects = [
+                        [
+                            'name' => $filename,
+                            'path' => $file->getTempName()
+                        ]
+                    ];
+
+                    $files = [];
+                    foreach($fileObjects as $index => $fileObject)
+                    {
+                        $fileContent = file_get_contents($fileObject['path']);
+                        $files[$fileObject['name']] = $fileContent;
+                    }
+                    $uploadResponse = $this->api->uploadFile($fields, $files);
+                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
+                    {
+                        $decodedResponse = json_decode($uploadResponse['result'], true);
+                        $imageUrl = $decodedResponse['url'];
+                    }
+                }
+            }
+
+            if(!empty($imageUrl))
+            {
+                $payload['imageUrl'] = $imageUrl;
+            }
+
+            $apiResponse = $this->api->post('cards/version', $payload, 'DUEL_LINKS');
+
+            $response = [
+                'success' => (200 === $apiResponse['status']),
+                'response' => $apiResponse['result'],
+                'cardHtml' => $this->view->getPartial('cards/card', ['card' => json_decode($apiResponse['result'])])
             ];
 
             $this->response->setContentType('application/json', 'UTF-8');
