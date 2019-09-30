@@ -165,5 +165,9 @@
                 e.preventDefault();
             }
         });
+
+        $(document).on('change', 'form[name="add-source-form"] select[name="type"]', function(e) {
+            $('form[name="add-source-form"]').find('input[name="expiryDate"]').closest('.form-field').removeClass('error');
+        });
     });
 </script>

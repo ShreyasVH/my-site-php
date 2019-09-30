@@ -440,11 +440,89 @@ var forms = {
 		isAddSourceFormValid: function(form) {
 			var errorsPresent = false;
 
+			var typeSelect = form.find('select[name="type"]');
+			var typeValue = typeSelect.val();
+			var typeElement = typeSelect.find('option[value="' + typeValue + '"]');
+			var type = typeElement.text().trim();
+
+			if(forms.Validation.isInputFieldEmpty(form.find('input[name="name"]')))
+			{
+				form.find('input[name="name"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="type"]')))
+			{
+				form.find('select[name="type"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if (('TICKET' === type) || ('default' === typeValue)) {
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="expiryDate"]')))
+				{
+					form.find('input[name="expiryDate"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+			}
+
+			if(form.find('input[name="cards[]"]').length === 0)
+			{
+				form.find('.picked-item-list[data-type="card"]').closest('.jsSuggestionWrap').find('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(errorsPresent)
+			{
+				$('html, body').animate({
+						scrollTop : $(form.find('.error')[0]).offset().top
+					}, 300
+				);
+			}
+
 			return !errorsPresent;
 		},
 
 		isEditSourceFormValid: function(form) {
 			var errorsPresent = false;
+
+			var typeSelect = form.find('select[name="type"]');
+			var typeValue = typeSelect.val();
+			var typeElement = typeSelect.find('option[value="' + typeValue + '"]');
+			var type = typeElement.text().trim();
+
+			if(forms.Validation.isInputFieldEmpty(form.find('input[name="name"]')))
+			{
+				form.find('input[name="name"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="type"]')))
+			{
+				form.find('select[name="type"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if (('TICKET' === type) || ('default' === typeValue)) {
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="expiryDate"]')))
+				{
+					form.find('input[name="expiryDate"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+			}
+
+			if(form.find('input[name="cards[]"]').length === 0)
+			{
+				form.find('.picked-item-list[data-type="card"]').closest('.jsSuggestionWrap').find('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(errorsPresent)
+			{
+				$('html, body').animate({
+						scrollTop : $(form.find('.error')[0]).offset().top
+					}, 300
+				);
+			}
 
 			return !errorsPresent;
 		}

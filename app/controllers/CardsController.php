@@ -458,7 +458,6 @@ class CardsController extends BaseController
         if($this->request->isPost())
         {
             $cardName = $this->request->getPost('cardName');
-            $foilType = $this->request->getPost('foilType');
 
             $payload = [
                 'name' => $cardName

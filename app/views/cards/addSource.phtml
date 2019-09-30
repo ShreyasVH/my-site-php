@@ -23,7 +23,7 @@ use app\enums\cards\Type;
             Add Card
         </li>
     </ul>
-    <form class="form-horizontal add-movie-form add-form" name="add-card-form" method="POST" action="/cards/addSource">
+    <form class="form-horizontal add-movie-form add-form" name="add-source-form" method="POST" action="/cards/addSource">
         <div class="">
             <div class="title">
                 <h2>Add Source</h2>
@@ -160,6 +160,10 @@ use app\enums\cards\Type;
             {
                 e.preventDefault();
             }
+        });
+
+        $(document).on('change', 'form[name="add-source-form"] select[name="type"]', function(e) {
+            $('form[name="add-source-form"]').find('input[name="expiryDate"]').closest('.form-field').removeClass('error');
         });
     });
 </script>
