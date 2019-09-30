@@ -514,13 +514,29 @@ class CardsController extends BaseController
             $response = [
                 'success' => (200 === $apiResponse['status']),
                 'response' => $apiResponse['result'],
-                'cardHtml' => $this->view->getPartial('cards/card', ['card' => json_decode($apiResponse['result'])])
+                'cardHtml' => $this->view->getPartial('cards/card', [
+                    'card' => json_decode($apiResponse['result']),
+                    'isRarityRequired' => true
+                ])
             ];
 
             $this->response->setContentType('application/json', 'UTF-8');
             $outputContent = json_encode($response, JSON_UNESCAPED_SLASHES);
             $this->response->setContent($outputContent);
             return $this->response;
+        }
+    }
+
+    public function detailAction()
+    {
+        if($this->request->isGet())
+        {
+            $id = $this->request->getQuery('id');
+            $this->view->card = $card = Card::getById($id);
+            if(!empty($card))
+            {
+                $this->view->title = $card->name . ' - Let\'s Duel';
+            }
         }
     }
 }

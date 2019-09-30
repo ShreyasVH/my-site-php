@@ -4,14 +4,17 @@ use app\models\Card;
 
 /** @var Card $card */
 ?>
-    <a class="btn btn-warning edit-movie" href="<?php echo '/cards/edit?id=' . $card->id; ?>" target="_blank">
-        <i class="glyphicon glyphicon-pencil"></i>
-    </a>
+    <?php if(isset($myCard) && !empty($myCard)): ?>
+    <?php else: ?>
+        <a class="btn btn-warning edit-movie" href="<?php echo '/cards/edit?id=' . $card->id; ?>" target="_blank">
+            <i class="glyphicon glyphicon-pencil"></i>
+        </a>
 
-    <a class="btn btn-success jsObtainCard" href="javascript:void(0);" data-cardId="<?php echo $card->id; ?>">
-        <i class="glyphicon glyphicon-share"></i>
-    </a>
+        <a class="btn btn-success jsObtainCard" href="javascript:void(0);" data-cardId="<?php echo $card->id; ?>">
+            <i class="glyphicon glyphicon-share"></i>
+        </a>
 
-    <a class="btn btn-info jsAddVersion" href="javascript:void(0);" data-cardName="<?php echo $card->name; ?>" data-cardId="<?php echo $card->id; ?>">
-        <i class="glyphicon glyphicon-plus-sign"></i>
-    </a>
+        <a class="btn btn-info jsAddVersion" href="javascript:void(0);" data-cardName="<?php echo $card->name; ?>" data-cardId="<?php echo $card->id; ?>">
+            <i class="glyphicon glyphicon-plus-sign"></i>
+        </a>
+    <?php endif; ?>

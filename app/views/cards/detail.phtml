@@ -1,0 +1,100 @@
+<?php
+/** @var \app\models\Card $card */
+
+use app\constants\Constants;
+use app\helpers\AssetHelper;
+
+?>
+
+<div class="container my-container">
+    <div class="row">
+        <ul class="breadcrumb">
+            <li>
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="/cards/browse">
+                    Browse Cards
+                </a>
+            </li>
+            <li class="active">
+                <?php echo $card->name; ?>
+            </li>
+        </ul>
+    </div>
+
+    <div class="title">
+        <h1 class="page-header">
+            <?php echo $card->name; ?>
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3 col-lg-3">
+            <div class="<?php echo 'card-rarity ' . strtolower($card->rarity->name); ?>">
+                <?php
+
+                $rarityName = $card->rarity->name;
+                $rarityParts = explode('_', $rarityName);
+
+                $rarityDisplayParts = [];
+                foreach($rarityParts as $rarityPart)
+                {
+                    $rarityDisplayParts[] = strtoupper($rarityPart[0]);
+                }
+                echo implode('', $rarityDisplayParts);
+                ?>
+            </div>
+            <img class="img-rounded" src="<?php echo $card->imageUrl; ?>" style="max-height:390px;max-width:260px">
+
+            <?php if(false): ?>
+                <div class="action-btns">
+                    <a class="btn btn-warning" href="<?php echo '/cards/edit?id=' . $card->id; ?>" target="_blank">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                        &nbsp;&nbsp;Edit Card
+                    </a>
+
+                    <a class="btn btn-success jsObtainCard" href="javascript:void(0);" data-cardId="<?php echo $card->id; ?>">
+                        <i class="glyphicon glyphicon-share"></i>
+                        Obtain Card
+                    </a>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="col-md-9 col-lg-9">
+
+        </div>
+    </div>
+
+    <?php if(!empty($card->individualCards)): ?>
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <h1>
+                        My Cards
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="row movie-list clearfix jsMovieContainer">
+                            <?php foreach($card->individualCards as $myCard): ?>
+                                <?php $this->partial('cards/card', [
+                                    'card' => $card,
+                                    'isRarityRequired' => false,
+                                    'myCard' => $myCard
+                                ]); ?>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
+
+<?php $this->partial('cards/obtainModal'); ?>
+
+<?php $this->partial('cards/versionModal'); ?>

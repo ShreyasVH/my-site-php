@@ -44,7 +44,7 @@
 	display: block;
 }
 
-.movie-card.duel-links .card:hover .card-img-overlay{
+.movie-card.duel-links .card:hover .card-img-overlay.with-rarity {
 	margin-top: 17px;
 }
 
@@ -113,6 +113,7 @@
 	line-height: 15px;
 	width: 30%;
 	float: right;
+	text-align: center;
 }
 
 .card-rarity.normal {
@@ -129,4 +130,53 @@
 
 .card-rarity.ultra_rare {
 	background: linear-gradient(to bottom, #BB49DF, #00FBFF);
+}
+
+.movie-card {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+}
+
+.movie-card.glossy:after {
+	animation: shine 2s ease-in-out  infinite;
+	animation-fill-mode: forwards;
+	content: "";
+	position: absolute;
+	top: -110%;
+	left: -210%;
+	width: 200%;
+	height: 200%;
+	opacity: 0;
+	transform: rotate(30deg);
+
+	background: rgba(255, 255, 255, 0.13);
+	background: linear-gradient(
+		to right,
+		rgba(255, 255, 255, 0.13) 0%,
+		rgba(255, 255, 255, 0.13) 33%,
+		rgba(255, 255, 255, 0.5) 66%,
+		rgba(255, 255, 255, 0.0) 100%
+	);
+}
+
+.movie-card.glossy:after {
+	opacity: 0;
+}
+
+@keyframes shine{
+	10% {
+		opacity: 1;
+		top: -30%;
+		left: -30%;
+		transition-property: left, top, opacity;
+		transition-duration: 0.7s, 0.7s, 0.15s;
+		transition-timing-function: ease;
+	}
+	100% {
+		opacity: 0;
+		top: -30%;
+		left: -30%;
+		transition-property: left, top, opacity;
+	}
 }

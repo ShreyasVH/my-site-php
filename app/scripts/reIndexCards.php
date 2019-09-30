@@ -39,6 +39,7 @@ foreach($cardIds as $index => $cardId)
     echo "\nCard Id: " . $cardId . "\n";
 
     $response = $apiHelper->get('cards/index/' . $cardId, 'DUEL_LINKS');
+    echo "\nResponse: " . $response['result'] . "\n";
 
     if(200 != $response['status'])
     {
