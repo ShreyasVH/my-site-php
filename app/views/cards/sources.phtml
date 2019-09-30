@@ -25,7 +25,7 @@
         <ul>
             <?php foreach($sources as $source): ?>
                 <li>
-                    <a href="#">
+                    <a href="<?php echo '/cards/browse?sources[]=' . $source['id'] . '&order=name ASC'; ?>" target="_blank">
                         <?php echo $source['name']; ?>
                     </a>
 
