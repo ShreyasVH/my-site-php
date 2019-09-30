@@ -265,11 +265,173 @@ var forms = {
 		isAddCardFormValid: function(form) {
 			var errorsPresent = false;
 
+			var cardTypeSelect = form.find('select[name="cardType"]');
+			var cardTypeValue = cardTypeSelect.val();
+			var cardTypeElement = cardTypeSelect.find('option[value="' + cardTypeValue + '"]');
+			var cardType = cardTypeElement.text().trim();
+
+			if(forms.Validation.isInputFieldEmpty(form.find('input[name="name"]')))
+			{
+				form.find('input[name="name"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isTextareaEmpty(form.find('textarea[name="description"]')))
+			{
+				form.find('textarea[name="description"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="cardType"]')))
+			{
+				form.find('select[name="cardType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if ('MONSTER' === cardType) {
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="level"]')))
+				{
+					form.find('input[name="level"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isSelectFieldEmpty(form.find('select[name="attribute"]')))
+				{
+					form.find('select[name="attribute"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isSelectFieldEmpty(form.find('select[name="type"]')))
+				{
+					form.find('select[name="type"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="attack"]')))
+				{
+					form.find('input[name="attack"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="defense"]')))
+				{
+					form.find('input[name="defense"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="cardSubType"]')))
+			{
+				form.find('select[name="cardSubType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="rarity"]')))
+			{
+				form.find('select[name="rarity"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="limitType"]')))
+			{
+				form.find('select[name="limitType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(errorsPresent)
+			{
+				$('html, body').animate({
+						scrollTop : $(form.find('.error')[0]).offset().top
+					}, 300
+				);
+			}
+
 			return !errorsPresent;
 		},
 
 		isEditCardFormValid: function(form) {
 			var errorsPresent = false;
+
+			var cardTypeSelect = form.find('select[name="cardType"]');
+			var cardTypeValue = cardTypeSelect.val();
+			var cardTypeElement = cardTypeSelect.find('option[value="' + cardTypeValue + '"]');
+			var cardType = cardTypeElement.text().trim();
+
+			if(forms.Validation.isInputFieldEmpty(form.find('input[name="name"]')))
+			{
+				form.find('input[name="name"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isTextareaEmpty(form.find('textarea[name="description"]')))
+			{
+				form.find('textarea[name="description"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="cardType"]')))
+			{
+				form.find('select[name="cardType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if ('MONSTER' === cardType) {
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="level"]')))
+				{
+					form.find('input[name="level"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isSelectFieldEmpty(form.find('select[name="attribute"]')))
+				{
+					form.find('select[name="attribute"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isSelectFieldEmpty(form.find('select[name="type"]')))
+				{
+					form.find('select[name="type"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="attack"]')))
+				{
+					form.find('input[name="attack"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isInputFieldEmpty(form.find('input[name="defense"]')))
+				{
+					form.find('input[name="defense"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="cardSubType"]')))
+			{
+				form.find('select[name="cardSubType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="rarity"]')))
+			{
+				form.find('select[name="rarity"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="limitType"]')))
+			{
+				form.find('select[name="limitType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(errorsPresent)
+			{
+				$('html, body').animate({
+						scrollTop : $(form.find('.error')[0]).offset().top
+					}, 300
+				);
+			}
 
 			return !errorsPresent;
 		},

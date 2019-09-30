@@ -6,7 +6,7 @@
     display: none;
 }
 
-.form-field.error input, .form-field.error select {
+.form-field.error input, .form-field.error select,  .form-field.error textarea{
     border: 1px solid red;
 }
 
