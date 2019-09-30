@@ -7,10 +7,13 @@ use app\models\Card;
 /** @var Card $card */
 
 $overlayClass = 'card-img-overlay' . (($isRarityRequired) ? ' with-rarity' : '');
-$foilTypeClass = (((isset($myCard) && !empty($myCard))) ? strtolower($myCard->cardGlossType->name) : '');
+$foilTypeClass = (((isset($myCard) && !empty($myCard))) ? ' ' . strtolower($myCard->cardGlossType->name) : '');
+$myCardClass = (((isset($myCard) && !empty($myCard))) ? ' my-card' : '');
+
+$cardClass = ((isset($myCard) && !empty($myCard)) ? '' : 'col-md-4 col-sm-4 col-xs-12 col-lg-3') . ' movie-card jsCard duel-links' . $foilTypeClass . $myCardClass;
 
 ?>
-<div class="<?php echo 'col-md-4 col-sm-4 col-xs-12 col-lg-3 movie-card jsCard duel-links ' . $foilTypeClass; ?>" data-id="<?php echo $card->id; ?>">
+<div class="<?php echo $cardClass; ?>" data-id="<?php echo $card->id; ?>">
     <?php if($isRarityRequired): ?>
         <div class="<?php echo 'card-rarity ' . strtolower($card->rarity->name); ?>">
             <?php

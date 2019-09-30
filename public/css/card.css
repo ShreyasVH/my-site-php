@@ -32,6 +32,16 @@
     height: 360px;
 }
 
+.movie-card.my-card .card .img-thumbnail{
+	height: 272px;
+	width: 204px;
+}
+
+.movie-card.my-card .card .card-img-overlay {
+	height: 272px;
+	width: 204px;
+}
+
 .song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
 	width: 129px;
 	height: 172px;
@@ -179,4 +189,8 @@
 		left: -30%;
 		transition-property: left, top, opacity;
 	}
+}
+
+.movie-list {
+	text-align: center;
 }
