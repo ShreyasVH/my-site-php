@@ -525,6 +525,18 @@ var forms = {
 			}
 
 			return !errorsPresent;
+		},
+
+		isObtainCardFormValid: function(form) {
+			var errorsPresent = false;
+
+			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="foilType"]')))
+			{
+				form.find('select[name="foilType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			return !errorsPresent;
 		}
 	}
 };

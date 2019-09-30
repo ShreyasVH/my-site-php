@@ -116,7 +116,7 @@ $(document).ready(function() {
 
 	$(document).on('submit', 'form[name="add-artist-form"]', function(e) {
 		e.preventDefault();
-		if($(this).find('.empty').length == 0)
+		if($(this).find('.error').length == 0)
 		{
 			var formdata = new FormData($(this)[0]);
 			$.ajax({

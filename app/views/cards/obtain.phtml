@@ -34,3 +34,14 @@
         </div>
     </form>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(document).on('submit', 'form[name="obtain-card-form"]', function(e) {
+            if(!forms.validateForms.isObtainCardFormValid($(this)))
+            {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

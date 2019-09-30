@@ -43,6 +43,7 @@ class AssetHelper extends BaseHelper
                     new CssSnippet('/css/jquery-ui.min.css')
                 ],
                 'browse' => [
+                    new CssSnippet('/css/forms.css'),
                     new CssSnippet('/css/jquery-ui.min.css'),
                     new CssSnippet('/css/card.css'),
                     new CssSnippet('/css/filters.css'),
