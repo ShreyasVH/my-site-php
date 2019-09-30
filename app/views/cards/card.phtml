@@ -29,7 +29,6 @@ $foilTypeClass = (((isset($myCard) && !empty($myCard))) ? strtolower($myCard->ca
     <?php endif; ?>
     <div class="card">
         <img src="<?php echo $card->imageUrl; ?>" class="img-thumbnail" alt="<?php echo $card->name; ?>">
-        <div class="show-off"></div>
         <div class="<?php echo $overlayClass; ?>">
             <div class="controls">
                 <?php $this->partial('cards/actionButtons'); ?>
@@ -38,7 +37,7 @@ $foilTypeClass = (((isset($myCard) && !empty($myCard))) ? strtolower($myCard->ca
     </div>
     <div class="col-md-12">
         <div class="row">
-            <a href="#" target="_blank" class="jsShowMovieDetail">
+            <a href="<?php echo '/cards/detail?id=' . $card->id; ?>" target="_blank" class="jsShowMovieDetail">
                 <p class="movie-name">
                     <?php echo $card->name; ?>
                 </p>
