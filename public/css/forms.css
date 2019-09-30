@@ -58,13 +58,13 @@ form .auto-suggest-input {
 }
 
 .picked-item-list[data-type="cardSubType"] .picked-item{
-    border: 1px solid #E74C3C;
-    color: #E74C3C;
+    border: 1px solid #5DADE2;
+    color: #5DADE2;
 }
 
 .picked-item-list[data-type="card"] .picked-item{
-    border: 1px solid #E74C3C;
-    color: #E74C3C;
+    border: 1px solid #5DADE2;
+    color: #5DADE2;
 }
 
 

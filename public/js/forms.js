@@ -288,7 +288,7 @@ var forms = {
 				errorsPresent = true;
 			}
 
-			if ('MONSTER' === cardType) {
+			if (('MONSTER' === cardType) || ('default' === cardTypeValue)) {
 				if(forms.Validation.isInputFieldEmpty(form.find('input[name="level"]')))
 				{
 					form.find('input[name="level"]').closest('.form-field').addClass('error');
@@ -320,9 +320,9 @@ var forms = {
 				}
 			}
 
-			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="cardSubType"]')))
+			if(form.find('input[name="cardSubTypes[]"]').length === 0)
 			{
-				form.find('select[name="cardSubType"]').closest('.form-field').addClass('error');
+				form.find('.picked-item-list[data-type="cardSubType"]').closest('.jsSuggestionWrap').find('.form-field').addClass('error');
 				errorsPresent = true;
 			}
 
@@ -357,6 +357,7 @@ var forms = {
 			var cardTypeElement = cardTypeSelect.find('option[value="' + cardTypeValue + '"]');
 			var cardType = cardTypeElement.text().trim();
 
+
 			if(forms.Validation.isInputFieldEmpty(form.find('input[name="name"]')))
 			{
 				form.find('input[name="name"]').closest('.form-field').addClass('error');
@@ -375,7 +376,7 @@ var forms = {
 				errorsPresent = true;
 			}
 
-			if ('MONSTER' === cardType) {
+			if (('MONSTER' === cardType) || ('default' === cardTypeValue)) {
 				if(forms.Validation.isInputFieldEmpty(form.find('input[name="level"]')))
 				{
 					form.find('input[name="level"]').closest('.form-field').addClass('error');
@@ -407,9 +408,9 @@ var forms = {
 				}
 			}
 
-			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="cardSubType"]')))
+			if(form.find('input[name="cardSubTypes[]"]').length === 0)
 			{
-				form.find('select[name="cardSubType"]').closest('.form-field').addClass('error');
+				form.find('.picked-item-list[data-type="cardSubType"]').closest('.jsSuggestionWrap').find('.form-field').addClass('error');
 				errorsPresent = true;
 			}
 
