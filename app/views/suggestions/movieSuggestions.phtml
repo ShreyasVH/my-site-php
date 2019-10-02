@@ -11,14 +11,16 @@
 			if($this->request->hasQuery('context') && !empty($this->request->getQuery('context')))
 			{
 				$href = "javascript:Suggestions.pickSuggestion('" . CommonUtils::formatStringWithEscapeChars($movie->name) . "'," . $movie->id . ", 'movie')";
+				$target = '';
 			}
 			else
 			{
 				$href = "/movies/movieDetail?id=" . $movie->id;
+				$target = '_blank';
 			}
 		?>
 		<li>
-			<a href="<?php echo $href; ?>" target="_blank">
+			<a href="<?php echo $href; ?>" target="<?php echo $target; ?>">
 				<img class="hidden-xs" src="<?php echo $movie->imageUrl; ?>" width="50" height="75" alt="<?php echo $movie->name;?>">
 				<?php echo $movie->name; ?>
 			</a>

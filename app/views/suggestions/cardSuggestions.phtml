@@ -2,13 +2,25 @@
 use app\models\Card;
 use app\utils\CommonUtils;
 
-/** @var Card $card */
+/** @var Card[] $cards */
 ?>
 <?php if(count($cards) > 0): ?>
     <?php foreach($cards as $card): ?>
+        <?php
+            if($this->request->hasQuery('context') && !empty($this->request->getQuery('context')))
+            {
+                $href = "javascript:Suggestions.pickSuggestion('" . CommonUtils::formatStringWithEscapeChars($card->name) . "'," . $card->id . ", 'card')";
+                $target = '';
+            }
+            else
+            {
+                $href = "/cards/detail?id=" . $card->id;
+                $target = '_blank';
+            }
+        ?>
         <li>
-            <a href="javascript:Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($card->name); ?>', '<?php echo $card->id; ?>', 'card'); ">
-<!--                <img class="hidden-xs" src="--><?php //echo $movie->imageUrl; ?><!--" width="50" height="75" alt="--><?php //echo $movie->name;?><!--">-->
+            <a href="<?php echo $href; ?>" target="<?php echo $target; ?>">
+                <img class="hidden-xs" src="<?php echo $card->imageUrl; ?>" width="50" height="75" alt="<?php echo $card->name;?>">
                 <?php echo $card->name; ?>
             </a>
         </li>
