@@ -29,4 +29,11 @@ class Source extends BaseModel
 
         return $source;
     }
+
+    public static function getByKeyword($keyword)
+    {
+        $sources = [];
+
+        return $sources;
+    }
 }

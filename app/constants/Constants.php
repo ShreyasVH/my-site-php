@@ -59,6 +59,7 @@ class Constants
     const CARD_ATTRIBUTE_CARD_SUB_TYPES = 'cardSubTypes';
     const CARD_ATTRIBUTE_RARITY = 'rarity';
     const CARD_ATTRIBUTE_LIMIT_TYPE = 'limitType';
+    const CARD_ATTRIBUTE_SOURCES = 'sources';
 
     const FILTER_TYPE_CHECKBOX = 'checkbox';
     const FILTER_TYPE_SEARCH = 'search';
@@ -187,7 +188,11 @@ class Constants
         self::CARD_ATTRIBUTE_LIMIT_TYPE => [
             'filterLabel' => 'LimitType',
             'filterType' => self::FILTER_TYPE_CHECKBOX
-        ]
+        ],
+        self::CARD_ATTRIBUTE_SOURCES => [
+            'filterLabel' => 'Sources',
+            'filterType' => self::FILTER_TYPE_SEARCH
+        ],
     ];
 
     public static function getMovieAttributes()

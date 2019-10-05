@@ -67,5 +67,10 @@ form .auto-suggest-input {
     color: #5DADE2;
 }
 
+.picked-item-list[data-type="source"] .picked-item{
+    border: 1px solid #5DADE2;
+    color: #5DADE2;
+}
+
 
 

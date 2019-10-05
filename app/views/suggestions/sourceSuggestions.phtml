@@ -1,0 +1,19 @@
+<?php
+
+use app\models\Source;
+use app\utils\CommonUtils;
+
+/** @var Source[] $sources */
+?>
+
+<?php if(count($sources) > 0): ?>
+    <?php foreach($sources as $source): ?>
+        <li>
+            <a href="<?php echo 'javascript:Suggestions.pickSuggestion(\'" . CommonUtils::formatStringWithEscapeChars($source->name) . "\'," . $source->id . ", \'movie\')'; ?>" target="_blank">
+                <?php echo $source->name; ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p style="padding: 5px">No results</p>
+<?php endif; ?>

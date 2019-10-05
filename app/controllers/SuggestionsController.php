@@ -11,6 +11,7 @@ namespace app\controllers;
 use app\models\Artist;
 use app\models\Card;
 use app\models\Movie;
+use app\models\Source;
 use Phalcon\Mvc\View;
 
 class SuggestionsController extends BaseController
@@ -39,6 +40,14 @@ class SuggestionsController extends BaseController
         $keyword = urlencode($this->request->getQuery('keyword'));
 
         $this->view->cards = Card::getByKeyword($keyword);
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+    }
+
+    public function sourceSuggestionsAction()
+    {
+        $keyword = urlencode($this->request->getQuery('keyword'));
+
+        $this->view->sources = Source::getByKeyword($keyword);
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
     }
 }

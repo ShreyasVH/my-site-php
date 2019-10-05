@@ -118,4 +118,12 @@
 <script>
     var offset = <?php echo $offset; ?>;
     var totalCount = <?php echo $totalCount; ?>;
+
+    $(document).ready(function() {
+        <?php if(isset($filterValues['sources']['values']) && !empty($filterValues['sources']['values'])): ?>
+            <?php foreach($filterValues['sources']['values'] as $index => $source): ?>
+                Suggestions.pickSuggestion('<?php echo $source["name"]; ?>', '<?php echo $source["id"]; ?>', 'source');
+            <?php endforeach; ?>
+        <?php endif; ?>
+    });
 </script>

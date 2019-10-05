@@ -122,8 +122,26 @@ class CardsController extends BaseController
             Constants::CARD_ATTRIBUTE_CARD_TYPE => CardType::getAllValuesAsIdValueObjects(),
             Constants::CARD_ATTRIBUTE_CARD_SUB_TYPES => CardSubType::getAllValuesAsIdValueObjects(),
             Constants::CARD_ATTRIBUTE_RARITY => Rarity::getAllValuesAsIdValueObjects(),
-            Constants::CARD_ATTRIBUTE_LIMIT_TYPE => LimitType::getAllValuesAsIdValueObjects()
+            Constants::CARD_ATTRIBUTE_LIMIT_TYPE => LimitType::getAllValuesAsIdValueObjects(),
+            Constants::CARD_ATTRIBUTE_SOURCES => [
+                'entityPrimaryType' => 'source',
+                'entitySecondaryType' => 'source'
+            ]
         ];
+
+        if(!$this->request->isAjax())
+        {
+            if(isset($filters['sources']) && !empty($filters['sources']))
+            {
+                $sources = [];
+                foreach($filters['sources'] as $sIndex => $sourceId)
+                {
+                    $sources[] = Source::getById($sourceId);
+                }
+                $filterValues['sources'] = array_merge($filterValues['sources'], ['values' => $sources]);
+            }
+        }
+
         $this->view->filterValues = $filterValues;
 
         if($this->request->isAjax())
