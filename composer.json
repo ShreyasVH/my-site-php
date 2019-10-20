@@ -3,6 +3,7 @@
     "ext-phalcon": "^3.4.1",
     "vlucas/phpdotenv": "*",
     "ext-curl": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "cloudinary/cloudinary_php": "^1.15"
   }
 }

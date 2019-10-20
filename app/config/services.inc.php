@@ -53,3 +53,9 @@ $di->set('logger', function() {
 
     return $logger;
 });
+
+Cloudinary::config(array(
+    'cloud_name' => getenv('CLOUDINARY_NAME'),
+    'api_key' => getenv('CLOUDINARY_KEY'),
+    'api_secret' => getenv('CLOUDINARY_SECRET')
+));

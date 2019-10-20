@@ -90,4 +90,9 @@ class CommonUtils extends Component
             (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
         );
     }
+
+    public static function isLocalEnv()
+    {
+        return ('127.0.0.1' === $_SERVER['SERVER_ADDR']);
+    }
 }

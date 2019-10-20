@@ -9,6 +9,7 @@ namespace app\controllers;
 
 
 use app\models\Artist;
+use Phalcon\Http\Request\File;
 
 class ArtistsController extends BaseController
 {
@@ -73,6 +74,7 @@ class ArtistsController extends BaseController
             $imageUrl = '';
             if($this->request->hasFiles())
             {
+                /** @var File[] $uploaded_files */
                 $uploaded_files = $this->request->getUploadedFiles();
                 $file = $uploaded_files[0];
 
@@ -80,29 +82,7 @@ class ArtistsController extends BaseController
                 {
                     $filename = $id . '.' . $file->getExtension();
 
-                    $fields = [
-                        'folderName' => 'artists'
-                    ];
-
-                    $fileObjects = [
-                        [
-                            'name' => $filename,
-                            'path' => $file->getTempName()
-                        ]
-                    ];
-
-                    $files = [];
-                    foreach($fileObjects as $index => $fileObject)
-                    {
-                        $fileContent = file_get_contents($fileObject['path']);
-                        $files[$fileObject['name']] = $fileContent;
-                    }
-                    $uploadResponse = $this->api->uploadFile($fields, $files);
-                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
-                    {
-                        $decodedResponse = json_decode($uploadResponse['result'], true);
-                        $imageUrl = $decodedResponse['url'];
-                    }
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'artists', $filename);
                 }
             }
             if(!empty($imageUrl))

@@ -309,30 +309,7 @@ class MoviesController extends BaseController
                 if('' != $file->getName())
                 {
                     $filename = $id . '.' . $file->getExtension();
-
-                    $fields = [
-                        'folderName' => 'movies'
-                    ];
-
-                    $fileObjects = [
-                        [
-                            'name' => $filename,
-                            'path' => $file->getTempName()
-                        ]
-                    ];
-
-                    $files = [];
-                    foreach($fileObjects as $index => $fileObject)
-                    {
-                        $fileContent = file_get_contents($fileObject['path']);
-                        $files[$fileObject['name']] = $fileContent;
-                    }
-                    $uploadResponse = $this->api->uploadFile($fields, $files);
-                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
-                    {
-                        $decodedResponse = json_decode($uploadResponse['result'], true);
-                        $imageUrl = $decodedResponse['url'];
-                    }
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'movies', $filename);
                 }
             }
             if(!empty($imageUrl))
