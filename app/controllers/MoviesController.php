@@ -308,8 +308,8 @@ class MoviesController extends BaseController
 
                 if('' != $file->getName())
                 {
-                    $filename = $id . '.' . $file->getExtension();
-                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'movies', $filename);
+                    $filename = $id;
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'movies', $filename, $file->getExtension());
                 }
             }
             if(!empty($imageUrl))

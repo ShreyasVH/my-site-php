@@ -194,12 +194,12 @@ class Api extends BaseHelper
         );
     }
 
-    public function uploadImage($file, $folder, $fileName)
+    public function uploadImage($file, $folder, $fileName, $fileExtension)
     {
         $url = '';
         if(CommonUtils::isLocalEnv())
         {
-            $url = $this->uploadImageLocal($file, $folder, $fileName);
+            $url = $this->uploadImageLocal($file, $folder, $fileName, $fileExtension);
         }
         else
         {
@@ -223,10 +223,10 @@ class Api extends BaseHelper
         return $fileUrl;
     }
 
-    public function uploadImageLocal($file, $folder, $fileName)
+    public function uploadImageLocal($file, $folder, $fileName, $fileExtension)
     {
         $fileContent = [
-            $fileName => file_get_contents($file)
+            ($fileName . '.' . $fileExtension) => file_get_contents($file)
         ];
 
         return $this->uploadFile(['folderName' => $folder], $fileContent);

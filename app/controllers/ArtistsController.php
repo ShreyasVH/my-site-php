@@ -80,9 +80,9 @@ class ArtistsController extends BaseController
 
                 if('' != $file->getName())
                 {
-                    $filename = $id . '.' . $file->getExtension();
+                    $filename = $id;
 
-                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'artists', $filename);
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'artists', $filename, $file->getExtension());
                 }
             }
             if(!empty($imageUrl))

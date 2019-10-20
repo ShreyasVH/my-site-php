@@ -203,8 +203,8 @@ class CardsController extends BaseController
                 {
                     $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($name));
 
-                    $filename = $formattedName . '.' . $file->getExtension();
-                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename);
+                    $filename = $formattedName;
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename, $file->getExtension());
                 }
             }
 
@@ -284,8 +284,8 @@ class CardsController extends BaseController
                         $formattedName = $formattedName . '_' . $version;
                     }
 
-                    $filename = $formattedName . '.' . $file->getExtension();
-                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename);
+                    $filename = $formattedName;
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename, $file->getExtension());
                 }
             }
 
@@ -441,8 +441,8 @@ class CardsController extends BaseController
                 {
                     $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($cardName));
                     $formattedName = $formattedName . '_' . time();
-                    $filename = $formattedName . '.' . $file->getExtension();
-                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename);
+                    $filename = $formattedName;
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename, $file->getExtension());
                 }
             }
 
