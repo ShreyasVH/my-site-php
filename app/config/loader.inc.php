@@ -5,6 +5,8 @@
  * Time: 6:22 PM
  */
 
+require APP_PATH . 'vendor/autoload.php';
+
 /**
  * This file is meant to be included / required in the bootstrap file.
  **/
@@ -32,10 +34,7 @@ $namespaces = [
     'app\\enums' => APP_PATH . 'app/enums',
     'app\\helpers' => APP_PATH . 'app/helpers',
     'app\\models' => APP_PATH . 'app/models',
-    'app\\utils' => APP_PATH . 'app/utils',
-    'Dotenv' => APP_PATH . 'vendor/vlucas/phpdotenv/src',
-    'PhpOption' => APP_PATH . 'vendor/phpoption/phpoption/src/PhpOption'
+    'app\\utils' => APP_PATH . 'app/utils'
 ];
 
 $loader->registerNamespaces($namespaces)->register();
-

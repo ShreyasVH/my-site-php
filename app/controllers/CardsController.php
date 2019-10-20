@@ -202,38 +202,9 @@ class CardsController extends BaseController
                 if('' != $file->getName())
                 {
                     $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($name));
-                    $version = 1;
-
-                    if($version > 1)
-                    {
-                        $formattedName = $formattedName . '_' . $version;
-                    }
 
                     $filename = $formattedName . '.' . $file->getExtension();
-
-                    $fields = [
-                        'folderName' => 'cards'
-                    ];
-
-                    $fileObjects = [
-                        [
-                            'name' => $filename,
-                            'path' => $file->getTempName()
-                        ]
-                    ];
-
-                    $files = [];
-                    foreach($fileObjects as $index => $fileObject)
-                    {
-                        $fileContent = file_get_contents($fileObject['path']);
-                        $files[$fileObject['name']] = $fileContent;
-                    }
-                    $uploadResponse = $this->api->uploadFile($fields, $files);
-                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
-                    {
-                        $decodedResponse = json_decode($uploadResponse['result'], true);
-                        $imageUrl = $decodedResponse['url'];
-                    }
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename);
                 }
             }
 
@@ -314,30 +285,7 @@ class CardsController extends BaseController
                     }
 
                     $filename = $formattedName . '.' . $file->getExtension();
-
-                    $fields = [
-                        'folderName' => 'cards'
-                    ];
-
-                    $fileObjects = [
-                        [
-                            'name' => $filename,
-                            'path' => $file->getTempName()
-                        ]
-                    ];
-
-                    $files = [];
-                    foreach($fileObjects as $index => $fileObject)
-                    {
-                        $fileContent = file_get_contents($fileObject['path']);
-                        $files[$fileObject['name']] = $fileContent;
-                    }
-                    $uploadResponse = $this->api->uploadFile($fields, $files);
-                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
-                    {
-                        $decodedResponse = json_decode($uploadResponse['result'], true);
-                        $imageUrl = $decodedResponse['url'];
-                    }
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename);
                 }
             }
 
@@ -494,30 +442,7 @@ class CardsController extends BaseController
                     $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($cardName));
                     $formattedName = $formattedName . '_' . time();
                     $filename = $formattedName . '.' . $file->getExtension();
-
-                    $fields = [
-                        'folderName' => 'cards'
-                    ];
-
-                    $fileObjects = [
-                        [
-                            'name' => $filename,
-                            'path' => $file->getTempName()
-                        ]
-                    ];
-
-                    $files = [];
-                    foreach($fileObjects as $index => $fileObject)
-                    {
-                        $fileContent = file_get_contents($fileObject['path']);
-                        $files[$fileObject['name']] = $fileContent;
-                    }
-                    $uploadResponse = $this->api->uploadFile($fields, $files);
-                    if(array_key_exists('status', $uploadResponse) && (200 === $uploadResponse['status']))
-                    {
-                        $decodedResponse = json_decode($uploadResponse['result'], true);
-                        $imageUrl = $decodedResponse['url'];
-                    }
+                    $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename);
                 }
             }
 

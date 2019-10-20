@@ -10,6 +10,7 @@ namespace app\helpers;
 
 use app\utils\CommonUtils;
 use app\utils\Logger;
+use Cloudinary\Uploader;
 
 class Api extends BaseHelper
 {
@@ -193,8 +194,47 @@ class Api extends BaseHelper
         );
     }
 
+    public function uploadImage($file, $folder, $fileName)
+    {
+        $url = '';
+        if(CommonUtils::isLocalEnv())
+        {
+            $url = $this->uploadImageLocal($file, $folder, $fileName);
+        }
+        else
+        {
+            $url = $this->uploadImageProd($file, $folder, $fileName);
+        }
+        return $url;
+    }
+
+    public function uploadImageProd($file, $folder, $fileName)
+    {
+        $fileUrl = '';
+
+        $response = Uploader::upload($file, [
+            'folder' => $folder,
+            'public_id' => $fileName
+        ]);
+        if(array_key_exists('secure_url', $response))
+        {
+            $fileUrl = $response['secure_url'];
+        }
+        return $fileUrl;
+    }
+
+    public function uploadImageLocal($file, $folder, $fileName)
+    {
+        $fileContent = [
+            $fileName => file_get_contents($file)
+        ];
+
+        return $this->uploadFile(['folderName' => $folder], $fileContent);
+    }
+
     public function uploadFile($fields, $files)
     {
+        $fileUrl = '';
         $url = getenv('UPLOAD_API_ENDPOINT') . 'upload/file';
 
         $boundary = uniqid();
@@ -217,15 +257,20 @@ class Api extends BaseHelper
         ));
         $response = curl_exec($curlHandle);
         $status = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
-        if(200 !== $status)
+        if(200 === $status)
+        {
+            $decodedResponse = json_decode($response, true);
+            if(array_key_exists('url', $decodedResponse))
+            {
+                $fileUrl = $decodedResponse['url'];
+            }
+        }
+        else
         {
             Logger::error('ERROR!! - File Upload API URL : ' . $url . ' Status : ' . $status . ' Response : ' . $response);
         }
         curl_close($curlHandle);
-        return [
-            'status' => $status,
-            'result' => $response
-        ];
+        return $fileUrl;
     }
 
     private function _buildPayloadForUpload($boundary, $fields, $files)
