@@ -107,7 +107,7 @@ use app\enums\cards\Type;
                                         -- Select CardType --
                                     </option>
                                     <?php foreach(CardType::getAllValuesAsIdValueObjects() as $cardType): ?>
-                                        <?php $selected = (($cardType['id'] === $card->cardType->id) ? 'selected' : ''); ?>
+                                        <?php $selected = (($cardType['id'] === $card->cardTypeId) ? 'selected' : ''); ?>
                                         <option
                                             value="<?php echo $cardType['id']; ?>"
                                             <?php echo $selected; ?>
@@ -142,7 +142,7 @@ use app\enums\cards\Type;
                                     min="1"
                                     max="12"
                                     step="1"
-                                    value="<?php echo ((CardType::MONSTER === $card->cardType->id) ? $card->level : '') ; ?>"
+                                    value="<?php echo ((CardType::MONSTER === $card->cardTypeId) ? $card->level : '') ; ?>"
                                 >
                             </div>
                         </div>
@@ -170,7 +170,7 @@ use app\enums\cards\Type;
                                         -- Select Attribute --
                                     </option>
                                     <?php foreach(Attribute::getAllValuesAsIdValueObjects() as $attribute): ?>
-                                        <?php $selected = (($attribute['id'] === $card->attribute->id) ? 'selected' : ''); ?>
+                                        <?php $selected = (($attribute['id'] === $card->attributeId) ? 'selected' : ''); ?>
                                         <option
                                             value="<?php echo $attribute['id']; ?>"
                                             <?php echo $selected; ?>
@@ -202,7 +202,7 @@ use app\enums\cards\Type;
                                         -- Select Type --
                                     </option>
                                     <?php foreach(Type::getAllValuesAsIdValueObjects() as $type): ?>
-                                        <?php $selected = (($type['id'] === $card->type->id) ? 'selected' : ''); ?>
+                                        <?php $selected = (($type['id'] === $card->typeId) ? 'selected' : ''); ?>
                                         <option
                                             value="<?php echo $type['id']; ?>"
                                             <?php echo $selected; ?>
@@ -240,7 +240,7 @@ use app\enums\cards\Type;
                                     min="-50"
                                     max="5000"
                                     step="1"
-                                    value="<?php echo ((CardType::MONSTER === $card->cardType->id) ? $card->attack : '') ; ?>"
+                                    value="<?php echo ((CardType::MONSTER === $card->cardTypeId) ? $card->attack : '') ; ?>"
                                 >
                             </div>
                         </div>
@@ -268,7 +268,7 @@ use app\enums\cards\Type;
                                     min="-50"
                                     max="5000"
                                     step="1"
-                                    value="<?php echo ((CardType::MONSTER === $card->cardType->id) ? $card->defense : '') ; ?>"
+                                    value="<?php echo ((CardType::MONSTER === $card->cardTypeId) ? $card->defense : '') ; ?>"
                                 >
                             </div>
                         </div>
@@ -329,7 +329,7 @@ use app\enums\cards\Type;
                                         -- Select Rarity --
                                     </option>
                                     <?php foreach(Rarity::getAllValuesAsIdValueObjects() as $rarity): ?>
-                                        <?php $selected = (($rarity['id'] === $card->rarity->id) ? 'selected' : ''); ?>
+                                        <?php $selected = (($rarity['id'] === $card->rarityId) ? 'selected' : ''); ?>
                                         <option
                                             value="<?php echo $rarity['id']; ?>"
                                             <?php echo $selected; ?>
@@ -361,7 +361,7 @@ use app\enums\cards\Type;
                                         -- Select LimitType --
                                     </option>
                                     <?php foreach(LimitType::getAllValuesAsIdValueObjects() as $limitType): ?>
-                                        <?php $selected = (($limitType['id'] === $card->limitType->id) ? 'selected' : ''); ?>
+                                        <?php $selected = (($limitType['id'] === $card->limitTypeId) ? 'selected' : ''); ?>
                                         <option
                                             value="<?php echo $limitType['id']; ?>"
                                             <?php echo $selected; ?>
@@ -414,12 +414,12 @@ use app\enums\cards\Type;
 
 <script type="text/javascript">
     $(document).ready(function() {
-        cardActions.toggleAdditionalFields('<?php echo $card->cardType->name; ?>');
+        cardActions.toggleAdditionalFields('<?php echo $card->cardType; ?>');
 
         var pickedItemListForCardSubTypes = $('select[name="cardSubType"]').closest('.jsMultiSelectWrap').find('.picked-item-list');
 
-        <?php foreach($card->cardSubTypes as $cardSubType): ?>
-            pickedItemListForCardSubTypes.append('<span class="picked-item"><input type="hidden" value="' + '<?php echo $cardSubType->id ; ?>' + '" name="cardSubTypes[]">' + Miscellaneous.formatString('<?php echo $cardSubType->name; ?>') + ' <a href="javascript:void(0);" class="remove-item"><i class="glyphicon glyphicon-remove"></i></a></span>');
+        <?php foreach($card->cardSubTypeIds as $index => $cardSubTypeId): ?>
+            pickedItemListForCardSubTypes.append('<span class="picked-item"><input type="hidden" value="' + '<?php echo $cardSubTypeId ; ?>' + '" name="cardSubTypes[]"><span>' + Miscellaneous.formatString('<?php echo $card->cardSubTypes[$index]; ?>') + '</span> <a href="javascript:void(0);" class="remove-item"><i class="glyphicon glyphicon-remove"></i></a></span>');
         <?php endforeach; ?>
 
         $(document).on('submit', 'form[name="edit-card-form"]', function(e) {

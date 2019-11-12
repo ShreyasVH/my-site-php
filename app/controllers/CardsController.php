@@ -481,4 +481,21 @@ class CardsController extends BaseController
             }
         }
     }
+
+    public function myCardsAction()
+    {
+        if($this->request->isPost())
+        {
+            $cardId = $this->request->getPost('cardId');
+            $imageUrl = $this->request->getPost('imageUrl');
+            $myCards = Card::getMyCardsById($cardId);
+            $this->view->myCards = $myCards;
+            $this->view->card = (Object) ['imageUrl' => $imageUrl];
+            $view = $this->view->getPartial('cards/myCards');
+            $this->response->setContentType('application/json', 'UTF-8');
+            $outputContent = json_encode(['view' => $view], JSON_UNESCAPED_SLASHES);
+            $this->response->setContent($outputContent);
+            return $this->response;
+        }
+    }
 }

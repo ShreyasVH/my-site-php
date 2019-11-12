@@ -103,6 +103,25 @@ var cardActions = {
         }
     },
 
+    getMyCards: function(cardId, imageUrl) {
+        $.ajax({
+            url: '/cards/myCards',
+            type: 'POST',
+            data: {
+                cardId: cardId,
+                imageUrl: imageUrl
+            },
+            cache: false,
+            success: function(result) {
+                console.log(result);
+                if (result.view) {
+                    $('#my_cards').html(result.view);
+                }
+
+            }
+        });
+    },
+
     obtainActions: {
         resetObtainPopup: function() {
             var modal = $('#obtain_card');
@@ -119,5 +138,5 @@ var cardActions = {
             modal.find('.jsFileText').html('No file chosen');
             modal.find('.jsUploadText').html('Upload');
         }
-    }
+    },
 };

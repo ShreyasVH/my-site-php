@@ -1,0 +1,24 @@
+<?php if(!empty($myCards)): ?>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="row">
+                <h1>
+                    My Cards
+                </h1>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="row movie-list clearfix jsMovieContainer">
+                        <?php foreach($myCards as $myCard): ?>
+                            <?php $this->partial('cards/card', [
+                                'card' => $card,
+                                'isRarityRequired' => false,
+                                'myCard' => $myCard
+                            ]); ?>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
