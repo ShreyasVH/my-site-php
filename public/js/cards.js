@@ -113,9 +113,22 @@ var cardActions = {
             },
             cache: false,
             success: function(result) {
-                console.log(result);
                 if (result.view) {
                     $('#my_cards').html(result.view);
+                }
+
+            }
+        });
+    },
+
+    getSourcesByCard: function(cardId) {
+        $.ajax({
+            url: '/cards/sourcesByCard?cardId=' + cardId,
+            type: 'GET',
+            cache: false,
+            success: function(result) {
+                if (result.view) {
+                    $('#sources').html(result.view);
                 }
 
             }

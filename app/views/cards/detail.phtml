@@ -71,25 +71,7 @@ use app\helpers\AssetHelper;
 
     <div id="my_cards"></div>
 
-    <?php if(!empty($card->sources)): ?>
-        <div class="row">
-            <h1>
-                Sources
-            </h1>
-        </div>
-        <div style="margin-bottom:30px">
-            <ul>
-                <?php foreach($card->sources as $source): ?>
-                    <li>
-                        <a href="<?php echo '/cards/browse?sources[]=' . $source->id . '&order=name ASC'; ?>" target="_blank">
-                            <?php echo $source->name; ?>
-                        </a>
-                    </li>
-
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
+    <div id="sources"></div>
 
 </div>
 
@@ -100,5 +82,6 @@ use app\helpers\AssetHelper;
 <script type="text/javascript">
     $(document).ready(function() {
         cardActions.getMyCards(<?php echo $card->id; ?>, '<?php echo $card->imageUrl; ?>');
+        cardActions.getSourcesByCard(<?php echo $card->id; ?>);
     });
 </script>
