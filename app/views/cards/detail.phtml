@@ -69,53 +69,19 @@ use app\helpers\AssetHelper;
         </div>
     </div>
 
-    <?php if(!empty($card->individualCards)): ?>
-        <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <div class="row">
-                    <h1>
-                        My Cards
-                    </h1>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <div class="row movie-list clearfix jsMovieContainer">
-                            <?php foreach($card->individualCards as $myCard): ?>
-                                <?php $this->partial('cards/card', [
-                                    'card' => $card,
-                                    'isRarityRequired' => false,
-                                    'myCard' => $myCard
-                                ]); ?>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
+    <div id="my_cards"></div>
 
-    <?php if(!empty($card->sources)): ?>
-        <div class="row">
-            <h1>
-                Sources
-            </h1>
-        </div>
-        <div style="margin-bottom:30px">
-            <ul>
-                <?php foreach($card->sources as $source): ?>
-                    <li>
-                        <a href="<?php echo '/cards/browse?sources[]=' . $source->id . '&order=name ASC'; ?>" target="_blank">
-                            <?php echo $source->name; ?>
-                        </a>
-                    </li>
-
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php endif; ?>
+    <div id="sources"></div>
 
 </div>
 
 <?php $this->partial('cards/obtainModal'); ?>
 
 <?php $this->partial('cards/versionModal'); ?>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        cardActions.getMyCards(<?php echo $card->id; ?>, '<?php echo $card->imageUrl; ?>');
+        cardActions.getSourcesByCard(<?php echo $card->id; ?>);
+    });
+</script>

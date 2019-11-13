@@ -1,0 +1,19 @@
+<?php if(!empty($sources)): ?>
+    <div class="row">
+        <h1>
+            Sources
+        </h1>
+    </div>
+    <div style="margin-bottom:30px">
+        <ul>
+            <?php foreach($sources as $source): ?>
+                <li>
+                    <a href="<?php echo '/cards/browse?sources[]=' . $source->id . '&order=name ASC'; ?>" target="_blank">
+                        <?php echo $source->name; ?>
+                    </a>
+                </li>
+
+            <?php endforeach; ?>
+        </ul>
+    </div>
+<?php endif; ?>
