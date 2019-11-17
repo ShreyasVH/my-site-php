@@ -37,6 +37,30 @@ $cardClass = ((isset($myCard) && !empty($myCard)) ? '' : 'col-md-4 col-sm-4 col-
                 <?php $this->partial('cards/actionButtons'); ?>
             </div>
         </div>
+
+        <?php if(property_exists($card, 'glossTypeStats')): ?>
+            <?php
+            $stats = json_decode($card->glossTypeStats, true);
+            $order = [
+                'PRISMATIC',
+                'GLOSSY',
+                'NORMAL'
+            ];
+
+            $foilTypeText = '';
+
+            foreach($order as $index => $key)
+            {
+                if($index > 0)
+                {
+                    $foilTypeText .= '/';
+                }
+
+                $foilTypeText .= '<span class="' . $key .'">' . $stats[$key] . '</span>';
+            }
+            ?>
+            <p class="foil-type-stats"><?php echo $foilTypeText; ?></p>
+        <?php endif; ?>
     </div>
     <div class="col-md-12">
         <div class="row">
