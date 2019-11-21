@@ -31,6 +31,9 @@ $cardClass = ((isset($myCard) && !empty($myCard)) ? '' : 'col-md-4 col-sm-4 col-
         </div>
     <?php endif; ?>
     <div class="card">
+        <?php for($i = 0; $i < 70; $i++): ?>
+        <i></i>
+        <?php endfor; ?>
         <img src="<?php echo $card->imageUrl; ?>" class="img-thumbnail" alt="<?php echo $card->name; ?>">
         <div class="<?php echo $overlayClass; ?>">
             <div class="controls">
