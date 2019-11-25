@@ -201,7 +201,7 @@ class CardsController extends BaseController
 
                 if('' != $file->getName())
                 {
-                    $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($name));
+                    $formattedName = str_replace(['#', ' ', '-', ', ', '\'', '"'], '_', strtolower($name));
 
                     $filename = $formattedName;
                     $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename, $file->getExtension());
@@ -276,7 +276,7 @@ class CardsController extends BaseController
 
                 if('' != $file->getName())
                 {
-                    $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($name));
+                    $formattedName = str_replace(['#', ' ', '-', ', ', '\'', '"'], '_', strtolower($name));
                     $version = $this->request->getPost('version', null, 1);
 
                     if($version > 1)
@@ -439,7 +439,7 @@ class CardsController extends BaseController
 
                 if('' != $file->getName())
                 {
-                    $formattedName = str_replace(['#', ' ', '-', ', '], '_', strtolower($cardName));
+                    $formattedName = str_replace(['#', ' ', '-', ', ', '\'', '"'], '_', strtolower($cardName));
                     $formattedName = $formattedName . '_' . time();
                     $filename = $formattedName;
                     $imageUrl = $this->api->uploadImage($file->getTempName(), 'cards', $filename, $file->getExtension());
