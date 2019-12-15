@@ -37,9 +37,19 @@
 	width: 204px;
 }
 
+.movie-card.my-card.view-mode .card .img-thumbnail{
+	height: 200px;
+	width: 150px;
+}
+
 .movie-card.my-card .card .card-img-overlay {
 	height: 272px;
 	width: 204px;
+}
+
+.movie-card.my-card.view-mode .card .card-img-overlay {
+	height: 200px;
+	width: 150px;
 }
 
 .song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
@@ -80,6 +90,11 @@
 		width: 135px;
 	}
 
+	.movie-card.view-mode .card .img-thumbnail, .movie-card.view-mode .card .card-img-overlay {
+		height: 160px;
+		width: 120px;
+	}
+
 	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
 		width: 219px;
 		height: 292px;
@@ -96,6 +111,11 @@
 		width: 150px;
 	}
 
+	.movie-card.view-mode .card .img-thumbnail, .movie-card.view-mode .card .card-img-overlay {
+		height: 200px;
+		width: 150px;
+	}
+
 	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
 		width: 210px;
 		height: 280px;
@@ -106,6 +126,11 @@
 	.movie-card .card .img-thumbnail, .movie-card .card .card-img-overlay {
 		height: 252px;
 		width: 189px;
+	}
+
+	.movie-card.view-mode .card .img-thumbnail, .movie-card.view-mode .card .card-img-overlay {
+		height: 200px;
+		width: 150px;
 	}
 
 	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
@@ -124,6 +149,10 @@
 	width: 30%;
 	float: right;
 	text-align: center;
+}
+
+.view-mode .card-rarity {
+	margin-right: 5%;
 }
 
 .card-rarity.normal {

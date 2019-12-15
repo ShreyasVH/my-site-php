@@ -39,6 +39,7 @@ class CardsController extends BaseController
             });
             $order = $this->request->getPost('order', null, Constants::DEFAULT_ORDER_CARDS);
         }
+        $this->view->isViewMode = filter_var($_COOKIE['viewMode'], FILTER_VALIDATE_BOOLEAN);
 
         $filters = [];
         $rangeFilters = [];
