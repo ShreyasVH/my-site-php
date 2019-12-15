@@ -39,7 +39,8 @@ class CardsController extends BaseController
             });
             $order = $this->request->getPost('order', null, Constants::DEFAULT_ORDER_CARDS);
         }
-        $this->view->isViewMode = filter_var($_COOKIE['viewMode'], FILTER_VALIDATE_BOOLEAN);
+        $this->view->isViewMode = filter_var($_COOKIE['isViewMode'], FILTER_VALIDATE_BOOLEAN);
+        $this->view->viewMode = filter_var($_COOKIE['viewMode']);
 
         $filters = [];
         $rangeFilters = [];
@@ -77,7 +78,7 @@ class CardsController extends BaseController
         $currentOffset = $this->request->getPost('offset', null, Constants::DEFAULT_OFFSET);
 
         $payload = [
-            'count' => Constants::DEFAULT_RESULTS_PER_PAGE,
+            'count' => ((($this->view->isViewMode) && ('small' === $this->view->viewMode)) ? Constants::DEFAULT_RESULTS_PER_PAGE_SMALL_VIEW : Constants::DEFAULT_RESULTS_PER_PAGE),
             'offset' => $currentOffset,
             'sortMap' => $sortMap
         ];

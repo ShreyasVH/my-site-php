@@ -593,3 +593,7 @@ td.movie-name img {
 .custom-file-upload input[type="file"] {
 	display: none;
 }
+
+.col-md-1-10 {
+	width: 10%;
+}

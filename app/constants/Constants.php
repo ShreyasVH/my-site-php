@@ -20,6 +20,7 @@ class Constants
     const DEFAULT_OFFSET = 0;
     const DEFAULT_PAGE = 1;
     const DEFAULT_RESULTS_PER_PAGE = 24;
+    const DEFAULT_RESULTS_PER_PAGE_SMALL_VIEW = 30;
     const DEFAULT_ORDER_MOVIES = 'name ASC';
     const DEFAULT_ORDER_SONGS = 'name ASC';
     const DEFAULT_SONG_LANGUAGE = 'Kannada';

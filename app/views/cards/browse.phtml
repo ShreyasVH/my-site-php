@@ -106,7 +106,8 @@
                             <?php $this->partial('cards/card', [
                                     'card' => $card,
                                     'isRarityRequired' => true,
-                                    'isViewMode' => $isViewMode
+                                    'isViewMode' => $isViewMode,
+                                    'viewMode' => $viewMode
                             ]); ?>
                         <?php endforeach; ?>
                     </div>

@@ -9,8 +9,8 @@ use app\models\Card;
 $overlayClass = 'card-img-overlay' . (($isRarityRequired) ? ' with-rarity' : '');
 $foilTypeClass = (((isset($myCard) && !empty($myCard))) ? ' ' . strtolower($myCard->cardGlossType) : '');
 $myCardClass = (((isset($myCard) && !empty($myCard))) ? ' my-card' : '');
-$gridClass = (($isViewMode) ? ' col-md-2' : ' col-md-3');
-$viewModeClass = (($isViewMode) ? ' view-mode' : '');
+$gridClass = (($isViewMode) ? (('small' === $viewMode) ? ' col-md-1-10' : ' col-md-2') : ' col-md-3');
+$viewModeClass = (($isViewMode) ? (('small' === $viewMode) ? ' view-mode-small' : ' view-mode') : '');
 
 $cardClass = 'movie-card jsCard duel-links' . $gridClass . $foilTypeClass . $myCardClass . $viewModeClass;
 

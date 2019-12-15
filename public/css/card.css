@@ -42,6 +42,11 @@
 	width: 150px;
 }
 
+.movie-card.my-card.view-mode-small .card .img-thumbnail{
+	height: 120px;
+	width: 90px;
+}
+
 .movie-card.my-card .card .card-img-overlay {
 	height: 272px;
 	width: 204px;
@@ -50,6 +55,11 @@
 .movie-card.my-card.view-mode .card .card-img-overlay {
 	height: 200px;
 	width: 150px;
+}
+
+.movie-card.my-card.view-mode-small .card .card-img-overlay {
+	height: 120px;
+	width: 90px;
 }
 
 .song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
@@ -95,6 +105,11 @@
 		width: 120px;
 	}
 
+	.movie-card.view-mode-small .card .img-thumbnail, .movie-card.view-mode-small .card .card-img-overlay {
+		height: 100px;
+		width: 75px;
+	}
+
 	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
 		width: 219px;
 		height: 292px;
@@ -116,6 +131,11 @@
 		width: 150px;
 	}
 
+	.movie-card.view-mode-small .card .img-thumbnail, .movie-card.view-mode-small .card .card-img-overlay {
+		height: 120px;
+		width: 90px;
+	}
+
 	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
 		width: 210px;
 		height: 280px;
@@ -131,6 +151,11 @@
 	.movie-card.view-mode .card .img-thumbnail, .movie-card.view-mode .card .card-img-overlay {
 		height: 200px;
 		width: 150px;
+	}
+
+	.movie-card.view-mode-small .card .img-thumbnail, .movie-card.view-mode-small .card .card-img-overlay {
+		height: 120px;
+		width: 90px;
 	}
 
 	.song-card .card .img-thumbnail, .song-card .card .card-img-overlay {
@@ -155,6 +180,10 @@
 	margin-right: 5%;
 }
 
+.view-mode-small .card-rarity {
+	margin-right: 10%;
+}
+
 .card-rarity.normal {
 	background-color: #DAD9DB;
 }
@@ -175,6 +204,11 @@
 	position: relative;
 	overflow: hidden;
 	display: inline-block;
+}
+
+.movie-card.view-mode-small {
+	width: 110px;
+	height: 220px;
 }
 
 .movie-list {
