@@ -26,21 +26,50 @@ $failures = [];
 
 function getCards()
 {
-    $content = file_get_contents(APP_PATH . 'app/documents/cardsForImport.json');
-    return json_decode($content, true);
+    $cards = [];
+    $content = readData(APP_PATH . 'app/documents/cardsForImport.json');
+    if(!empty($content))
+    {
+        $cards = json_decode($content, true);
+    }
+    return $cards;
+}
+
+function readData($fileName)
+{
+    $fh = fopen($fileName, 'r');
+    $content = fread($fh, filesize($fileName));
+    fclose($fh);
+    return $content;
+
+}
+
+function writeData($fileName, $data)
+{
+    $fh = fopen($fileName, 'w');
+    $response = fwrite($fh, $data);
+    fclose($fh);
+    return $response;
 }
 
 function addImage($cardUrl, $name)
 {
     $imageUrl = getenv('DUEL_LINKS_DEFAULT_IMAGE_URL');
-    $uploadResponse =  Uploader::upload($cardUrl, [
-        'folder' => 'cards',
-        'public_id' => $name
-    ]);
-
-    if(!empty($uploadResponse) && array_key_exists('secure_url', $uploadResponse))
+    try
     {
-        $imageUrl = $uploadResponse['secure_url'];
+        $uploadResponse =  Uploader::upload($cardUrl, [
+            'folder' => 'cards',
+            'public_id' => $name
+        ]);
+
+        if(!empty($uploadResponse) && array_key_exists('secure_url', $uploadResponse))
+        {
+            $imageUrl = $uploadResponse['secure_url'];
+        }
+    }
+    catch(Exception $ex)
+    {
+        echo "\n" . $ex->getMessage() . "\n";
     }
     return $imageUrl;
 }
@@ -73,8 +102,7 @@ foreach($cards as $card)
         'limitType' => $card['limitType']
     ];
 
-    $formattedName = str_replace(['#', ' ', '-', ', ', '\'', '"', '/'], '_', strtolower($card['name']));
-//    var_dump($formattedName);die;
+    $formattedName = str_replace(['#', ' ', '-', ', ', '\'', '"', '/', '!', '?', '&'], '_', strtolower($card['name']));
 
     $imageUrl = addImage($card['imageUrl'], $formattedName);
     $payload['imageUrl'] = $imageUrl;
@@ -124,9 +152,9 @@ foreach($cards as $card)
         ];
     }
 
+    writeData(APP_PATH . 'app/documents/importCardStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'app/documents/importCardFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+
     echo "\nProcessed Card. [" . ($index + 1) . "/" . count(array_keys($cards)) . "]\n";
     $index++;
 }
-
-file_put_contents(APP_PATH . 'app/documents/importCardStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-file_put_contents(APP_PATH . 'app/documents/importCardFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
