@@ -8,6 +8,7 @@
 
 use app\enums\cards\FoilType;
 use app\helpers\Api;
+use app\models\Card;
 use Phalcon\Di\FactoryDefault\Cli;
 
 date_default_timezone_set('Asia/Kolkata');
@@ -23,33 +24,6 @@ require_once APP_PATH . 'app/config/services.inc.php';
 /** @var Api $apiHelper */
 $apiHelper = $di->get('api');
 
-function runQuery($query, $databaseName)
-{
-    /** @var \mysqli $dbLink */
-    $dbLink = mysqli_connect(getenv('MYSQL_IP'), getenv('MYSQL_USERNAME'), getenv('MYSQL_PASSWORD'));
-    $result = false;
-    if($dbLink)
-    {
-        if(isset($databaseName) && !empty($databaseName))
-        {
-            $q = 'USE ' . $databaseName;
-            mysqli_query($dbLink, $q);
-        }
-        $result = mysqli_query($dbLink, $query);
-        if(!$result)
-        {
-            echo "\nError executing mysql query.\nDatabase : " . $databaseName . "\nQuery : " . $query . ".\nResponse : " . json_encode($result, JSON_PRETTY_PRINT) . "\nError : " . $dbLink->error . "\n";
-        }
-
-        $dbLink->close();
-    }
-    else
-    {
-        echo "\nError executing mysql query.\nDatabase : " . $databaseName . "\nQuery : " . $query . ".\nResponse : " . json_encode($result, JSON_PRETTY_PRINT) . "\nError : Couldn't connect to DB" . "\n";
-    }
-    return $result;
-}
-
 function getData()
 {
     $content = file_get_contents(APP_PATH . 'app/documents/cardCountData.json');
@@ -59,14 +33,31 @@ function getData()
 function getCardFoilTypeStats($cardId)
 {
     $stats = [];
-    $query = 'SELECT gloss_type as foilType, count(*) as count FROM `my_cards` WHERE `card_id` = ' . $cardId . ' GROUP BY card_id, gloss_type';
-    $result = runQuery($query, getenv('MYSQL_DB'));
-    if($result)
+
+    $try = 1;
+    $maxRetryCount = 5;
+
+    $response = null;
+    while((is_null($response)) && ($try <= $maxRetryCount))
     {
-        $statsData = $result->fetch_all(MYSQLI_ASSOC);
-        $stats = array_combine(array_column($statsData, 'foilType'), array_column($statsData, 'count'));
-        $result->free();
+        if($try > 1)
+        {
+            echo "\n\tRetrying for foil type stats...\n";
+        }
+
+        $response = Card::getById($cardId);
+        $try++;
     }
+
+    if(!is_null($response))
+    {
+        $response = json_decode(json_encode($response), true);
+        if(array_key_exists('glossTypeStats', $response))
+        {
+            $stats = json_decode($response['glossTypeStats'], true);
+        }
+    }
+
     return $stats;
 }
 
@@ -77,8 +68,31 @@ function obtainCard($cardId, $foilType)
         'cardId' => $cardId,
         'glossType' => $foilType
     ];
-    $response = $apiHelper->post('cards/myCards', $payload, 'DUEL_LINKS');
-    return (200 === $response['status']);
+
+    $try = 1;
+    $maxTries = 5;
+
+    while((empty($response)) && $try <= $maxTries)
+    {
+        if($try > 1)
+        {
+            echo "\n\t\t\tRetrying...\n";
+        }
+
+        $response = $apiHelper->post('cards/myCards', $payload, 'DUEL_LINKS');
+        if(200 === $response['status'])
+        {
+            break;
+        }
+        else
+        {
+            $response = null;
+        }
+
+        $try++;
+    }
+
+    return (null !== $response);
 }
 
 function indexCard($cardId)
@@ -115,8 +129,7 @@ foreach($data as $cardId => $cardData)
         }
 
         echo "\n\tProcessing foilType. [" . $fIndex . "/" . count(array_keys($cardData)) . "]\n";
-        $foilTypeValue = FoilType::fromString($foilType);
-        $currentCount = ((array_key_exists($foilTypeValue, $stats)) ? $stats[$foilTypeValue] : 0);
+        $currentCount = ((array_key_exists($foilType, $stats)) ? $stats[$foilType] : 0);
 
         if($value > $currentCount)
         {
