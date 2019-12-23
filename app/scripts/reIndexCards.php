@@ -12,7 +12,7 @@ use Phalcon\Di\FactoryDefault\Cli;
 date_default_timezone_set('Asia/Kolkata');
 define('APP_PATH', realpath(dirname(dirname(dirname(__FILE__)))) . '/');
 
-require_once APP_PATH . 'app/constants/constants.php';
+require_once APP_PATH . 'app/constants/Constants.php';
 require_once APP_PATH . 'app/config/loader.inc.php';
 
 $di = new Cli();
