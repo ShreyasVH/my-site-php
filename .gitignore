@@ -1,4 +1,4 @@
-!app/documents/.gitkeep
+!app/documents/.gitignore
 
 vendor/
 app/config/config.ini
