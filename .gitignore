@@ -1,3 +1,5 @@
+!app/documents/.gitkeep
+
 vendor/
 app/config/config.ini
 TODO.txt
