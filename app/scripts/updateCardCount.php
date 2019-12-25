@@ -118,35 +118,38 @@ foreach($data as $cardId => $cardData)
     echo "\nProcessing card.[" . $index . "/" . $cardCount . "]\n";
 
     $stats = getCardFoilTypeStats($cardId);
-    $fIndex = 0;
-    foreach($cardData as $foilType => $value)
+    if(!empty($stats))
     {
-        $fIndex++;
-
-        if($fIndex > 1)
+        $fIndex = 0;
+        foreach($cardData as $foilType => $value)
         {
-            echo "\n\t........................\n";
-        }
+            $fIndex++;
 
-        echo "\n\tProcessing foilType. [" . $fIndex . "/" . count(array_keys($cardData)) . "]\n";
-        $currentCount = ((array_key_exists($foilType, $stats)) ? $stats[$foilType] : 0);
-
-        if($value > $currentCount)
-        {
-            for($i = 1; $i <= ($value - $currentCount); $i++)
+            if($fIndex > 1)
             {
-                echo "\n\t\tObtaining card. Id: " . $cardId . ". FoilType: " . $foilType . "\n";
-                $success = obtainCard($cardId, $foilType);
-                echo "\n\t\tObtain Success = " . json_encode($success) . "\n";
+                echo "\n\t........................\n";
             }
+
+            echo "\n\tProcessing foilType. [" . $fIndex . "/" . count(array_keys($cardData)) . "]\n";
+            $currentCount = ((array_key_exists($foilType, $stats)) ? $stats[$foilType] : 0);
+
+            if($value > $currentCount)
+            {
+                for($i = 1; $i <= ($value - $currentCount); $i++)
+                {
+                    echo "\n\t\tObtaining card. Id: " . $cardId . ". FoilType: " . $foilType . "\n";
+                    $success = obtainCard($cardId, $foilType);
+                    echo "\n\t\tObtain Success = " . json_encode($success) . "\n";
+                }
+            }
+
+            echo "\n\tProcessed foilType. [" . $fIndex . "/" . count(array_keys($cardData)) . "]\n";
+
         }
 
-        echo "\n\tProcessed foilType. [" . $fIndex . "/" . count(array_keys($cardData)) . "]\n";
-
+        $indexResponse = indexCard($cardId);
+        echo "\nIndex Success: " . json_encode($indexResponse) . "\n";
     }
-
-    $indexResponse = indexCard($cardId);
-    echo "\nIndex Success: " . json_encode($indexResponse) . "\n";
 
     echo "\nProcessed card.[" . $index . "/" . $cardCount . "]\n";
     usleep(500000);
