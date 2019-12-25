@@ -357,8 +357,12 @@ var Suggestions = {
 			},
 			success : function(data)
 			{
-				dropdown.html(data);
-				dropdown.show();
+				if(keyword === input.val())
+				{
+					dropdown.html(data);
+					dropdown.show();
+				}
+
 
 				// if(type != 'movies')
 				// {
