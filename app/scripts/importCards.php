@@ -17,6 +17,8 @@ require_once APP_PATH . 'app/config/services.inc.php';
 /** @var Api $apiHelper */
 $apiHelper = $di->get('api');
 
+$env = $argv[1];
+
 $stats = [
     'success' => 0,
     'failure' => 0
@@ -52,20 +54,50 @@ function writeData($fileName, $data)
     return $response;
 }
 
+function getEnvironment()
+{
+    global $env;
+
+    if(empty($env))
+    {
+        $env = 'local';
+    }
+
+    return $env;
+}
+
 function addImage($cardUrl, $name)
 {
     $imageUrl = getenv('DUEL_LINKS_DEFAULT_IMAGE_URL');
     try
     {
-        $uploadResponse =  Uploader::upload($cardUrl, [
-            'folder' => 'cards',
-            'public_id' => $name
-        ]);
+        global $apiHelper;
 
-        if(!empty($uploadResponse) && array_key_exists('secure_url', $uploadResponse))
+        $imageParts = explode('/', $cardUrl);
+        $imageFile = $imageParts[count($imageParts) - 1];
+
+        file_put_contents($imageFile, file_get_contents($cardUrl));
+
+        $env = getEnvironment();
+        if($env === 'local')
         {
-            $imageUrl = $uploadResponse['secure_url'];
+            $imageNameParts = explode('.', $imageFile);
+            $url = $apiHelper->uploadImageLocal($imageFile, 'cards', $name, $imageNameParts[1]);
+            if(!empty($url))
+            {
+                $imageUrl = $url;
+            }
         }
+        else
+        {
+            $url = $apiHelper->uploadImageProd($imageFile, 'cards', $name);
+            if(!empty($url))
+            {
+                $imageUrl = $url;
+            }
+        }
+        
+        unlink($imageFile);
     }
     catch(Exception $ex)
     {

@@ -246,7 +246,7 @@ class Api extends BaseHelper
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 5,
+            CURLOPT_TIMEOUT => 30,
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POST => 1,
             CURLOPT_POSTFIELDS => $payload,
