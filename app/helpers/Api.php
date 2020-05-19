@@ -53,8 +53,8 @@ class Api extends BaseHelper
         curl_setopt($ch, CURLOPT_URL, $url );
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 5000);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 5000);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 30000);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 30000);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -90,8 +90,8 @@ class Api extends BaseHelper
         }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url );
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 5000);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 5000);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 30000);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 30000);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 
@@ -128,8 +128,8 @@ class Api extends BaseHelper
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 5000);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 5000);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 30000);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 30000);
 
         $result = curl_exec($ch);
 
@@ -166,8 +166,8 @@ class Api extends BaseHelper
         curl_setopt($ch, CURLOPT_URL, $url );
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 5000);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 5000);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 30000);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 30000);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $putdata);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
