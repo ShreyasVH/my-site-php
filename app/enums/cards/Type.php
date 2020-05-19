@@ -30,4 +30,5 @@ class Type extends BaseEnum
     const PSYCHIC = 20;
     const WYRM = 21;
     const DIVINE_BEAST = 22;
+    const CYBERSE = 23;
 }
