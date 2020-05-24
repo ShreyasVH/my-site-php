@@ -22,7 +22,7 @@ require_once APP_PATH . 'app/config/services.inc.php';
 /** @var Api $apiHelper */
 $apiHelper = $di->get('api');
 
-$movieIds = explode("\n", file_get_contents('/Users/quikr/Downloads/movies.csv'));
+$movieIds = explode("\n", file_get_contents(APP_PATH . 'app/documents/movieIds.csv'));
 $movieCount = count($movieIds);
 
 foreach($movieIds as $index => $movieId)
@@ -40,7 +40,7 @@ foreach($movieIds as $index => $movieId)
 
     if(200 != $response['status'])
     {
-        echo "\n\tError while indexing movie. Payload: " . json_encode([]) . ". Response: " . $response['result'] . "\n";
+        echo "\n\tError while indexing movie. Movie: " . $movieId . ". Response: " . $response['result'] . "\n";
     }
 
     time_nanosleep(0, 500000);
