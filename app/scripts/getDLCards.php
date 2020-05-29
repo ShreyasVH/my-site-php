@@ -21,8 +21,8 @@ function get($url)
 {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url );
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 30000);
-    curl_setopt($ch, CURLOPT_TIMEOUT_MS, 30000);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT_MS, 0);
+    curl_setopt($ch, CURLOPT_TIMEOUT_MS, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 
@@ -64,6 +64,12 @@ function getAllCards($url)
 
     while((empty($cards)) && ($try <= 5))
     {
+
+        if($try > 1)
+        {
+            echo "\nRetrying.....\n";
+        }
+
         $response = get($url);
         if(200 === $response['status'])
         {
@@ -182,7 +188,7 @@ function getExistingCards()
 }
 
 $cardsLink = getCardsLink();
-//var_dump($cardsLink);
+// var_dump($cardsLink);
 
 $cards = getAllCards($cardsLink);
 saveCards($cards, 'dlAllCards');

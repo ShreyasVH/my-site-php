@@ -22,8 +22,11 @@ class Api extends BaseHelper
             case 'LOGGER':
                 $endpoint = getenv('LOGGER_API_ENDPOINT');
                 break;
-            CASE 'DUEL_LINKS':
+            case 'DUEL_LINKS':
                 $endpoint = getenv('DUEL_LINKS_API_ENDPOINT');
+                break;
+            case 'CRICBUZZ':
+                $endpoint = getenv('CRICBUZZ_API_ENDPOINT');
                 break;
             case 'DEFAULT':
                 $endpoint = getenv('ENDPOINT_' . CommonUtils::getCurrentMode());
