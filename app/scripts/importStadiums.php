@@ -27,7 +27,7 @@ $failures = [];
 function getStadiums()
 {
     $stadiums = [];
-    $content = readData(APP_PATH . 'app/documents/stadiums.json');
+    $content = readData(APP_PATH . 'app/documents/cricbuzz/stadiums.json');
     if(!empty($content))
     {
         $stadiums = json_decode($content, true);
