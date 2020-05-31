@@ -77,7 +77,7 @@ foreach($playerMap as $team => $players)
         {
             echo "\n\t...................................\n";
         }
-        echo "\n\tProcessing Player. [" . ($index + 1) . "/" . count($players) . "]\n";
+        echo "\n\tProcessing Player. [" . ($pIndex + 1) . "/" . count($players) . "]\n";
 
         $payload = [
             'name' => $player,
