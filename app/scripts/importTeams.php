@@ -24,15 +24,15 @@ $stats = [
 
 $failures = [];
 
-function getStadiums()
+function getTeams()
 {
-    $stadiums = [];
-    $content = readData(APP_PATH . 'app/documents/stadiums.json');
+    $teams = [];
+    $content = readData(APP_PATH . 'app/documents/cricbuzz/teams.json');
     if(!empty($content))
     {
-        $stadiums = json_decode($content, true);
+        $teams = json_decode($content, true);
     }
-    return $stadiums;
+    return $teams;
 }
 
 function readData($fileName)
@@ -52,31 +52,32 @@ function writeData($fileName, $data)
     return $response;
 }
 
-function addStadium($payload)
+function addTeam($payload)
 {
     global $apiHelper;
 
-    return $apiHelper->post('cricbuzz/stadiums', $payload, 'CRICBUZZ');
+    return $apiHelper->post('cricbuzz/teams', $payload, 'CRICBUZZ');
 }
 
-$stadiums = getStadiums();
+$teams = getTeams();
 
 $index = 0;
-foreach($stadiums as $stadium)
+foreach($teams as $team)
 {
     if($index > 0)
     {
         echo "\n---------------------------------------------\n";
     }
 
-    echo "\nProcessing Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
+    echo "\nProcessing Team. [" . ($index + 1) . "/" . count($teams) . "]\n";
 
     $payload = [
-        'name' => $stadium,
-        'countryId' => 1
+        'name' => $team,
+        'countryId' => 1,
+        'teamType' => 0
     ];
 
-    $response = addStadium($payload);
+    $response = addTeam($payload);
     if(200 === $response['status'])
     {
         $stats['success']++;
@@ -85,16 +86,16 @@ foreach($stadiums as $stadium)
     {
         $stats['failure']++;
         $failures[] = [
-            'name' => $stadium,
+            'name' => $team,
             'response' => $response['result'],
             'status' => $response['status']
         ];
     }
 
-    writeData(APP_PATH . 'app/documents/importStadiumStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-    writeData(APP_PATH . 'app/documents/importStadiumFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'app/documents/importTeamStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'app/documents/importTeamFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
-    echo "\nProcessed Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
+    echo "\nProcessed Team. [" . ($index + 1) . "/" . count($teams) . "]\n";
     $index++;
 }
 
