@@ -1,6 +1,7 @@
 <?php
 
 use app\constants\Constants;
+use app\enums\cards\ViewMode;
 use app\helpers\AssetHelper;
 use app\models\Card;
 
@@ -9,8 +10,8 @@ use app\models\Card;
 $overlayClass = 'card-img-overlay' . (($isRarityRequired) ? ' with-rarity' : '');
 $foilTypeClass = (((isset($myCard) && !empty($myCard))) ? ' ' . strtolower($myCard->cardGlossType) : '');
 $myCardClass = (((isset($myCard) && !empty($myCard))) ? ' my-card' : '');
-$gridClass = (($isViewMode) ? (('small' === $viewMode) ? ' col-md-1-10' : ' col-md-2') : ' col-md-3');
-$viewModeClass = (($isViewMode) ? (('small' === $viewMode) ? ' view-mode-small' : ' view-mode') : '');
+$gridClass = ((ViewMode::DEFAULT !== $viewMode) ? ((ViewMode::SMALL === $viewMode) ? ' col-md-1-10' : ' col-md-2') : ' col-md-3');
+$viewModeClass = ((ViewMode::DEFAULT !== $viewMode) ? ((ViewMode::SMALL === $viewMode) ? ' view-mode-small' : ' view-mode') : '');
 
 $cardClass = 'movie-card jsCard duel-links' . $gridClass . $foilTypeClass . $myCardClass . $viewModeClass;
 

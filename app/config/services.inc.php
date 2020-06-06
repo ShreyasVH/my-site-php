@@ -13,9 +13,9 @@ use app\helpers\AssetHelper;
 use Phalcon\Logger\Adapter\File as FileAdapter;
 use Phalcon\Session\Adapter\Files as Session;
 
-if((array_key_exists('SERVER_ADDR', $_SERVER) && ('127.0.0.1' === $_SERVER['SERVER_ADDR'])) || ('cli' === php_sapi_name()))
+if(('cli' === php_sapi_name()) || (array_key_exists('SERVER_NAME', $_SERVER) && ('my-site-php.herokuapp.com' === $_SERVER['SERVER_NAME'])))
 {
-    $dotenv = Dotenv\Dotenv::create(APP_PATH);
+    $dotenv = Dotenv\Dotenv::createImmutable(APP_PATH);
     $dotenv->load();
 }
 

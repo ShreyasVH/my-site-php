@@ -1,5 +1,6 @@
 <?php
     use app\constants\Constants;
+    use app\enums\cards\ViewMode;
 ?>
 
 <div class="container">
@@ -26,13 +27,13 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-3 col-lg-3 col-xs-6 col-sm-12 add-movie">
+            <div class="col-md-2 col-lg-2 col-xs-6 col-sm-12 add-movie">
                 <a class="btn btn-primary" href="/cards/add" target="_blank">
                     <span class="glyphicon glyphicon-plus"></span>
                     Add Cards
                 </a>
             </div>
-            <div class="col-md-3 col-lg-3 col-xs-6 col-sm-4">
+            <div class="col-md-2 col-lg-2 col-xs-6 col-sm-4">
                 <p class="movie-count">
                     <strong class="jsTotalCount">
                         <?php echo $totalCount; ?>
@@ -46,7 +47,30 @@
                     <ul class="suggestions-list dropdown-menu" id="search_movie_dropdown"></ul>
                 </div>
             </div>
-            <div class="col-md-2 col-lg-3 col-xs-5 col-sm-2">
+
+            <div class="col-md-2 col-lg-2 col-xs-5 col-sm-2">
+                <div class="sort-dropdown dropdown view-mode-dropdown">
+                    <button class="btn btn-default pull-right" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-sort-by-attributes"></i>
+                        View Mode:
+                        <span class="visible-lg sort-display jsViewModeDisplay" data-viewMode="<?php echo $viewMode; ?>">
+							<?php echo $viewMode; ?>
+						</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <?php foreach(ViewMode::getAllValues() as $viewModeOption): ?>
+                            <li class="jsViewMode" data-viewMode="<?php echo $viewModeOption; ?>">
+                                <span>
+									<?php echo $viewModeOption; ?>
+								</span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-lg-3 col-xs-5 col-sm-2">
                 <?php
                 $sortAttributes = array_filter(Constants::getCardAttributes(), function($attribute) {
                     return (isset($attribute['isSortEnabled']) && !empty($attribute['isSortEnabled']));
@@ -94,8 +118,8 @@
         <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="row">
                 <?php
-                    $filterClass = (($isViewMode) ? 'hidden' : 'col-md-3');
-                    $cardListClass = (($isViewMode) ? 'col-md-12' : 'col-md-9');
+                    $filterClass = (($viewMode !== ViewMode::DEFAULT) ? 'hidden' : 'col-md-3');
+                    $cardListClass = (($viewMode !== ViewMode::DEFAULT) ? 'col-md-12' : 'col-md-9');
                 ?>
                 <div class="<?php echo $filterClass; ?>">
                     <?php $this->partial('shared/filters/filters', ['filtersForDisplay' => Constants::getCardAttributes()]); ?>
@@ -106,7 +130,6 @@
                             <?php $this->partial('cards/card', [
                                     'card' => $card,
                                     'isRarityRequired' => true,
-                                    'isViewMode' => $isViewMode,
                                     'viewMode' => $viewMode
                             ]); ?>
                         <?php endforeach; ?>

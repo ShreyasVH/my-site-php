@@ -215,6 +215,14 @@
 	text-align: center;
 }
 
+.view-mode-dropdown li span {
+	padding: 10px;
+	text-align: center;
+	width: 100%;
+	display: inline-block;
+	cursor: pointer;
+}
+
 .foil-type-stats {
 	margin: 10px 0 0 0;
 }

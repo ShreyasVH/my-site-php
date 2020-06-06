@@ -11,8 +11,10 @@ use app\enums\cards\CardType;
 use app\enums\cards\LimitType;
 use app\enums\cards\Rarity;
 use app\enums\cards\Type;
+use app\enums\cards\ViewMode;
 use app\models\Card;
 use app\models\Source;
+use app\utils\CommonUtils;
 use Phalcon\Http\Request\File;
 
 class CardsController extends BaseController
@@ -20,6 +22,7 @@ class CardsController extends BaseController
     public function browseAction()
     {
         $this->view->title = 'Browse Cards - Let\'s Duel';
+        $this->view->viewMode = CommonUtils::getViewMode();
 
         if($this->request->isGet())
         {
@@ -43,8 +46,6 @@ class CardsController extends BaseController
 
             $currentOffset = $this->request->getPost('offset', null, Constants::DEFAULT_OFFSET);
         }
-        $this->view->isViewMode = filter_var($_COOKIE['isViewMode'], FILTER_VALIDATE_BOOLEAN);
-        $this->view->viewMode = filter_var($_COOKIE['viewMode']);
 
         $filters = [];
         $rangeFilters = [];
@@ -82,7 +83,7 @@ class CardsController extends BaseController
 
 
         $payload = [
-            'count' => ((($this->view->isViewMode) && ('small' === $this->view->viewMode)) ? Constants::DEFAULT_RESULTS_PER_PAGE_SMALL_VIEW : Constants::DEFAULT_RESULTS_PER_PAGE),
+            'count' => ((ViewMode::SMALL === $this->view->viewMode) ? Constants::DEFAULT_RESULTS_PER_PAGE_SMALL_VIEW : Constants::DEFAULT_RESULTS_PER_PAGE),
             'offset' => $currentOffset,
             'sortMap' => $sortMap
         ];
@@ -519,6 +520,15 @@ class CardsController extends BaseController
             $outputContent = json_encode(['view' => $view], JSON_UNESCAPED_SLASHES);
             $this->response->setContent($outputContent);
             return $this->response;
+        }
+    }
+
+    public function setViewModeAction()
+    {
+        if($this->request->isPost())
+        {
+            $viewMode = $this->request->getPost('viewMode');
+            $this->session->set('viewMode', $viewMode);
         }
     }
 }
