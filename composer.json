@@ -1,6 +1,6 @@
 {
   "require": {
-    "ext-phalcon": "^3.4.1",
+    "ext-phalcon": "^3.4.0",
     "vlucas/phpdotenv": "*",
     "ext-curl": "*",
     "ext-json": "*",

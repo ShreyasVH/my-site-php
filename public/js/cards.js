@@ -28,6 +28,27 @@ $(document).ready(function() {
         modal.modal('show');
     });
 
+    $(document).on('click', '.jsViewMode', function(e) {
+        var target = $(this);
+        var newViewMode = target.attr('data-viewMode');
+        var dropdownDisplay = $('.jsViewModeDisplay');
+        var currentViewMode = dropdownDisplay.attr('data-viewmode');
+
+        if (currentViewMode !== newViewMode) {
+            Miscellaneous.showLoader();
+            $.ajax({
+                url: '/cards/setViewMode',
+                data: {
+                    'viewMode': newViewMode
+                },
+                type: 'POST',
+                success: function () {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+
     $(document).on('submit', 'form[name="obtain-card-form"]', function(e) {
         e.preventDefault();
         if($(this).find('.error').length == 0)

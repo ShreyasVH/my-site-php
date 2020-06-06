@@ -7,6 +7,7 @@
 
 namespace app\utils;
 
+use app\enums\cards\ViewMode;
 use Phalcon\Di;
 use Phalcon\Session\Adapter\Files as Session;
 use Phalcon\Mvc\User\Component;
@@ -94,5 +95,21 @@ class CommonUtils extends Component
     public static function isLocalEnv()
     {
         return ('127.0.0.1' === $_SERVER['SERVER_ADDR']);
+    }
+
+    public static function getViewMode()
+    {
+        $viewMode = ViewMode::DEFAULT;
+
+        $di = Di::getDefault();
+
+        /** @var Session $session */
+        $session = $di->get('session');
+        if($session->has('viewMode'))
+        {
+            $viewMode = $session->get('viewMode');
+        }
+
+        return $viewMode;
     }
 }
