@@ -247,12 +247,12 @@ function getPlayerIdFromShortName($name, $players, $bench)
             if(count($nameParts) === 1)
             {
                 $playerId = $player['playerId'];
-                $count++;
+                // $count++;
             }
             else if(strtolower($firstName[0]) === strtolower($playerFirstName[0]))
             {
                 $playerId = $player['playerId'];
-                $count++;
+                // $count++;
             }
             else
             {
@@ -529,6 +529,18 @@ foreach($files as $file)
                         ];
                     }
                     $payload['bench'] = $benchObjects;
+                }
+
+                if(array_key_exists('manOfTheMatchList', $matchDetails))
+                {
+                    $motmList = [];
+
+                    foreach($matchDetails['manOfTheMatchList'] as $player)
+                    {
+                        $motm[] = getPlayerIdFromShortName($player, $players, $bench);
+                    }
+
+                    $payload['manOfTheMatchList'] = $motm;
                 }
 
                 echo "\n\t\t\t" . json_encode($payload) . "\n";
