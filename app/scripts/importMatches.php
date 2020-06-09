@@ -54,12 +54,33 @@ function getStadiums()
 
 function getPlayers()
 {
+    global $apiHelper;
     $players = [];
-    $data = readData(APP_PATH . 'app/documents/cricbuzz/allPlayers.json');
-    if(!empty($data))
+    $offset = 0;
+    $count = 100;
+
+    while(true)
     {
-        $players = json_decode($data, true);
+        $apiResponse = $apiHelper->get('cricbuzz/players/all/' . $offset . '/' . $count, 'CRICBUZZ');
+        if($apiResponse['status'] === 200)
+        {
+            $batchPlayers = json_decode($apiResponse['result'], true);
+            $players = array_merge($players, $batchPlayers);
+            if(count($batchPlayers) < $count)
+            {
+                break;
+            }
+            else
+            {
+                $offset += $count;
+            }
+        }
+        else
+        {
+            echo "\nRetrying....\n";
+        }
     }
+
     return $players;
 }
 
