@@ -388,7 +388,7 @@ foreach($files as $file)
                     'team2' => getTeamId($matchDetails['team2'], $teamMap),
                     'result' => $matchDetails['result'],
                     'stadium' => getStadiumId($matchDetails['stadium'], $stadiumMap),
-                    'startTime' => date('Y-m-d H:i:s')
+                    'startTime' => date('Y-m-d H:i:s', $matchDetails['startTime'] / 1000)
                 ];
 
                 if(array_key_exists('tossWinner', $matchDetails))
