@@ -24,6 +24,20 @@ $stats = [
 
 $failures = [];
 
+function getCountries()
+{
+    global $apiHelper;
+    $teams = [];
+    
+    $apiResponse = $apiHelper->get('cricbuzz/countries', 'CRICBUZZ');
+    if($apiResponse['status'] === 200)
+    {
+        $teams = json_decode($apiResponse['result'], true);
+    }
+
+    return $teams;
+}
+
 function getStadiums()
 {
     $stadiums = [];
@@ -59,7 +73,31 @@ function addStadium($payload)
     return $apiHelper->post('cricbuzz/stadiums', $payload, 'CRICBUZZ');
 }
 
+function createCountryMap()
+{
+    $countryMap = [];
+    $countries = getCountries();
+    foreach($countries as $country)
+    {
+        $countryMap[$country['name']] = $country['id'];
+    }
+    return $countryMap;
+}
+
+function getCountryId($name, $countryMap)
+{
+    $id = null;
+
+    if(array_key_exists($name, $countryMap))
+    {
+        $id = $countryMap[$name];
+    }
+
+    return $id;
+}
+
 $stadiums = getStadiums();
+$countryMap = createCountryMap();
 
 $index = 0;
 foreach($stadiums as $stadium)
@@ -72,8 +110,9 @@ foreach($stadiums as $stadium)
     echo "\nProcessing Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
 
     $payload = [
-        'name' => $stadium,
-        'countryId' => 1
+        'name' => $stadium['name'],
+        'countryId' => getCountryId($stadium['country'], $countryMap),
+        'city' => $stadium['city']
     ];
 
     $response = addStadium($payload);
