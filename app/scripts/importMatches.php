@@ -387,7 +387,7 @@ foreach($files as $file)
                     'team1' => getTeamId($matchDetails['team1'], $teamMap),
                     'team2' => getTeamId($matchDetails['team2'], $teamMap),
                     'result' => $matchDetails['result'],
-                    'stadium' => getStadiumId($matchDetails['stadium'], $stadiumMap),
+                    'stadium' => getStadiumId($matchDetails['stadium']['name'], $stadiumMap),
                     'startTime' => date('Y-m-d H:i:s', $matchDetails['startTime'] / 1000)
                 ];
 
