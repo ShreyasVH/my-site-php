@@ -59,7 +59,47 @@ function addPlayer($payload)
     return $apiHelper->post('cricbuzz/players', $payload, 'CRICBUZZ');
 }
 
+function getCountries()
+{
+    global $apiHelper;
+    $teams = [];
+
+    $apiResponse = $apiHelper->get('cricbuzz/countries', 'CRICBUZZ');
+    if($apiResponse['status'] === 200)
+    {
+        $teams = json_decode($apiResponse['result'], true);
+    }
+
+    return $teams;
+}
+
+function createCountryMap()
+{
+    $countryMap = [];
+    $countries = getCountries();
+    foreach($countries as $country)
+    {
+        $countryMap[$country['name']] = $country['id'];
+    }
+    return $countryMap;
+}
+
+function getCountryId($name, $countryMap)
+{
+    $id = 1;
+
+    if(array_key_exists($name, $countryMap))
+    {
+        $id = $countryMap[$name];
+    }
+
+    return $id;
+}
+
 $playerMap = getPlayers();
+
+$countryMap = createCountryMap();
+
 
 $index = 0;
 foreach($playerMap as $team => $players)
@@ -80,8 +120,8 @@ foreach($playerMap as $team => $players)
         echo "\n\tProcessing Player. [" . ($pIndex + 1) . "/" . count($players) . "]\n";
 
         $payload = [
-            'name' => $player,
-            'countryId' => 1,
+            'name' => $player['name'],
+            'countryId' => getCountryId($player['country'], $countryMap),
             'image' => 'https://res.cloudinary.com/dyoxubvbg/image/upload/v1577106216/artists/default_m.jpg'
         ];
 
