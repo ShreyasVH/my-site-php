@@ -30,6 +30,7 @@ foreach($files as $file)
 				{
 					$team = $playerDetails['team'];
 					$playerName = $playerDetails['player'];
+                    $playerCountry = $playerDetails['country'];
 					echo "\n\t\t" . $team . "\n";
 					echo "\n\t\t" . $playerName . "\n";
 					if(array_key_exists($team, $playerData))
@@ -37,14 +38,20 @@ foreach($files as $file)
 						$existingPlayers = $playerData[$team];
 						if(!in_array($playerName, $existingPlayers))
 						{
-							$playerData[$team][] = $playerName;
+                            $playerData[$team][] = [
+                                'name' => $playerName,
+                                'country' => $playerCountry
+                            ];
 						}
 					}
 					else
 					{
-						$playerData[$team] = [
-							$playerName
-						];
+                        $playerData[$team] = [
+                            [
+                                'name' => $playerName,
+                                'country' => $playerCountry
+                            ]
+                        ];
 					}
 				}
 			}
@@ -57,6 +64,7 @@ foreach($files as $file)
 				{
 					$team = $playerDetails['team'];
 					$playerName = $playerDetails['player'];
+					$playerCountry = $playerDetails['country'];
 					echo "\n\t\t" . $team . "\n";
 					echo "\n\t\t" . $playerName . "\n";
 					if(array_key_exists($team, $playerData))
@@ -64,13 +72,19 @@ foreach($files as $file)
 						$existingPlayers = $playerData[$team];
 						if(!in_array($playerName, $existingPlayers))
 						{
-							$playerData[$team][] = $playerName;
+							$playerData[$team][] = [
+							    'name' => $playerName,
+                                'country' => $playerCountry
+                            ];
 						}
 					}
 					else
 					{
 						$playerData[$team] = [
-							$playerName
+						    [
+                                'name' => $playerName,
+                                'country' => $playerCountry
+                            ]
 						];
 					}
 				}
@@ -81,7 +95,9 @@ foreach($files as $file)
 
 foreach($playerData as $team => $players)
 {
-	usort($players, 'strcasecmp');
+	usort($players, function($player1, $player2) {
+	    return strcasecmp($player1['name'], $player2['name']);
+    });
 	$playerData[$team] = $players;
 }
 
