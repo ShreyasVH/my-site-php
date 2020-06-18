@@ -112,7 +112,7 @@ function writeData($fileName, $data)
     return $response;
 }
 
-function addTeam($payload)
+function addMatch($payload)
 {
     global $apiHelper;
 
@@ -287,12 +287,13 @@ function getPlayerIdFromShortName($name, $players, $bench)
         {
             echo 'Failed to select from options. Player Name - ' . $name;
             echo "\nOptions: " . json_encode($options, JSON_PRETTY_PRINT) . "\n";
-            die;
+//            die;
         }
     }
     else
     {
-        echo ("\nNot found. Player Name - " . $name . "\n");die;
+        echo ("\nNot found. Player Name - " . $name . "\n");
+//        die;
     }
 
     // if($count !== 1)
@@ -472,7 +473,6 @@ foreach($files as $file)
                             'balls' => $battingScore['balls'],
                             'fours' => $battingScore['fours'],
                             'sixes' => $battingScore['sixes'],
-                            'runs' => $battingScore['runs'],
                             'innings' => $battingScore['innings'],
                             'teamInnings' => $battingScore['teamInnings']
                         ];
@@ -558,29 +558,30 @@ foreach($files as $file)
 
                     foreach($matchDetails['manOfTheMatchList'] as $player)
                     {
-                        $motm[] = getPlayerIdFromShortName($player, $players, $bench);
+                        $motmList[] = getPlayerIdFromShortName($player, $players, $bench);
                     }
 
-                    $payload['manOfTheMatchList'] = $motm;
+                    $payload['manOfTheMatchList'] = $motmList;
                 }
 
                 echo "\n\t\t\t" . json_encode($payload) . "\n";
 
-                // $response = addPlayer($payload);
-                // if(200 === $response['status'])
-                // {
-                //     $stats['success']++;
-                // }
-                // else
-                // {
-                //     $stats['failure']++;
-                //     $failures[] = [
-                //         'series' => $seriesName,
-                //         'match' => $matchName,
-                //         'response' => $response['result'],
-                //         'status' => $response['status']
-                //     ];
-                // }
+                 $response = addMatch($payload);
+                 if(200 === $response['status'])
+                 {
+                     $stats['success']++;
+                 }
+                 else
+                 {
+                     $stats['failure']++;
+                     $failures[] = [
+                         'series' => $seriesName,
+                         'match' => $matchName,
+                         'payload' => json_encode($payload),
+                         'response' => $response['result'],
+                         'status' => $response['status']
+                     ];
+                 }
 
                 writeData(APP_PATH . 'app/documents/importMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
                 writeData(APP_PATH . 'app/documents/importMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));

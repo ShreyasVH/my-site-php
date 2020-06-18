@@ -36,6 +36,8 @@ foreach($files as $file)
 	}
 }
 
-usort($stadiums, 'strcasecmp');
+usort($stadiums, function($stadium1, $stadium2) {
+	return strcasecmp($stadium1['name'], $stadium2['name']);
+});
 
 file_put_contents(APP_PATH . 'app/documents/cricbuzz/stadiums.json', json_encode($stadiums, JSON_PRETTY_PRINT));
