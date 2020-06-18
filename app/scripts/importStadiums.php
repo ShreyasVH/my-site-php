@@ -27,15 +27,15 @@ $failures = [];
 function getCountries()
 {
     global $apiHelper;
-    $teams = [];
+    $countries = [];
     
     $apiResponse = $apiHelper->get('cricbuzz/countries', 'CRICBUZZ');
     if($apiResponse['status'] === 200)
     {
-        $teams = json_decode($apiResponse['result'], true);
+        $countries = json_decode($apiResponse['result'], true);
     }
 
-    return $teams;
+    return $countries;
 }
 
 function getStadiums()
