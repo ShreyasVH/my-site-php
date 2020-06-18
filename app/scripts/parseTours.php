@@ -16,10 +16,14 @@ foreach($files as $file)
 {
     $data = json_decode(file_get_contents($dataDirectory . '/' . $file), true);
 
-    foreach($data as $seriesName => $seriesDetails)
+    foreach($data as $tourName => $tourDetails)
     {
-        echo "\n" . $seriesName . "\n";
-        $tours[] = $seriesName;
+        echo "\n" . $tourName . "\n";
+        $tours[] = [
+            'name' => $tourName,
+            'startTime' => $tourDetails['startTime'],
+            'endTime' => $tourDetails['endTime']
+        ];
     }
 }
 
