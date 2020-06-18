@@ -16,23 +16,29 @@ foreach($files as $file)
 {
     $data = json_decode(file_get_contents($dataDirectory . '/' . $file), true);
 
-    foreach($data as $seriesName => $seriesDetails)
+    foreach($data as $tourName => $tourDetails)
     {
-        echo "\n" . $seriesName . "\n";
-        foreach($seriesDetails as $matchName => $matchDetails)
+        echo "\n" . $tourName . "\n";
+        $seriesInfo = $tourDetails['series'];
+        foreach($seriesInfo as $gameType => $seriesDetails)
         {
-            echo "\n\t" . $matchName . "\n";
-            foreach($matchDetails['players'] as $player)
+            echo "\n\t" . $gameType . "\n";
+            $matches = $seriesDetails['matches'];
+            foreach($matches as $matchName => $matchDetails)
             {
-                if((array_key_exists('country', $player)) && !in_array($player['country'], $countries))
+                echo "\n\t\t" . $matchName . "\n";
+                foreach($matchDetails['players'] as $player)
                 {
-                    $countries[] = $player['country'];
+                    if((array_key_exists('country', $player)) && !in_array($player['country'], $countries))
+                    {
+                        $countries[] = $player['country'];
+                    }
                 }
-            }
 
-            if(!is_null($matchDetails['stadium']['country']) && !in_array($matchDetails['stadium']['country'], $countries))
-            {
-                $countries[] = $matchDetails['stadium']['country'];
+                if(!is_null($matchDetails['stadium']['country']) && !in_array($matchDetails['stadium']['country'], $countries))
+                {
+                    $countries[] = $matchDetails['stadium']['country'];
+                }
             }
         }
     }

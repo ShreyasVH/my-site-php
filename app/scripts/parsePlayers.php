@@ -16,79 +16,85 @@ foreach($files as $file)
 {
 	$data = json_decode(file_get_contents($dataDirectory . '/' . $file), true);
 
-	foreach($data as $seriesName => $seriesDetails)
-	{
-		echo "\n" . $seriesName . "\n";
-		foreach($seriesDetails as $matchName => $matchDetails)
-		{
-			echo "\n\t" . $matchName . "\n";
-			if(array_key_exists('players', $matchDetails))
-			{
-				$players = $matchDetails['players'];
+    foreach($data as $tourName => $tourDetails)
+    {
+        echo "\n" . $tourName . "\n";
+        $seriesInfo = $tourDetails['series'];
+        foreach($seriesInfo as $gameType => $seriesDetails)
+        {
+            echo "\n\t" . $gameType . "\n";
+            $matches = $seriesDetails['matches'];
+            foreach($matches as $matchName => $matchDetails)
+            {
+                echo "\n\t\t" . $matchName . "\n";
+                if(array_key_exists('players', $matchDetails))
+                {
+                    $players = $matchDetails['players'];
 
-				foreach($players as $playerDetails)
-				{
-					$team = $playerDetails['team'];
-					$playerName = $playerDetails['player'];
-                    $playerCountry = $playerDetails['country'];
-					echo "\n\t\t" . $team . "\n";
-					echo "\n\t\t" . $playerName . "\n";
-					if(array_key_exists($team, $playerData))
-					{
-						$existingPlayers = $playerData[$team];
-						if(!in_array($playerName, $existingPlayers))
-						{
-                            $playerData[$team][] = [
-                                'name' => $playerName,
-                                'country' => $playerCountry
+                    foreach($players as $playerDetails)
+                    {
+                        $team = $playerDetails['team'];
+                        $playerName = $playerDetails['player'];
+                        $playerCountry = $playerDetails['country'];
+                        echo "\n\t\t" . $team . "\n";
+                        echo "\n\t\t" . $playerName . "\n";
+                        if(array_key_exists($team, $playerData))
+                        {
+                            $existingPlayers = $playerData[$team];
+                            if(!in_array($playerName, $existingPlayers))
+                            {
+                                $playerData[$team][] = [
+                                    'name' => $playerName,
+                                    'country' => $playerCountry
+                                ];
+                            }
+                        }
+                        else
+                        {
+                            $playerData[$team] = [
+                                [
+                                    'name' => $playerName,
+                                    'country' => $playerCountry
+                                ]
                             ];
-						}
-					}
-					else
-					{
-                        $playerData[$team] = [
-                            [
-                                'name' => $playerName,
-                                'country' => $playerCountry
-                            ]
-                        ];
-					}
-				}
-			}
-			
-			if(array_key_exists('bench', $matchDetails))
-			{
-				$bench = $matchDetails['bench'];
+                        }
+                    }
+                }
 
-				foreach($bench as $playerDetails)
-				{
-					$team = $playerDetails['team'];
-					$playerName = $playerDetails['player'];
-					$playerCountry = $playerDetails['country'];
-					echo "\n\t\t" . $team . "\n";
-					echo "\n\t\t" . $playerName . "\n";
-					if(array_key_exists($team, $playerData))
-					{
-						$existingPlayers = $playerData[$team];
-						if(!in_array($playerName, $existingPlayers))
-						{
-							$playerData[$team][] = [
-							    'name' => $playerName,
-                                'country' => $playerCountry
+                if(array_key_exists('bench', $matchDetails))
+                {
+                    $bench = $matchDetails['bench'];
+
+                    foreach($bench as $playerDetails)
+                    {
+                        $team = $playerDetails['team'];
+                        $playerName = $playerDetails['player'];
+                        $playerCountry = $playerDetails['country'];
+                        echo "\n\t\t" . $team . "\n";
+                        echo "\n\t\t" . $playerName . "\n";
+                        if(array_key_exists($team, $playerData))
+                        {
+                            $existingPlayers = $playerData[$team];
+                            if(!in_array($playerName, $existingPlayers))
+                            {
+                                $playerData[$team][] = [
+                                    'name' => $playerName,
+                                    'country' => $playerCountry
+                                ];
+                            }
+                        }
+                        else
+                        {
+                            $playerData[$team] = [
+                                [
+                                    'name' => $playerName,
+                                    'country' => $playerCountry
+                                ]
                             ];
-						}
-					}
-					else
-					{
-						$playerData[$team] = [
-						    [
-                                'name' => $playerName,
-                                'country' => $playerCountry
-                            ]
-						];
-					}
-				}
-			}
+                        }
+                    }
+                }
+            }
 		}
 	}
 }

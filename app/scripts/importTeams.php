@@ -87,6 +87,7 @@ foreach($teams as $team)
         $stats['failure']++;
         $failures[] = [
             'name' => $team,
+            'payload' => json_encode($payload),
             'response' => $response['result'],
             'status' => $response['status']
         ];

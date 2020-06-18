@@ -16,22 +16,27 @@ foreach($files as $file)
 {
 	$data = json_decode(file_get_contents($dataDirectory . '/' . $file), true);
 
-	foreach($data as $seriesName => $seriesDetails)
-	{
-		echo "\n" . $seriesName . "\n";
-		foreach($seriesDetails as $matchName => $matchDetails)
-		{
-			echo "\n\t" . $matchName . "\n";
-			if(array_key_exists('stadium', $matchDetails))
-			{
-				$stadium = $matchDetails['stadium'];
-				if(!in_array($stadium, $stadiums))
-				{
-					$stadiums[] = $stadium;
-				}
-				
-			}
-			
+    foreach($data as $tourName => $tourDetails)
+    {
+        echo "\n" . $tourName . "\n";
+        $seriesInfo = $tourDetails['series'];
+        foreach($seriesInfo as $gameType => $seriesDetails)
+        {
+            echo "\n\t" . $gameType . "\n";
+            $matches = $seriesDetails['matches'];
+            foreach($matches as $matchName => $matchDetails)
+            {
+                echo "\n\t\t" . $matchName . "\n";
+                if(array_key_exists('stadium', $matchDetails))
+                {
+                    $stadium = $matchDetails['stadium'];
+                    if(!in_array($stadium, $stadiums))
+                    {
+                        $stadiums[] = $stadium;
+                    }
+
+                }
+            }
 		}
 	}
 }
