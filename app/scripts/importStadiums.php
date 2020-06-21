@@ -124,7 +124,8 @@ foreach($stadiums as $stadium)
     {
         $stats['failure']++;
         $failures[] = [
-            'name' => $stadium,
+            'name' => $stadium['name'],
+            'payload' => json_encode($payload),
             'response' => $response['result'],
             'status' => $response['status']
         ];

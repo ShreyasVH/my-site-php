@@ -40,19 +40,15 @@ foreach($files as $file)
                         echo "\n\t\t" . $playerName . "\n";
                         if(array_key_exists($team, $playerData))
                         {
-                            $existingPlayers = $playerData[$team];
-                            if(!in_array($playerName, $existingPlayers))
-                            {
-                                $playerData[$team][] = [
-                                    'name' => $playerName,
-                                    'country' => $playerCountry
-                                ];
-                            }
+                            $playerData[$team][$playerName] = [
+                                'name' => $playerName,
+                                'country' => $playerCountry
+                            ];
                         }
                         else
                         {
                             $playerData[$team] = [
-                                [
+                                $playerName => [
                                     'name' => $playerName,
                                     'country' => $playerCountry
                                 ]
@@ -74,19 +70,15 @@ foreach($files as $file)
                         echo "\n\t\t" . $playerName . "\n";
                         if(array_key_exists($team, $playerData))
                         {
-                            $existingPlayers = $playerData[$team];
-                            if(!in_array($playerName, $existingPlayers))
-                            {
-                                $playerData[$team][] = [
-                                    'name' => $playerName,
-                                    'country' => $playerCountry
-                                ];
-                            }
+                            $playerData[$team][$playerName] = [
+                                'name' => $playerName,
+                                'country' => $playerCountry
+                            ];
                         }
                         else
                         {
                             $playerData[$team] = [
-                                [
+                                $playerName => [
                                     'name' => $playerName,
                                     'country' => $playerCountry
                                 ]

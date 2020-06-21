@@ -30,10 +30,7 @@ foreach($files as $file)
                 if(array_key_exists('stadium', $matchDetails))
                 {
                     $stadium = $matchDetails['stadium'];
-                    if(!in_array($stadium, $stadiums))
-                    {
-                        $stadiums[] = $stadium;
-                    }
+                    $stadiums[$stadium['name']] = $stadium;
 
                 }
             }

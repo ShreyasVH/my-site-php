@@ -111,7 +111,8 @@ foreach($playerMap as $team => $players)
 
     echo "\nProcessing Team. [" . ($index + 1) . "/" . count(array_keys($playerMap)) . "]\n";
 
-    foreach($players as $pIndex => $player)
+    $pIndex = 0;
+    foreach($players as $playerName => $player)
     {
         if($pIndex > 0)
         {
@@ -145,6 +146,7 @@ foreach($playerMap as $team => $players)
         writeData(APP_PATH . 'app/documents/importPlayerFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
         echo "\n\tProcessed Player. [" . ($pIndex + 1) . "/" . count($players) . "]\n";
+        $pIndex++;
     }
     echo "\nProcessed Team. [" . ($index + 1) . "/" . count(array_keys($playerMap)) . "]\n";
     $index++;
