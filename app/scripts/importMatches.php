@@ -411,7 +411,7 @@ foreach($files as $file)
                     {
                         echo "\n\t\t\t-----------------------------------\n";
                     }
-                    echo "\n\t\t\tProcessing Match - " . $matchName . " [" . $mIndex . "/" . count(array_keys($seriesDetails)) . "]\n";
+                    echo "\n\t\t\tProcessing Match - " . $matchName . " [" . $mIndex . "/" . count(array_keys($seriesDetails['matches'])) . "]\n";
 
 
                     $payload = [
@@ -618,7 +618,7 @@ foreach($files as $file)
                     writeData(APP_PATH . 'app/documents/importMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
                     writeData(APP_PATH . 'app/documents/importMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
-                    echo "\n\t\t\tProcessed Match - " . $matchName . " [" . $mIndex . "/" . count(array_keys($seriesDetails)) . "]\n";
+                    echo "\n\t\t\tProcessed Match - " . $matchName . " [" . $mIndex . "/" . count(array_keys($seriesDetails['matches'])) . "]\n";
                     $mIndex++;
                 }
             }

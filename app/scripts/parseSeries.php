@@ -28,7 +28,15 @@ foreach($files as $file)
 
             foreach($matches as $matchName => $matchDetails)
             {
-                preg_match('/(.*) vs (.*), (.*)/', $matchName, $patternMatches);
+                if(preg_match('/Group [A-Za-z0-9]/', $matchName))
+                {
+                    preg_match('/(.*) vs (.*), (.*), Group (.*)/', $matchName, $patternMatches);
+                }
+                else
+                {
+                    preg_match('/(.*) vs (.*), (.*)/', $matchName, $patternMatches);
+                }
+
                 $team1 = $patternMatches[1];
                 $team2 = $patternMatches[2];
 
