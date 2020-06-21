@@ -253,8 +253,14 @@ function getPlayerIdFromShortName($name, $players, $bench)
             $playerNameParts = explode(' ', $player['name']);
             $lastName = $nameParts[count($nameParts) - 1];
             $playerLastName = $playerNameParts[count($playerNameParts) - 1];
+            $firstName = $nameParts[0];
+            $playerFirstName = $playerNameParts[0];
 
             if(strtolower($lastName) === strtolower($playerLastName))
+            {
+                $options[] = $player;
+            }
+            else if(strtolower($firstName) === strtolower($playerFirstName))
             {
                 $options[] = $player;
             }
@@ -273,8 +279,14 @@ function getPlayerIdFromShortName($name, $players, $bench)
             $playerNameParts = explode(' ', $player['name']);
             $lastName = $nameParts[count($nameParts) - 1];
             $playerLastName = $playerNameParts[count($playerNameParts) - 1];
+            $firstName = $nameParts[0];
+            $playerFirstName = $playerNameParts[0];
 
             if(strtolower($lastName) === strtolower($playerLastName))
+            {
+                $options[] = $player;
+            }
+            else if(strtolower($firstName) === strtolower($playerFirstName))
             {
                 $options[] = $player;
             }
@@ -397,7 +409,7 @@ foreach($files as $file)
                 {
                     if($mIndex > 1)
                     {
-                        echo "\n\t\\tt-----------------------------------\n";
+                        echo "\n\t\t\t-----------------------------------\n";
                     }
                     echo "\n\t\t\tProcessing Match - " . $matchName . " [" . $mIndex . "/" . count(array_keys($seriesDetails)) . "]\n";
 
