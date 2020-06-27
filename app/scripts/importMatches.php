@@ -245,7 +245,7 @@ function getPlayerIdFromShortName($name, $players, $bench)
     {
         if($name === $player['name'])
         {
-            $options[] = $player;
+            return $player['playerId'];
         }
         else
         {
@@ -260,9 +260,9 @@ function getPlayerIdFromShortName($name, $players, $bench)
             {
                 $options[] = $player;
             }
-            else if(strtolower($firstName) === strtolower($playerFirstName))
+            else if((count($nameParts) === 1) && (strtolower($firstName) === strtolower($playerFirstName)))
             {
-                $options[] = $player;
+                return $player['playerId'];
             }
         }
     }
@@ -271,7 +271,7 @@ function getPlayerIdFromShortName($name, $players, $bench)
     {
         if($name === $player['name'])
         {
-            $options[] = $player;
+            return $player['playerId'];
         }
         else
         {
@@ -286,9 +286,9 @@ function getPlayerIdFromShortName($name, $players, $bench)
             {
                 $options[] = $player;
             }
-            else if(strtolower($firstName) === strtolower($playerFirstName))
+            else if((count($nameParts) === 1) && (strtolower($firstName) === strtolower($playerFirstName)))
             {
-                $options[] = $player;
+                return $player['playerId'];
             }
         }
     }
