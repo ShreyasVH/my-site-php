@@ -362,276 +362,280 @@ $seriesMap = createSeriesMap();
 
 $dataDirectory = APP_PATH . 'app/documents/cricbuzz/yearWiseDetails';
 
-$files = scandir($dataDirectory);
-$files = array_filter($files, function($file){
+$yearFolders = scandir($dataDirectory);
+$yearFolders = array_filter($yearFolders, function($file){
     return (($file !== '.') && ($file !== '..'));
 });
+$yearFolders = array_values($yearFolders);
 
-$playerData = [];
-
-$fIndex = 0;
-foreach($files as $file)
+foreach($yearFolders as $yearIndex => $yearFolder)
 {
-    if($fIndex > 0)
+    if($yearIndex > 0)
     {
-        echo "\n---------------------------------------------\n";
+        echo "\n-----------------------------------------------------------\n";
     }
 
-    $year = str_replace('.json', '', $file);
-    echo "\nProcessing year - " . $year . " [" . ($fIndex + 1) . "/" . count($files) . "]\n";
+    echo "\nProcessing year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 
-    $data = json_decode(file_get_contents($dataDirectory . '/' . $file), true);
+    $tourFolders = scandir($dataDirectory . '/' . $yearFolder . '/tours');
+    $tourFolders = array_filter($tourFolders, function($file){
+        return (($file !== '.') && ($file !== '..'));
+    });
+    $tourFolders = array_values($tourFolders);
 
-    $tIndex = 1;
-    foreach($data as $tourName => $tourDetails)
+    foreach($tourFolders as $tourIndex => $tourFolder)
     {
-        if($tIndex > 1)
+        if($tourIndex > 0)
         {
-            echo "\n\t.........................................\n";
+            echo "\n\t............................................................\n";
         }
+        echo "\n\tProcessing tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
 
-        echo "\n\tProcessing tour - " . $tourName . " [" . $tIndex . "/" . count(array_keys($data)) . "]\n";
+        $gameTypeFolders = scandir($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series');
+        $gameTypeFolders = array_filter($gameTypeFolders, function($file){
+            return (($file !== '.') && ($file !== '..'));
+        });
+        $gameTypeFolders = array_values($gameTypeFolders);
 
-        $series = $tourDetails['series'];
-        $sIndex = 1;
-        foreach($series as $gameType => $seriesDetails)
+        foreach($gameTypeFolders as $gameTypeIndex => $gameType)
         {
-            if($tIndex > 1)
+            if($gameTypeIndex > 0)
             {
-                echo "\n\t\t::::::::::::::::::::::::::::::\n";
+                echo "\n\t\\t---------------------------------------------------\n";
             }
-            echo "\n\t\tProcessing " . $gameType . " series. [" . $sIndex . "/" . count($series) . "]\n";
 
-            $mIndex = 1;
-            foreach($seriesDetails['matches'] as $matchName => $matchDetails)
+            echo "\n\t\tProcessing " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
+
+            $matchFiles = scandir($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType);
+            $matchFiles = array_filter($matchFiles, function($file){
+                return (($file !== '.') && ($file !== '..'));
+            });
+            $matchFiles = array_values($matchFiles);
+
+            foreach($matchFiles as $matchIndex => $matchFile)
             {
-                if(!empty($matchDetails))
+                if($matchIndex > 0)
                 {
-                    if($mIndex > 1)
+                    echo "\n\t\t\t...................................\n";
+                }
+
+                $matchDetails = json_decode(file_get_contents($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType . '/' . $matchFile), true);
+                echo "\n\t\t\tProcessing match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
+                $tourName = $matchDetails['tourName'];
+                $matchName = $matchDetails['name'];
+
+                $payload = [
+                    'seriesId' => getSeriesId($tourName, $gameType, $seriesMap),
+                    'team1' => getTeamId($matchDetails['team1'], $teamMap),
+                    'team2' => getTeamId($matchDetails['team2'], $teamMap),
+                    'result' => $matchDetails['result'],
+                    'stadium' => getStadiumId($matchDetails['stadium']['name'], $stadiumMap),
+                    'startTime' => date('Y-m-d H:i:s', $matchDetails['startTime'] / 1000)
+                ];
+
+                if(array_key_exists('tossWinner', $matchDetails))
+                {
+                    $payload['tossWinner'] = getTeamId($matchDetails['tossWinner'], $teamMap);
+                }
+
+                if(array_key_exists('batFirst', $matchDetails))
+                {
+                    $payload['batFirst'] = getTeamId($matchDetails['batFirst'], $teamMap);
+                }
+
+                if(array_key_exists('winner', $matchDetails))
+                {
+                    $payload['winner'] = getTeamId($matchDetails['winner'], $teamMap);
+                }
+
+                if(array_key_exists('winMargin', $matchDetails))
+                {
+                    $payload['winMargin'] = (int) $matchDetails['winMargin'];
+                }
+
+                if(array_key_exists('winMarginType', $matchDetails))
+                {
+                    $payload['winMarginType'] = $matchDetails['winMarginType'];
+                }
+
+                if(array_key_exists('extras', $matchDetails))
+                {
+                    $extras = [];
+                    foreach($matchDetails['extras'] as $extrasObject)
                     {
-                        echo "\n\t\t\t-----------------------------------\n";
+                        $extras[] = [
+                            'runs' => $extrasObject['runs'],
+                            'type' => $extrasObject['type'],
+                            'battingTeam' => getTeamId($extrasObject['battingTeam'], $teamMap),
+                            'bowlingTeam' => getTeamId($extrasObject['bowlingTeam'], $teamMap),
+                            'innings' => $extrasObject['innings'],
+                            'teamInnings' => $extrasObject['teamInnings']
+                        ];
                     }
-                    echo "\n\t\t\tProcessing Match - " . $matchName . " [" . $mIndex . "/" . count(array_keys($seriesDetails['matches'])) . "]\n";
-
-
-                    $payload = [
-                        'seriesId' => getSeriesId($tourName, $gameType, $seriesMap),
-                        'team1' => getTeamId($matchDetails['team1'], $teamMap),
-                        'team2' => getTeamId($matchDetails['team2'], $teamMap),
-                        'result' => $matchDetails['result'],
-                        'stadium' => getStadiumId($matchDetails['stadium']['name'], $stadiumMap),
-                        'startTime' => date('Y-m-d H:i:s', $matchDetails['startTime'] / 1000)
-                    ];
-
-                    if(array_key_exists('tossWinner', $matchDetails))
+                    $payload['extras'] = $extras;
+                }
+                $players = [];
+                $bench = [];
+                if(array_key_exists('players', $matchDetails))
+                {
+                    foreach($matchDetails['players'] as $player)
                     {
-                        $payload['tossWinner'] = getTeamId($matchDetails['tossWinner'], $teamMap);
+                        $players[] = [
+                            'playerId' => getPlayerId($player['player'], $playerMap),
+                            'teamId' => getTeamId($player['team'], $teamMap),
+                            'name' => $player['player']
+                        ];
                     }
+                }
 
-                    if(array_key_exists('batFirst', $matchDetails))
+                if(array_key_exists('bench', $matchDetails))
+                {
+                    foreach($matchDetails['bench'] as $player)
                     {
-                        $payload['batFirst'] = getTeamId($matchDetails['batFirst'], $teamMap);
-                    }
-
-                    if(array_key_exists('winner', $matchDetails))
-                    {
-                        $payload['winner'] = getTeamId($matchDetails['winner'], $teamMap);
-                    }
-
-                    if(array_key_exists('winMargin', $matchDetails))
-                    {
-                        $payload['winMargin'] = (int) $matchDetails['winMargin'];
-                    }
-
-                    if(array_key_exists('winMarginType', $matchDetails))
-                    {
-                        $payload['winMarginType'] = $matchDetails['winMarginType'];
-                    }
-
-                    if(array_key_exists('extras', $matchDetails))
-                    {
-                        $extras = [];
-                        foreach($matchDetails['extras'] as $extrasObject)
-                        {
-                            $extras[] = [
-                                'runs' => $extrasObject['runs'],
-                                'type' => $extrasObject['type'],
-                                'battingTeam' => getTeamId($extrasObject['battingTeam'], $teamMap),
-                                'bowlingTeam' => getTeamId($extrasObject['bowlingTeam'], $teamMap),
-                                'innings' => $extrasObject['innings'],
-                                'teamInnings' => $extrasObject['teamInnings']
-                            ];
-                        }
-                        $payload['extras'] = $extras;
-                    }
-                    $players = [];
-                    $bench = [];
-                    if(array_key_exists('players', $matchDetails))
-                    {
-                        foreach($matchDetails['players'] as $player)
-                        {
-                            $players[] = [
-                                'playerId' => getPlayerId($player['player'], $playerMap),
-                                'teamId' => getTeamId($player['team'], $teamMap),
-                                'name' => $player['player']
-                            ];
-                        }
-                    }
-
-                    if(array_key_exists('bench', $matchDetails))
-                    {
-                        foreach($matchDetails['bench'] as $player)
-                        {
-                            $bench[] = [
-                                'playerId' => getPlayerId($player['player'], $playerMap),
-                                'teamId' => getTeamId($player['team'], $teamMap),
-                                'name' => $player['player']
-                            ];
-                        }
-
-                        $payload['players'] = $players;
-                    }
-
-                    if(array_key_exists('battingScores', $matchDetails))
-                    {
-                        $battingScores = [];
-
-                        foreach($matchDetails['battingScores'] as $battingScore)
-                        {
-                            $battingScoreObject = [
-                                'playerId' => getPlayerIdFromShortName($battingScore['player'], $players, $bench),
-                                'runs' => $battingScore['runs'],
-                                'balls' => $battingScore['balls'],
-                                'fours' => $battingScore['fours'],
-                                'sixes' => $battingScore['sixes'],
-                                'innings' => $battingScore['innings'],
-                                'teamInnings' => $battingScore['teamInnings']
-                            ];
-
-                            if(array_key_exists('dismissalMode', $battingScore))
-                            {
-                                $battingScoreObject['dismissalMode'] = getDismissalModeId($battingScore['dismissalMode'], $dismissalModeMap);
-
-                                if(array_key_exists('bowler', $battingScore))
-                                {
-                                    $battingScoreObject['bowlerId'] = getPlayerIdFromShortName($battingScore['bowler'], $players, $bench);
-                                }
-
-                                if(array_key_exists('fielders', $battingScore))
-                                {
-                                    $fielders = [];
-                                    $fielderParts = explode(', ', $battingScore['fielders']);
-                                    foreach($fielderParts as $fielder)
-                                    {
-                                        $fielders[] = getPlayerIdFromShortName($fielder, $players, $bench);
-                                    }
-
-                                    $battingScoreObject['fielders'] = implode(', ', $fielders);
-                                }
-                            }
-
-                            $battingScores[] = $battingScoreObject;
-                        }
-
-                        $payload['battingScores'] = $battingScores;
-                    }
-
-                    if(array_key_exists('bowlingFigures', $matchDetails))
-                    {
-                        $bowlingFigures = [];
-
-                        foreach($matchDetails['bowlingFigures'] as $bowlingFigure)
-                        {
-                            $bowlingFigures[] = [
-                                'playerId' => getPlayerIdFromShortName($bowlingFigure['player'], $players, $bench),
-                                'balls' => $bowlingFigure['balls'],
-                                'maidens' => $bowlingFigure['maidens'],
-                                'runs' => $bowlingFigure['runs'],
-                                'wickets' => $bowlingFigure['wickets'],
-                                'innings' => $bowlingFigure['innings'],
-                                'teamInnings' => $bowlingFigure['teamInnings']
-                            ];
-                        }
-
-                        $payload['bowlingFigures'] = $bowlingFigures;
-                    }
-
-
-                    if(!empty($players))
-                    {
-                        $playerObjects = [];
-                        foreach($players as $player)
-                        {
-                            $playerObjects[] = [
-                                'playerId' => $player['playerId'],
-                                'teamId' => $player['teamId']
-                            ];
-                        }
-                        $payload['players'] = $playerObjects;
-                    }
-
-                    if(!empty($bench))
-                    {
-                        $benchObjects = [];
-                        foreach($bench as $player)
-                        {
-                            $benchObjects[] = [
-                                'playerId' => $player['playerId'],
-                                'teamId' => $player['teamId']
-                            ];
-                        }
-                        $payload['bench'] = $benchObjects;
-                    }
-
-                    if(array_key_exists('manOfTheMatchList', $matchDetails))
-                    {
-                        $motmList = [];
-
-                        foreach($matchDetails['manOfTheMatchList'] as $player)
-                        {
-                            $motmList[] = getPlayerIdFromShortName($player, $players, $bench);
-                        }
-
-                        $payload['manOfTheMatchList'] = $motmList;
-                    }
-
-//                    echo "\n\t\t\t" . json_encode($payload) . "\n";
-
-                    $response = addMatch($payload);
-                    if(200 === $response['status'])
-                    {
-                        $stats['success']++;
-                    }
-                    else
-                    {
-                        $stats['failure']++;
-                        $failures[] = [
-                            'tour' => $tourName,
-                            'gameType' => $gameType,
-                            'match' => $matchName,
-                            'payload' => json_encode($payload),
-                            'response' => $response['result'],
-                            'status' => $response['status']
+                        $bench[] = [
+                            'playerId' => getPlayerId($player['player'], $playerMap),
+                            'teamId' => getTeamId($player['team'], $teamMap),
+                            'name' => $player['player']
                         ];
                     }
 
-                    writeData(APP_PATH . 'app/documents/importMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-                    writeData(APP_PATH . 'app/documents/importMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
-
-                    echo "\n\t\t\tProcessed Match - " . $matchName . " [" . $mIndex . "/" . count(array_keys($seriesDetails['matches'])) . "]\n";
-                    $mIndex++;
+                    $payload['players'] = $players;
                 }
+
+                if(array_key_exists('battingScores', $matchDetails))
+                {
+                    $battingScores = [];
+
+                    foreach($matchDetails['battingScores'] as $battingScore)
+                    {
+                        $battingScoreObject = [
+                            'playerId' => getPlayerIdFromShortName($battingScore['player'], $players, $bench),
+                            'runs' => $battingScore['runs'],
+                            'balls' => $battingScore['balls'],
+                            'fours' => $battingScore['fours'],
+                            'sixes' => $battingScore['sixes'],
+                            'innings' => $battingScore['innings'],
+                            'teamInnings' => $battingScore['teamInnings']
+                        ];
+
+                        if(array_key_exists('dismissalMode', $battingScore))
+                        {
+                            $battingScoreObject['dismissalMode'] = getDismissalModeId($battingScore['dismissalMode'], $dismissalModeMap);
+
+                            if(array_key_exists('bowler', $battingScore))
+                            {
+                                $battingScoreObject['bowlerId'] = getPlayerIdFromShortName($battingScore['bowler'], $players, $bench);
+                            }
+
+                            if(array_key_exists('fielders', $battingScore))
+                            {
+                                $fielders = [];
+                                $fielderParts = explode(', ', $battingScore['fielders']);
+                                foreach($fielderParts as $fielder)
+                                {
+                                    $fielders[] = getPlayerIdFromShortName($fielder, $players, $bench);
+                                }
+
+                                $battingScoreObject['fielders'] = implode(', ', $fielders);
+                            }
+                        }
+
+                        $battingScores[] = $battingScoreObject;
+                    }
+
+                    $payload['battingScores'] = $battingScores;
+                }
+
+                if(array_key_exists('bowlingFigures', $matchDetails))
+                {
+                    $bowlingFigures = [];
+
+                    foreach($matchDetails['bowlingFigures'] as $bowlingFigure)
+                    {
+                        $bowlingFigures[] = [
+                            'playerId' => getPlayerIdFromShortName($bowlingFigure['player'], $players, $bench),
+                            'balls' => $bowlingFigure['balls'],
+                            'maidens' => $bowlingFigure['maidens'],
+                            'runs' => $bowlingFigure['runs'],
+                            'wickets' => $bowlingFigure['wickets'],
+                            'innings' => $bowlingFigure['innings'],
+                            'teamInnings' => $bowlingFigure['teamInnings']
+                        ];
+                    }
+
+                    $payload['bowlingFigures'] = $bowlingFigures;
+                }
+
+
+                if(!empty($players))
+                {
+                    $playerObjects = [];
+                    foreach($players as $player)
+                    {
+                        $playerObjects[] = [
+                            'playerId' => $player['playerId'],
+                            'teamId' => $player['teamId']
+                        ];
+                    }
+                    $payload['players'] = $playerObjects;
+                }
+
+                if(!empty($bench))
+                {
+                    $benchObjects = [];
+                    foreach($bench as $player)
+                    {
+                        $benchObjects[] = [
+                            'playerId' => $player['playerId'],
+                            'teamId' => $player['teamId']
+                        ];
+                    }
+                    $payload['bench'] = $benchObjects;
+                }
+
+                if(array_key_exists('manOfTheMatchList', $matchDetails))
+                {
+                    $motmList = [];
+
+                    foreach($matchDetails['manOfTheMatchList'] as $player)
+                    {
+                        $motmList[] = getPlayerIdFromShortName($player, $players, $bench);
+                    }
+
+                    $payload['manOfTheMatchList'] = $motmList;
+                }
+
+//                    echo "\n\t\t\t" . json_encode($payload) . "\n";
+
+                $response = addMatch($payload);
+                if(200 === $response['status'])
+                {
+                    $stats['success']++;
+                }
+                else
+                {
+                    $stats['failure']++;
+                    $failures[] = [
+                        'tour' => $tourName,
+                        'gameType' => $gameType,
+                        'match' => $matchName,
+                        'payload' => json_encode($payload),
+                        'response' => $response['result'],
+                        'status' => $response['status']
+                    ];
+                }
+
+                writeData(APP_PATH . 'app/documents/importMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+                writeData(APP_PATH . 'app/documents/importMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+
+                echo "\n\t\t\tProcessed match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
             }
 
-            echo "\n\t\tProcessed " . $gameType . " series. [" . $sIndex . "/" . count($series) . "]\n";
-            $sIndex++;
+            echo "\n\t\tProcessed " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
         }
 
-        echo "\n\tProcessed tour - " . $tourName . " [" . $tIndex . "/" . count(array_keys($data)) . "]\n";
-        $tIndex++;
+        echo "\n\tProcessed tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
     }
 
-    echo "\nProcessed year - " . $year . "[" . ($fIndex + 1) . "/" . count($files) . "]\n";
-    $fIndex++;
+    echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 }
-
