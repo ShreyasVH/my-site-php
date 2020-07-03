@@ -401,7 +401,7 @@ foreach($yearFolders as $yearIndex => $yearFolder)
         {
             if($gameTypeIndex > 0)
             {
-                echo "\n\t\\t---------------------------------------------------\n";
+                echo "\n\t\t---------------------------------------------------\n";
             }
 
             echo "\n\t\tProcessing " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";

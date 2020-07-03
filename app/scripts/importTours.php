@@ -86,7 +86,8 @@ foreach($tours as $tour)
     {
         $stats['failure']++;
         $failures[] = [
-            'name' => $tour,
+            'name' => $tour['name'],
+            'payload' => json_encode($payload),
             'response' => $response['result'],
             'status' => $response['status']
         ];

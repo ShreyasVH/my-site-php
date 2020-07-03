@@ -46,7 +46,8 @@ function getTours()
     for($year = 1890; $year <= date('Y'); $year++)
     {
         $payload = [
-            'year' => $year
+            'year' => $year,
+            'count' => 1000
         ];
 
         $apiResponse = $apiHelper->post('cricbuzz/tours/filter', $payload, 'CRICBUZZ');
@@ -54,6 +55,10 @@ function getTours()
         {
             $decodedResponse = json_decode($apiResponse['result'], true);
             $tours = array_merge($tours, $decodedResponse);
+        }
+        else
+        {
+            echo "\nTour loading failed - " . $year . "\n";
         }
     }
     
