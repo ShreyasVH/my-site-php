@@ -96,10 +96,46 @@ function getCountryId($name, $countryMap)
     return $id;
 }
 
+function getExistingPlayers()
+{
+    global $apiHelper;
+    $players = [];
+    $offset = 0;
+    $count = 1000;
+
+    while(true)
+    {
+        $apiResponse = $apiHelper->get('cricbuzz/players/all/' . $offset . '/' . $count, 'CRICBUZZ');
+        if($apiResponse['status'] === 200)
+        {
+            $batchPlayers = json_decode($apiResponse['result'], true);
+            foreach($batchPlayers as $player)
+            {
+                $players[] = $player['name'] . '_' . $player['country']['name'];
+            }
+
+            if(count($batchPlayers) < $count)
+            {
+                break;
+            }
+            else
+            {
+                $offset += $count;
+            }
+        }
+        else
+        {
+            echo "\nRetrying....\n";
+        }
+    }
+
+    return $players;
+}
+
 $playerMap = getPlayers();
 
 $countryMap = createCountryMap();
-
+$existingPlayers = getExistingPlayers();
 
 $index = 0;
 foreach($playerMap as $team => $players)
@@ -120,30 +156,37 @@ foreach($playerMap as $team => $players)
         }
         echo "\n\tProcessing Player. [" . ($pIndex + 1) . "/" . count($players) . "]\n";
 
-        $payload = [
-            'name' => $player['name'],
-            'countryId' => getCountryId($player['country'], $countryMap),
-            'image' => 'https://res.cloudinary.com/dyoxubvbg/image/upload/v1577106216/artists/default_m.jpg'
-        ];
-
-        $response = addPlayer($payload);
-        if(200 === $response['status'])
+        if(in_array($player['name'] . '_' . $player['country'], $existingPlayers))
         {
             $stats['success']++;
         }
         else
         {
-            $stats['failure']++;
-            $failures[] = [
-                'name' => $player,
-                'team' => $team,
-                'response' => $response['result'],
-                'status' => $response['status']
+            $payload = [
+                'name' => $player['name'],
+                'countryId' => getCountryId($player['country'], $countryMap),
+                'image' => 'https://res.cloudinary.com/dyoxubvbg/image/upload/v1577106216/artists/default_m.jpg'
             ];
+
+            $response = addPlayer($payload);
+            if(200 === $response['status'])
+            {
+                $stats['success']++;
+            }
+            else
+            {
+                $stats['failure']++;
+                $failures[] = [
+                    'name' => $player,
+                    'team' => $team,
+                    'response' => $response['result'],
+                    'status' => $response['status']
+                ];
+            }
         }
 
-        writeData(APP_PATH . 'app/documents/importPlayerStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-        writeData(APP_PATH . 'app/documents/importPlayerFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+        writeData(APP_PATH . 'logs/importPlayerStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+        writeData(APP_PATH . 'logs/importPlayerFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
         echo "\n\tProcessed Player. [" . ($pIndex + 1) . "/" . count($players) . "]\n";
         $pIndex++;
