@@ -96,8 +96,27 @@ function getCountryId($name, $countryMap)
     return $id;
 }
 
+function getExistingStadiums()
+{
+    global $apiHelper;
+    $stadiums = [];
+    $response = $apiHelper->get('cricbuzz/stadiums', 'CRICBUZZ');
+    if(200 === $response['status'])
+    {
+        $decodedResponse = json_decode($response['result'], true);
+        foreach($decodedResponse as $stadium)
+        {
+            $stadiums[] = $stadium['name'] . '_' . $stadium['country']['id'];
+        }
+    }
+
+    return $stadiums;
+}
+
 $stadiums = getStadiums();
 $countryMap = createCountryMap();
+
+$existingStadiums = getExistingStadiums();
 
 $index = 0;
 foreach($stadiums as $stadium)
@@ -109,30 +128,38 @@ foreach($stadiums as $stadium)
 
     echo "\nProcessing Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
 
-    $payload = [
-        'name' => $stadium['name'],
-        'countryId' => getCountryId($stadium['country'], $countryMap),
-        'city' => $stadium['city']
-    ];
-
-    $response = addStadium($payload);
-    if(200 === $response['status'])
+    if(in_array($stadium['name'] . '_' . getCountryId($stadium['country'], $countryMap), $existingStadiums))
     {
         $stats['success']++;
     }
     else
     {
-        $stats['failure']++;
-        $failures[] = [
+        $payload = [
             'name' => $stadium['name'],
-            'payload' => json_encode($payload),
-            'response' => $response['result'],
-            'status' => $response['status']
+            'countryId' => getCountryId($stadium['country'], $countryMap),
+            'city' => $stadium['city']
         ];
+
+        $response = addStadium($payload);
+        if(200 === $response['status'])
+        {
+            $stats['success']++;
+        }
+        else
+        {
+            $stats['failure']++;
+            $failures[] = [
+                'name' => $stadium['name'],
+                'payload' => json_encode($payload),
+                'response' => $response['result'],
+                'status' => $response['status']
+            ];
+        }
     }
 
-    writeData(APP_PATH . 'app/documents/importStadiumStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-    writeData(APP_PATH . 'app/documents/importStadiumFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+
+    writeData(APP_PATH . 'logs/importStadiumStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'logs/importStadiumFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
     echo "\nProcessed Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
     $index++;

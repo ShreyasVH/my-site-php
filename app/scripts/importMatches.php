@@ -354,6 +354,26 @@ function getDismissalModeId($name, $dismissalModeMap)
     return $id;
 }
 
+function correctPlayer($input)
+{
+    $output = $input;
+    $corrections = [
+        'Amjad Gul' => 'Amjad Gul Khan',
+        'Shenwari' => 'Samiullah Shinwari',
+        'Samiullah Shenwari' => 'Samiullah Shinwari',
+        'Fareed Ahmad' => 'Fareed Malik',
+        'Asghar Stanikzai' => 'Asghar Afghan',
+        'Mosaddek Hossain Saikat' => 'Mosaddek Hossain'
+    ];
+
+    if(array_key_exists($input, $corrections))
+    {
+        $output = $corrections[$input];
+    }
+    
+    return $output;
+}
+
 $teamMap = createTeamMap();
 $stadiumMap = createStadiumMap();
 $playerMap = createPlayerMap();
