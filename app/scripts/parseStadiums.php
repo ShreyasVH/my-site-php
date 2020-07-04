@@ -46,7 +46,7 @@ foreach($yearFolders as $yearIndex => $yearFolder)
         {
             if($gameTypeIndex > 0)
             {
-                echo "\n\t\\t---------------------------------------------------\n";
+                echo "\n\t\t---------------------------------------------------\n";
             }
 
             echo "\n\t\tProcessing " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
@@ -84,41 +84,6 @@ foreach($yearFolders as $yearIndex => $yearFolder)
 
     echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 }
-
-//$dataDirectory = APP_PATH . 'app/documents/cricbuzz/yearWiseDetails';
-//
-//$files = scandir($dataDirectory);
-//$files = array_filter($files, function($file){
-//	return (($file !== '.') && ($file !== '..'));
-//});
-//
-//$stadiums = [];
-//
-//foreach($files as $file)
-//{
-//	$data = json_decode(file_get_contents($dataDirectory . '/' . $file), true);
-//
-//    foreach($data as $tourName => $tourDetails)
-//    {
-//        echo "\n" . $tourName . "\n";
-//        $seriesInfo = $tourDetails['series'];
-//        foreach($seriesInfo as $gameType => $seriesDetails)
-//        {
-//            echo "\n\t" . $gameType . "\n";
-//            $matches = $seriesDetails['matches'];
-//            foreach($matches as $matchName => $matchDetails)
-//            {
-//                echo "\n\t\t" . $matchName . "\n";
-//                if(array_key_exists('stadium', $matchDetails))
-//                {
-//                    $stadium = $matchDetails['stadium'];
-//                    $stadiums[$stadium['name']] = $stadium;
-//
-//                }
-//            }
-//		}
-//	}
-//}
 
 usort($stadiums, function($stadium1, $stadium2) {
 	return strcasecmp($stadium1['name'], $stadium2['name']);

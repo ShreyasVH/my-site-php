@@ -50,28 +50,4 @@ foreach($yearFolders as $yearIndex => $yearFolder)
     echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 }
 
-//$dataDirectory = APP_PATH . 'app/documents/cricbuzz/yearWiseDetails';
-//
-//$files = scandir($dataDirectory);
-//$files = array_filter($files, function($file){
-//    return (($file !== '.') && ($file !== '..'));
-//});
-//
-//$tours = [];
-//
-//foreach($files as $file)
-//{
-//    $data = json_decode(file_get_contents($dataDirectory . '/' . $file), true);
-//
-//    foreach($data as $tourName => $tourDetails)
-//    {
-//        echo "\n" . $tourName . "\n";
-//        $tours[] = [
-//            'name' => $tourName,
-//            'startTime' => $tourDetails['startTime'],
-//            'endTime' => $tourDetails['endTime']
-//        ];
-//    }
-//}
-
 file_put_contents(APP_PATH . 'app/documents/cricbuzz/tours.json', json_encode($tours, JSON_PRETTY_PRINT));
