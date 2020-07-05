@@ -59,7 +59,25 @@ function addTeam($payload)
     return $apiHelper->post('cricbuzz/teams', $payload, 'CRICBUZZ');
 }
 
+function getExistingTeams()
+{
+    global $apiHelper;
+    $teams = [];
+    $response = $apiHelper->get('cricbuzz/teams', 'CRICBUZZ');
+    if(200 === $response['status'])
+    {
+        $decodedResponse = json_decode($response['result'], true);
+        foreach($decodedResponse as $team)
+        {
+            $teams[] = $team['name'];
+        }
+    }
+
+    return $teams;
+}
+
 $teams = getTeams();
+$existingTeams = getExistingTeams();
 
 $index = 0;
 foreach($teams as $team)
@@ -71,30 +89,38 @@ foreach($teams as $team)
 
     echo "\nProcessing Team. [" . ($index + 1) . "/" . count($teams) . "]\n";
 
-    $payload = [
-        'name' => $team,
-        'countryId' => 1,
-        'teamType' => 0
-    ];
-
-    $response = addTeam($payload);
-    if(200 === $response['status'])
+    if(in_array($team, $existingTeams))
     {
         $stats['success']++;
     }
     else
     {
-        $stats['failure']++;
-        $failures[] = [
+        $payload = [
             'name' => $team,
-            'payload' => json_encode($payload),
-            'response' => $response['result'],
-            'status' => $response['status']
+            'countryId' => 1,
+            'teamType' => 0
         ];
+
+        $response = addTeam($payload);
+        if(200 === $response['status'])
+        {
+            $stats['success']++;
+        }
+        else
+        {
+            $stats['failure']++;
+            $failures[] = [
+                'name' => $team,
+                'payload' => json_encode($payload),
+                'response' => $response['result'],
+                'status' => $response['status']
+            ];
+        }
     }
 
-    writeData(APP_PATH . 'app/documents/importTeamStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-    writeData(APP_PATH . 'app/documents/importTeamFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+
+    writeData(APP_PATH . 'logs/importTeamStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'logs/importTeamFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
     echo "\nProcessed Team. [" . ($index + 1) . "/" . count($teams) . "]\n";
     $index++;

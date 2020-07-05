@@ -23,6 +23,7 @@ $stats = [
 ];
 
 $failures = [];
+$existingSeries = [];
 
 function getTeams()
 {
@@ -46,7 +47,8 @@ function getTours()
     for($year = 1890; $year <= date('Y'); $year++)
     {
         $payload = [
-            'year' => $year
+            'year' => $year,
+            'count' => 1000
         ];
 
         $apiResponse = $apiHelper->post('cricbuzz/tours/filter', $payload, 'CRICBUZZ');
@@ -54,6 +56,10 @@ function getTours()
         {
             $decodedResponse = json_decode($apiResponse['result'], true);
             $tours = array_merge($tours, $decodedResponse);
+        }
+        else
+        {
+            echo "\nTour loading failed - " . $year . "\n";
         }
     }
     
@@ -108,11 +114,22 @@ function createTeamMap()
 
 function createTourMap()
 {
+    global $apiHelper;
+    global $existingSeries;
     $tourMap = [];
     $tours = getTours();
     foreach($tours as $tour)
     {
         $tourMap[$tour['name']] = $tour['id'];
+        $tourResponse = $apiHelper->get('cricbuzz/tours/' . $tour['id'], 'CRICBUZZ');
+        if($tourResponse['status'] === 200)
+        {
+            $decodedResponse = json_decode($tourResponse['result'], true);
+            foreach($decodedResponse['seriesList'] as $series)
+            {
+                $existingSeries[] = $tour['name'] . '_' . $series['gameType'];
+            }
+        }
     }
     return $tourMap;
 }
@@ -158,42 +175,49 @@ foreach($series as $seriesDetails)
 
     echo "\nProcessing Series. [" . ($index + 1) . "/" . count($series) . "]\n";
 
-    $payload = [
-        'name' => $seriesDetails['name'],
-        'startTime' => date('Y-m-d H:i:s', $seriesDetails['startTime'] / 1000),
-        'endTime' => date('Y-m-d H:i:s', $seriesDetails['endTime'] / 1000),
-        'gameType' => $seriesDetails['gameType'],
-        'type' => $seriesDetails['type'],
-        'tourId' => getTourId($seriesDetails['tour'], $tourMap),
-        'homeCountryId' => 1
-    ];
-
-    $teams = [];
-    foreach($seriesDetails['teams'] as $team)
-    {
-        $teams[] = getTeamId($team, $teamMap);
-    }
-    $payload['teams'] = $teams;
-
-    $response = addSeries($payload);
-    if(200 === $response['status'])
+    if(in_array($seriesDetails['tour'] . '_' . $seriesDetails['gameType'], $existingSeries))
     {
         $stats['success']++;
     }
     else
     {
-        $stats['failure']++;
-        $failures[] = [
+        $payload = [
             'name' => $seriesDetails['name'],
+            'startTime' => date('Y-m-d H:i:s', $seriesDetails['startTime'] / 1000),
+            'endTime' => date('Y-m-d H:i:s', $seriesDetails['endTime'] / 1000),
             'gameType' => $seriesDetails['gameType'],
-            'payload' => json_encode($payload),
-            'response' => $response['result'],
-            'status' => $response['status']
+            'type' => $seriesDetails['type'],
+            'tourId' => getTourId($seriesDetails['tour'], $tourMap),
+            'homeCountryId' => 1
         ];
+
+        $teams = [];
+        foreach($seriesDetails['teams'] as $team)
+        {
+            $teams[] = getTeamId($team, $teamMap);
+        }
+        $payload['teams'] = $teams;
+
+        $response = addSeries($payload);
+        if(200 === $response['status'])
+        {
+            $stats['success']++;
+        }
+        else
+        {
+            $stats['failure']++;
+            $failures[] = [
+                'name' => $seriesDetails['name'],
+                'gameType' => $seriesDetails['gameType'],
+                'payload' => json_encode($payload),
+                'response' => $response['result'],
+                'status' => $response['status']
+            ];
+        }
     }
 
-    writeData(APP_PATH . 'app/documents/importSeriesStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-    writeData(APP_PATH . 'app/documents/importSeriesFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'logs/importSeriesStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'logs/importSeriesFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
     echo "\nProcessed Series. [" . ($index + 1) . "/" . count($series) . "]\n";
     $index++;

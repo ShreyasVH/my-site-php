@@ -7,3 +7,4 @@ TODO.txt
 .env
 .DS_Store
 app/documents/
+logs/

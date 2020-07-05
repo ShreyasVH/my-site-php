@@ -56,7 +56,7 @@ function getPlayers()
     global $apiHelper;
     $players = [];
     $offset = 0;
-    $count = 100;
+    $count = 1000;
 
     while(true)
     {
@@ -238,6 +238,7 @@ function getSeriesId($tourName, $gameType, $seriesMap)
 
 function getPlayerIdFromShortName($name, $players, $bench)
 {
+    $name = correctPlayer($name);
     $playerId = null;
     $options = [];
 
@@ -354,6 +355,19 @@ function getDismissalModeId($name, $dismissalModeMap)
     return $id;
 }
 
+function correctPlayer($input)
+{
+    $output = $input;
+    $corrections = json_decode(readData(APP_PATH . 'app/documents/cricbuzz/playerReplacements.json'), true);
+
+    if(array_key_exists($input, $corrections))
+    {
+        $output = $corrections[$input];
+    }
+    
+    return $output;
+}
+
 $teamMap = createTeamMap();
 $stadiumMap = createStadiumMap();
 $playerMap = createPlayerMap();
@@ -401,7 +415,7 @@ foreach($yearFolders as $yearIndex => $yearFolder)
         {
             if($gameTypeIndex > 0)
             {
-                echo "\n\t\\t---------------------------------------------------\n";
+                echo "\n\t\t---------------------------------------------------\n";
             }
 
             echo "\n\t\tProcessing " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
@@ -606,11 +620,13 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                 }
 
 //                    echo "\n\t\t\t" . json_encode($payload) . "\n";
+                $matchFilePath = APP_PATH . 'app/documents/cricbuzz/yearWiseDetails/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType . '/' . $matchFile;
 
                 $response = addMatch($payload);
                 if(200 === $response['status'])
                 {
                     $stats['success']++;
+                    unlink($matchFilePath);
                 }
                 else
                 {
@@ -623,10 +639,15 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                         'response' => $response['result'],
                         'status' => $response['status']
                     ];
+                    $decodedResponse = json_decode($response['result'], true);
+                    if(array_key_exists('description', $decodedResponse) && ($decodedResponse['description'] === 'Already Exists'))
+                    {
+                        unlink($matchFilePath);
+                    }
                 }
 
-                writeData(APP_PATH . 'app/documents/importMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-                writeData(APP_PATH . 'app/documents/importMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+                writeData(APP_PATH . 'logs/importMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+                writeData(APP_PATH . 'logs/importMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
                 echo "\n\t\t\tProcessed match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
             }

@@ -59,7 +59,27 @@ function addCountry($payload)
     return $apiHelper->post('cricbuzz/countries', $payload, 'CRICBUZZ');
 }
 
+function getExistingCountries()
+{
+    global $apiHelper;
+    $countries = [];
+
+    $apiResponse = $apiHelper->get('cricbuzz/countries', 'CRICBUZZ');
+    if($apiResponse['status'] === 200)
+    {
+        $decodedResponse = json_decode($apiResponse['result'], true);
+        foreach($decodedResponse as $country)
+        {
+            $countries[] = $country['name'];
+        }
+    }
+
+    return $countries;
+}
+
 $countries = getCountries();
+
+$existingCountries = getExistingCountries();
 
 $index = 0;
 foreach($countries as $country)
@@ -71,27 +91,35 @@ foreach($countries as $country)
 
     echo "\nProcessing Country. [" . ($index + 1) . "/" . count($countries) . "]\n";
 
-    $payload = [
-        'name' => $country
-    ];
-
-    $response = addCountry($payload);
-    if(200 === $response['status'])
+    if(in_array($country, $existingCountries))
     {
         $stats['success']++;
     }
     else
     {
-        $stats['failure']++;
-        $failures[] = [
-            'name' => $country,
-            'response' => $response['result'],
-            'status' => $response['status']
+        $payload = [
+            'name' => $country
         ];
+
+        $response = addCountry($payload);
+        if(200 === $response['status'])
+        {
+            $stats['success']++;
+        }
+        else
+        {
+            $stats['failure']++;
+            $failures[] = [
+                'name' => $country,
+                'payload' => json_encode($payload),
+                'response' => $response['result'],
+                'status' => $response['status']
+            ];
+        }
     }
 
-    writeData(APP_PATH . 'app/documents/importCountryStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
-    writeData(APP_PATH . 'app/documents/importCountryFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'logs/importCountryStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+    writeData(APP_PATH . 'logs/importCountryFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
     echo "\nProcessed Country. [" . ($index + 1) . "/" . count($countries) . "]\n";
     $index++;
