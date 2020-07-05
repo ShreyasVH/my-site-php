@@ -358,38 +358,7 @@ function getDismissalModeId($name, $dismissalModeMap)
 function correctPlayer($input)
 {
     $output = $input;
-    $corrections = [
-        'Amjad Gul' => 'Amjad Gul Khan',
-        'Shenwari' => 'Samiullah Shinwari',
-        'Samiullah Shenwari' => 'Samiullah Shinwari',
-        'Fareed Ahmad' => 'Fareed Malik',
-        'Asghar Stanikzai' => 'Asghar Afghan',
-        'Mosaddek Hossain Saikat' => 'Mosaddek Hossain',
-        'Stanikzai' => 'Asghar Afghan',
-        'Ali Zadran' => 'Noor Ali Zadran',
-        'KC Karan' => 'Karan KC',
-        'Dipendra Singh' => 'Dipendra Singh Airee',
-        'Abdul Majid' => 'Abdul Majid Malik',
-        'Chandana Amrawickram' => 'Chandana Liyanage',
-        'Ahmed Ameel' => 'Ahmed Ameel Mauroof',
-        'Imran Ali' => 'Imran Ali Butt',
-        'Muslim Yar' => 'Muslim Ashraf',
-        'Raja Adeel' => 'Raja Adeel Iqbal',
-        'Hassan Khan M' => 'Hassan Khan Mohammad',
-        'Ariff Jamaludeen' => 'Mohamed Arief',
-        'George Aguis' => 'George Agius',
-        'Kuldeep Karan' => 'Kuldeep Lal',
-        'Atif Mahmood' => 'Atif Mehmood',
-        'Paul Hennessey' => 'Paul Hennessy',
-        'Wedage Janaka' => 'Wedage Malinda',
-        'Balaji Avanish' => 'Balaji Avanish Pai',
-        'Mark Bacarese' => 'Mark O Bacarese Pai',
-        'Palaniapan Meiyappan' => 'Karthik Palaniapan',
-        'Raja Tasawar Iqbal' => 'Ali Raza',
-        'Mohammad Noman' => 'Noman Kamawi',
-        'James Cameron' => 'James Cameron-Dow',
-        ''
-    ];
+    $corrections = json_decode(readData(APP_PATH . 'app/documents/cricbuzz/playerReplacements.json'), true);
 
     if(array_key_exists($input, $corrections))
     {
