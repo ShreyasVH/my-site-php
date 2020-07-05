@@ -238,6 +238,7 @@ function getSeriesId($tourName, $gameType, $seriesMap)
 
 function getPlayerIdFromShortName($name, $players, $bench)
 {
+    $name = correctPlayer($name);
     $playerId = null;
     $options = [];
 
@@ -363,7 +364,31 @@ function correctPlayer($input)
         'Samiullah Shenwari' => 'Samiullah Shinwari',
         'Fareed Ahmad' => 'Fareed Malik',
         'Asghar Stanikzai' => 'Asghar Afghan',
-        'Mosaddek Hossain Saikat' => 'Mosaddek Hossain'
+        'Mosaddek Hossain Saikat' => 'Mosaddek Hossain',
+        'Stanikzai' => 'Asghar Afghan',
+        'Ali Zadran' => 'Noor Ali Zadran',
+        'KC Karan' => 'Karan KC',
+        'Dipendra Singh' => 'Dipendra Singh Airee',
+        'Abdul Majid' => 'Abdul Majid Malik',
+        'Chandana Amrawickram' => 'Chandana Liyanage',
+        'Ahmed Ameel' => 'Ahmed Ameel Mauroof',
+        'Imran Ali' => 'Imran Ali Butt',
+        'Muslim Yar' => 'Muslim Ashraf',
+        'Raja Adeel' => 'Raja Adeel Iqbal',
+        'Hassan Khan M' => 'Hassan Khan Mohammad',
+        'Ariff Jamaludeen' => 'Mohamed Arief',
+        'George Aguis' => 'George Agius',
+        'Kuldeep Karan' => 'Kuldeep Lal',
+        'Atif Mahmood' => 'Atif Mehmood',
+        'Paul Hennessey' => 'Paul Hennessy',
+        'Wedage Janaka' => 'Wedage Malinda',
+        'Balaji Avanish' => 'Balaji Avanish Pai',
+        'Mark Bacarese' => 'Mark O Bacarese Pai',
+        'Palaniapan Meiyappan' => 'Karthik Palaniapan',
+        'Raja Tasawar Iqbal' => 'Ali Raza',
+        'Mohammad Noman' => 'Noman Kamawi',
+        'James Cameron' => 'James Cameron-Dow',
+        ''
     ];
 
     if(array_key_exists($input, $corrections))
