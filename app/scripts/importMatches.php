@@ -367,6 +367,16 @@ function correctPlayer($input)
     return $output;
 }
 
+function getFiles($path)
+{
+    $files = scandir($path);
+    $files = array_filter($files, function($file){
+        return (($file !== '.') && ($file !== '..'));
+    });
+    $files = array_values($files);
+    return $files;
+}
+
 $teamMap = createTeamMap();
 $stadiumMap = createStadiumMap();
 $playerMap = createPlayerMap();
@@ -375,14 +385,11 @@ $seriesMap = createSeriesMap();
 
 $dataDirectory = APP_PATH . 'app/documents/cricbuzz/yearWiseDetails';
 
-$yearFolders = scandir($dataDirectory);
-$yearFolders = array_filter($yearFolders, function($file){
-    return (($file !== '.') && ($file !== '..'));
-});
-$yearFolders = array_values($yearFolders);
+$yearFolders = getFiles($dataDirectory);
 
 foreach($yearFolders as $yearIndex => $yearFolder)
 {
+    $yearFolderPath = $dataDirectory . DIRECTORY_SEPARATOR . $yearFolder;
     if($yearIndex > 0)
     {
         echo "\n-----------------------------------------------------------\n";
@@ -390,28 +397,34 @@ foreach($yearFolders as $yearIndex => $yearFolder)
 
     echo "\nProcessing year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 
-    $tourFolders = scandir($dataDirectory . '/' . $yearFolder . '/tours');
-    $tourFolders = array_filter($tourFolders, function($file){
-        return (($file !== '.') && ($file !== '..'));
-    });
-    $tourFolders = array_values($tourFolders);
+    $tourListFilePath = $yearFolderPath . DIRECTORY_SEPARATOR . 'tourList.json';
+    if(file_exists($tourListFilePath))
+    {
+        unlink($tourListFilePath);
+    }
+
+    $tourFolders = getFiles($yearFolderPath . DIRECTORY_SEPARATOR . 'tours');
 
     foreach($tourFolders as $tourIndex => $tourFolder)
     {
+        $tourFolderPath = $yearFolderPath . DIRECTORY_SEPARATOR . 'tours' . DIRECTORY_SEPARATOR . $tourFolder;
         if($tourIndex > 0)
         {
             echo "\n\t............................................................\n";
         }
         echo "\n\tProcessing tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
 
-        $gameTypeFolders = scandir($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series');
-        $gameTypeFolders = array_filter($gameTypeFolders, function($file){
-            return (($file !== '.') && ($file !== '..'));
-        });
-        $gameTypeFolders = array_values($gameTypeFolders);
+        $tourDetailsFilePath = $tourFolderPath . DIRECTORY_SEPARATOR . 'details.json';
+        if(file_exists($tourDetailsFilePath))
+        {
+            unlink($tourDetailsFilePath);
+        }
+
+        $gameTypeFolders = getFiles($tourFolderPath . DIRECTORY_SEPARATOR . 'series');
 
         foreach($gameTypeFolders as $gameTypeIndex => $gameType)
         {
+            $gameTypeFolderPath = $tourFolderPath . DIRECTORY_SEPARATOR . 'series' . DIRECTORY_SEPARATOR . $gameType;
             if($gameTypeIndex > 0)
             {
                 echo "\n\t\t---------------------------------------------------\n";
@@ -419,20 +432,17 @@ foreach($yearFolders as $yearIndex => $yearFolder)
 
             echo "\n\t\tProcessing " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
 
-            $matchFiles = scandir($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType);
-            $matchFiles = array_filter($matchFiles, function($file){
-                return (($file !== '.') && ($file !== '..'));
-            });
-            $matchFiles = array_values($matchFiles);
+            $matchFiles = getFiles($gameTypeFolderPath);
 
             foreach($matchFiles as $matchIndex => $matchFile)
             {
+                $matchFilePath = $gameTypeFolderPath . DIRECTORY_SEPARATOR . $matchFile;
                 if($matchIndex > 0)
                 {
                     echo "\n\t\t\t...................................\n";
                 }
 
-                $matchDetails = json_decode(file_get_contents($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType . '/' . $matchFile), true);
+                $matchDetails = json_decode(file_get_contents($matchFilePath), true);
                 echo "\n\t\t\tProcessing match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
                 $tourName = $matchDetails['tourName'];
                 $matchName = $matchDetails['name'];
@@ -618,9 +628,6 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                     $payload['manOfTheMatchList'] = $motmList;
                 }
 
-//                    echo "\n\t\t\t" . json_encode($payload) . "\n";
-                $matchFilePath = APP_PATH . 'app/documents/cricbuzz/yearWiseDetails/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType . '/' . $matchFile;
-
                 $response = addMatch($payload);
                 if(200 === $response['status'])
                 {
@@ -651,12 +658,29 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                 echo "\n\t\t\tProcessed match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
             }
 
+            $files = getFiles($gameTypeFolderPath);
+            if(count($files) === 0)
+            {
+                rmdir($gameTypeFolderPath);
+            }
             echo "\n\t\tProcessed " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
         }
 
+        $files = getFiles($tourFolderPath . DIRECTORY_SEPARATOR . 'series');
+        if(count($files) === 0)
+        {
+            rmdir($tourFolderPath . DIRECTORY_SEPARATOR . 'series');
+            rmdir($tourFolderPath);
+        }
         echo "\n\tProcessed tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
     }
 
+    $files = getFiles($yearFolderPath . DIRECTORY_SEPARATOR . 'tours');
+    if(count($files) === 0)
+    {
+        rmdir($yearFolderPath . DIRECTORY_SEPARATOR . 'tours');
+        rmdir($yearFolderPath);
+    }
     echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 }
 
