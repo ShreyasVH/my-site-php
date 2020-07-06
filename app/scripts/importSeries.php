@@ -23,7 +23,6 @@ $stats = [
 ];
 
 $failures = [];
-$existingSeries = [];
 
 function getTeams()
 {
@@ -121,15 +120,6 @@ function createTourMap()
     foreach($tours as $tour)
     {
         $tourMap[$tour['name']] = $tour['id'];
-        $tourResponse = $apiHelper->get('cricbuzz/tours/' . $tour['id'], 'CRICBUZZ');
-        if($tourResponse['status'] === 200)
-        {
-            $decodedResponse = json_decode($tourResponse['result'], true);
-            foreach($decodedResponse['seriesList'] as $series)
-            {
-                $existingSeries[] = $tour['name'] . '_' . $series['gameType'];
-            }
-        }
     }
     return $tourMap;
 }
@@ -161,9 +151,27 @@ function getTourId($name, $tourMap)
     return $id;
 }
 
+function getExistingSeries()
+{
+    global $apiHelper;
+    $existingSeries = [];
+    $response = $apiHelper->get('cricbuzz/series', 'CRICBUZZ');
+    if($response['status'] === 200)
+    {
+        $decodedResponse = json_decode($response['result'], true);
+        foreach($decodedResponse as $series)
+        {
+            $existingSeries[] = $series['name'] . '_' . $series['gameType'];
+        }
+    }
+    return $existingSeries;
+}
+
 $series = getSeries();
 $teamMap = createTeamMap();
 $tourMap = createTourMap();
+
+$existingSeries = getExistingSeries();
 
 $index = 0;
 foreach($series as $seriesDetails)

@@ -11,7 +11,7 @@ $yearFolders = array_filter($yearFolders, function($file){
 });
 $yearFolders = array_values($yearFolders);
 
-$countries = [];
+$playerData = [];
 
 foreach($yearFolders as $yearIndex => $yearFolder)
 {

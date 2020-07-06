@@ -146,7 +146,6 @@ function createTeamMap()
 function getTeamId($name, $teamMap)
 {
     $id = null;
-
     if(array_key_exists($name, $teamMap))
     {
         $id = $teamMap[$name];
@@ -660,3 +659,6 @@ foreach($yearFolders as $yearIndex => $yearFolder)
 
     echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 }
+
+writeData(APP_PATH . 'logs/importMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
+writeData(APP_PATH . 'logs/importMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));

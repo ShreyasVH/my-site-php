@@ -49,7 +49,7 @@ function deleteMatch($matchId)
 function getMatchesToDelete()
 {
     $matches = [];
-    $path = APP_PATH . 'app/documents/matchesForDelete.csv';
+    $path = APP_PATH . 'app/documents/cricbuzz/matchesForDelete.csv';
     if(file_exists($path))
     {
         $matches = explode("\n", trim(readData($path), "\n"));
@@ -90,6 +90,6 @@ foreach($matches as $index => $matchId)
     echo "\nProcessed Match - " . $matchId . "[" . ($index + 1) . "/" . count($matches) . "]\n";
 }
 
-writeData(APP_PATH . 'app/documents/matchesForDelete.csv', implode("\n", $updatedMatches));
+writeData(APP_PATH . 'app/documents/cricbuzz/matchesForDelete.csv', implode("\n", $updatedMatches));
 writeData(APP_PATH . 'logs/deleteMatchStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
 writeData(APP_PATH . 'logs/deleteMatchFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
