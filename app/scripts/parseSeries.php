@@ -76,15 +76,8 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                 echo "\n\t\t\tProcessing match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
 
                 $matchName = $matchDetails['name'];
-                if(preg_match('/(Group|Pool) [A-Za-z0-9]/', $matchName))
-                {
-                    preg_match('/(.*) vs (.*), (.*), (Group|Pool) (.*)/', $matchName, $patternMatches);
-                    // echo "\n" . $matchName . "\n";
-                }
-                else
-                {
-                    preg_match('/(.*) vs (.*), (.*)/', $matchName, $patternMatches);
-                }
+                $matchNameParts = explode(', ', $matchName);
+                preg_match('/(.*) vs (.*)/', $matchNameParts[0], $patternMatches);
 
                 $team1 = $patternMatches[1];
                 $team2 = $patternMatches[2];
