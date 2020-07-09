@@ -85,8 +85,7 @@ foreach($yearFolders as $yearIndex => $yearFolder)
     echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 }
 
-usort($stadiums, function($stadium1, $stadium2) {
-	return strcasecmp($stadium1['name'], $stadium2['name']);
-});
+ksort($stadiums);
+$stadiums = array_values($stadiums);
 
 file_put_contents(APP_PATH . 'app/documents/cricbuzz/stadiums.json', json_encode($stadiums, JSON_PRETTY_PRINT));
