@@ -67,12 +67,19 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                 $matchDetails = json_decode(file_get_contents($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType . '/' . $matchFile), true);
                 echo "\n\t\t\tProcessing match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
 
-                foreach($matchDetails['players'] as $player)
+                if(array_key_exists('players', $matchDetails))
                 {
-                    if((array_key_exists('country', $player)) && !in_array($player['country'], $countries))
+                    foreach($matchDetails['players'] as $player)
                     {
-                        $countries[] = $player['country'];
+                        if((array_key_exists('country', $player)) && !in_array($player['country'], $countries))
+                        {
+                            $countries[] = $player['country'];
+                        }
                     }
+                }
+                else
+                {
+//                    echo "\n############################" . $matchDetails['name'] . "\n";
                 }
 
                 if(!is_null($matchDetails['stadium']['country']) && !in_array($matchDetails['stadium']['country'], $countries))

@@ -36,13 +36,16 @@ foreach($yearFolders as $yearIndex => $yearFolder)
         }
         echo "\n\tProcessing tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
 
-        $tourDetails = json_decode(file_get_contents($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/details.json'), true);
+        if(file_exists($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/details.json'))
+        {
+            $tourDetails = json_decode(file_get_contents($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/details.json'), true);
 
-        $tours[] = [
-            'name' => $tourDetails['name'],
-            'startTime' => $tourDetails['startTime'],
-            'endTime' => $tourDetails['endTime']
-        ];
+            $tours[] = [
+                'name' => $tourDetails['name'],
+                'startTime' => $tourDetails['startTime'],
+                'endTime' => $tourDetails['endTime']
+            ];
+        }
 
         echo "\n\tProcessed tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
     }

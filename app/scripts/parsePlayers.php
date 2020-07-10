@@ -83,23 +83,31 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                 {
                     $team = $playerDetails['team'];
                     $playerName = $playerDetails['player'];
-                    $playerCountry = $playerDetails['country'];
 
-                    if(array_key_exists($team, $playerData))
+                    if(array_key_exists('country', $playerDetails))
                     {
-                        $playerData[$team][$playerName] = [
-                            'name' => $playerName,
-                            'country' => $playerCountry
-                        ];
+                        $playerCountry = $playerDetails['country'];
+
+                        if(array_key_exists($team, $playerData))
+                        {
+                            $playerData[$team][$playerName] = [
+                                'name' => $playerName,
+                                'country' => $playerCountry
+                            ];
+                        }
+                        else
+                        {
+                            $playerData[$team] = [
+                                $playerName => [
+                                    'name' => $playerName,
+                                    'country' => $playerCountry
+                                ]
+                            ];
+                        }
                     }
                     else
                     {
-                        $playerData[$team] = [
-                            $playerName => [
-                                'name' => $playerName,
-                                'country' => $playerCountry
-                            ]
-                        ];
+//                        echo "\n##########################################" . $matchDetails['name'] . ' - ' . $playerName . "\n";
                     }
                 }
 
