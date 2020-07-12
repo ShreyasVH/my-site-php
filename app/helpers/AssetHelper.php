@@ -32,15 +32,16 @@ class AssetHelper extends BaseHelper
             ],
             'cards' => [
                 'add' => [
+                    new CssSnippet('/css/jquery-ui.min.css'),
                     new CssSnippet('/css/add-movie.css'),
                     new CssSnippet('/css/add-actor.css'),
                     new CssSnippet('/css/forms.css')
                 ],
                 'addSource' => [
+                    new CssSnippet('/css/jquery-ui.min.css'),
                     new CssSnippet('/css/add-movie.css'),
                     new CssSnippet('/css/add-actor.css'),
-                    new CssSnippet('/css/forms.css'),
-                    new CssSnippet('/css/jquery-ui.min.css')
+                    new CssSnippet('/css/forms.css')
                 ],
                 'browse' => [
                     new CssSnippet('/css/forms.css'),
@@ -55,6 +56,7 @@ class AssetHelper extends BaseHelper
                     new CssSnippet('/css/add-actor.css')
                 ],
                 'edit' => [
+                    new CssSnippet('/css/jquery-ui.min.css'),
                     new CssSnippet('/css/add-movie.css'),
                     new CssSnippet('/css/add-actor.css'),
                     new CssSnippet('/css/forms.css')
@@ -155,6 +157,7 @@ class AssetHelper extends BaseHelper
             'cards' => [
                 'add' => [
                     new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
+                    new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER)
                 ],
                 'addSource' => [
                     new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER)
@@ -169,6 +172,7 @@ class AssetHelper extends BaseHelper
                 ],
                 'edit' => [
                     new JsSnippet('/js/cards.js', Resource::POSITION_FOOTER),
+                    new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER)
                 ],
                 'editSource' => [
                     new JsSnippet('/js/jquery-ui.min.js', Resource::POSITION_FOOTER)

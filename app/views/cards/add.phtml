@@ -332,6 +332,28 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
+								<span class="label-title">
+									Release Date:
+								</span>
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Enter the release date of the card
+								</span>
+                                <span class="errorMsg">
+				                	Please enter valid release date
+				                </span>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="text" name="releaseDate" class="form-control" autocomplete="off" tabindex="1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
                     <div class="form-group form-field action-btns">
                         <div class="col-md-3">
                         </div>
@@ -357,6 +379,10 @@
             {
                 e.preventDefault();
             }
+        });
+
+        $('input[name="releaseDate"]').datepicker({
+            dateFormat: "yy-mm-dd"
         });
 
         $(document).on('change', '.jsMultiSelect', function() {

@@ -135,8 +135,13 @@ function createDetailsObject($dlmDetails, $ygoDetails)
         'cardType' => $cardType,
         'description' => $ygoDetails['desc'],
         'limitType' => 'UNLIMITED',
-        'sources' => $dlmDetails['how']
+//        'sources' => $dlmDetails['how'],
     ];
+
+    if(array_key_exists('release', $dlmDetails))
+    {
+        $details['releaseDate'] = $dlmDetails['release'];
+    }
 
     $cardSubTypes= [
         'NORMAL'
@@ -195,6 +200,8 @@ saveCards($cards, 'dlAllCards');
 
 $existingCards = getExistingCards();
 
+$todayObject = new DateTime();
+
 $newCards = [];
 foreach($cards as $index => $card)
 {
@@ -212,7 +219,14 @@ foreach($cards as $index => $card)
 
     if(array_key_exists('how', $card))
     {
-        if(!array_key_exists($card['name'], $existingCards))
+        $isNewCard = !array_key_exists($card['name'], $existingCards);
+        if(array_key_exists('release', $card))
+        {
+            $releaseDateObject = new DateTime($card['release']);
+            $isNewCard = ($isNewCard && ($todayObject->getTimestamp() > $releaseDateObject->getTimestamp()));
+        }
+
+        if($isNewCard)
         {
             echo "\n\tGetting YGO details\n";
             $ygoDetails = getCardDetailsFromYGO($card['name']);
