@@ -237,6 +237,7 @@ function getSeriesId($tourName, $gameType, $seriesMap)
 
 function getPlayerIdFromShortName($name, $players, $bench)
 {
+    $name = trim($name);
     $name = correctPlayer($name);
     $playerId = null;
     $options = [];
