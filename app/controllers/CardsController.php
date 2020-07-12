@@ -262,7 +262,8 @@ class CardsController extends BaseController
                 'cardType' => $this->request->getPost('cardType'),
                 'cardSubTypes' => $this->request->getPost('cardSubTypes'),
                 'rarity' => $this->request->getPost('rarity'),
-                'limitType' => $this->request->getPost('limitType')
+                'limitType' => $this->request->getPost('limitType'),
+                'releaseDate' => $this->request->getPost('releaseDate')
             ];
 
             if(CardType::MONSTER == $cardType)
