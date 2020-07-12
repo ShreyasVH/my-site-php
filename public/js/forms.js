@@ -338,6 +338,12 @@ var forms = {
 				errorsPresent = true;
 			}
 
+			if(forms.Validation.isInputFieldEmpty(form.find('input[name="releaseDate"]')))
+			{
+				form.find('input[name="releaseDate"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
 			if(errorsPresent)
 			{
 				$('html, body').animate({
@@ -373,6 +379,12 @@ var forms = {
 			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="cardType"]')))
 			{
 				form.find('select[name="cardType"]').closest('.form-field').addClass('error');
+				errorsPresent = true;
+			}
+
+			if(forms.Validation.isInputFieldEmpty(form.find('input[name="releaseDate"]')))
+			{
+				form.find('input[name="releaseDate"]').closest('.form-field').addClass('error');
 				errorsPresent = true;
 			}
 

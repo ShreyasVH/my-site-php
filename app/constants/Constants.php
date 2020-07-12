@@ -61,6 +61,7 @@ class Constants
     const CARD_ATTRIBUTE_RARITY = 'rarity';
     const CARD_ATTRIBUTE_LIMIT_TYPE = 'limitType';
     const CARD_ATTRIBUTE_SOURCES = 'sources';
+    const CARD_ATTRIBUTE_RELEASE_DATE = 'releaseDate';
 
     const FILTER_TYPE_CHECKBOX = 'checkbox';
     const FILTER_TYPE_SEARCH = 'search';
@@ -194,6 +195,11 @@ class Constants
             'filterLabel' => 'Sources',
             'filterType' => self::FILTER_TYPE_SEARCH
         ],
+        self::CARD_ATTRIBUTE_RELEASE_DATE => [
+            'isFilterEnabled' => false,
+            'isSortEnabled' => true,
+            'sortLabel' => 'Release'
+        ]
     ];
 
     public static function getMovieAttributes()
