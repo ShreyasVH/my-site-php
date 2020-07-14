@@ -179,6 +179,11 @@ if(array_key_exists(1, $argv))
             $payload['defense'] = $card['defense'];
         }
 
+        if(array_key_exists('releaseDate', $card))
+        {
+            $payload['releaseDate'] = $card['releaseDate'];
+        }
+
         $response = addCard($payload);
         if(200 === $response['status'])
         {
@@ -188,6 +193,7 @@ if(array_key_exists(1, $argv))
         {
             $stats['failure']++;
             $failures[] = [
+                'payload' => json_encode($payload),
                 'name' => $card['name'],
                 'response' => $response['result'],
                 'status' => $response['status']
