@@ -108,7 +108,6 @@ foreach($yearFolders as $yearIndex => $yearFolder)
             $series[] = [
                 'name' => $tourFolder,
                 'startTime' => $seriesStartTime,
-                'endTime' => $seriesStartTime,
                 'gameType' => $gameType,
                 'type' => $type,
                 'teams' => $teams,

@@ -192,7 +192,6 @@ foreach($series as $seriesDetails)
         $payload = [
             'name' => $seriesDetails['name'],
             'startTime' => date('Y-m-d H:i:s', $seriesDetails['startTime'] / 1000),
-            'endTime' => date('Y-m-d H:i:s', $seriesDetails['endTime'] / 1000),
             'gameType' => $seriesDetails['gameType'],
             'type' => $seriesDetails['type'],
             'tourId' => getTourId($seriesDetails['tour'], $tourMap),
