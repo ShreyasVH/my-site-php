@@ -107,8 +107,7 @@ foreach($tours as $tour)
     {
         $payload = [
             'name' => $tour['name'],
-            'startTime' => date('Y-m-d H:i:s', $tour['startTime'] / 1000),
-            'endTime' => date('Y-m-d H:i:s', $tour['endTime'] / 1000)
+            'startTime' => date('Y-m-d H:i:s', $tour['startTime'] / 1000)
         ];
 
         $response = addTour($payload);

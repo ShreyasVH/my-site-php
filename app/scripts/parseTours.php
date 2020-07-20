@@ -42,8 +42,7 @@ foreach($yearFolders as $yearIndex => $yearFolder)
 
             $tours[] = [
                 'name' => $tourDetails['name'],
-                'startTime' => $tourDetails['startTime'],
-                'endTime' => $tourDetails['endTime']
+                'startTime' => $tourDetails['startTime']
             ];
         }
 
