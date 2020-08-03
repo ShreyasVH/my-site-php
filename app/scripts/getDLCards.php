@@ -149,7 +149,7 @@ function createDetailsObject($dlmDetails, $ygoDetails)
 
     $race = $ygoDetails['race'];
 
-    $formattedRace = strtoupper(str_replace('-', '_', $race));
+    $formattedRace = strtoupper(str_replace(['-', ' '], '_', $race));
 
     if('MONSTER' === $cardType)
     {
