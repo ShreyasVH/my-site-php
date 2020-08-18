@@ -623,7 +623,10 @@ foreach($yearFolders as $yearIndex => $yearFolder)
 
                     foreach($matchDetails['manOfTheMatchList'] as $player)
                     {
-                        $motmList[] = getPlayerIdFromShortName($player, $players, $bench);
+                        if(!empty($player))
+                        {
+                            $motmList[] = getPlayerIdFromShortName($player, $players, $bench);
+                        }
                     }
 
                     $payload['manOfTheMatchList'] = $motmList;
