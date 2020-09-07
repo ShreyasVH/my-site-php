@@ -216,8 +216,8 @@ function getPlayerId($name, $playerMap)
     else
     {
         var_dump("\nPlayer Not found. name - " . $name . "\n");
-        echo "\n" . json_encode($playerMap, JSON_PRETTY_PRINT) . "\n";
-        die;
+        // echo "\n" . json_encode($playerMap, JSON_PRETTY_PRINT) . "\n";
+        // die;
     }
 
     return $id;
