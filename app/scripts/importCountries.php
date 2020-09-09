@@ -59,50 +59,35 @@ function addCountry($payload)
     return $apiHelper->post('cricbuzz/countries', $payload, 'CRICBUZZ');
 }
 
-function getExistingCountries()
-{
-    global $apiHelper;
-    $countries = [];
-
-    $apiResponse = $apiHelper->get('cricbuzz/countries', 'CRICBUZZ');
-    if($apiResponse['status'] === 200)
-    {
-        $decodedResponse = json_decode($apiResponse['result'], true);
-        foreach($decodedResponse as $country)
-        {
-            $countries[] = $country['name'];
-        }
-    }
-
-    return $countries;
-}
-
 $countries = getCountries();
 
-$existingCountries = getExistingCountries();
+echo "\nImporting Countries\n";
 
 $index = 0;
 foreach($countries as $country)
 {
     if($index > 0)
     {
-        echo "\n---------------------------------------------\n";
+        echo "\n\t---------------------------------------------\n";
     }
 
-    echo "\nProcessing Country. [" . ($index + 1) . "/" . count($countries) . "]\n";
+    echo "\n\tProcessing Country. [" . ($index + 1) . "/" . count($countries) . "]\n";
 
-    if(in_array($country, $existingCountries))
+    $payload = [
+        'name' => $country
+    ];
+
+    $response = addCountry($payload);
+    if(200 === $response['status'])
     {
         $stats['success']++;
     }
     else
     {
-        $payload = [
-            'name' => $country
-        ];
-
-        $response = addCountry($payload);
-        if(200 === $response['status'])
+        $decodedResponse = json_decode($response['result'], true);
+        $errorCode = $decodedResponse['code'];
+        $description = $decodedResponse['description'];
+        if($errorCode === 4004)
         {
             $stats['success']++;
         }
@@ -112,7 +97,7 @@ foreach($countries as $country)
             $failures[] = [
                 'name' => $country,
                 'payload' => json_encode($payload),
-                'response' => $response['result'],
+                'error' => $description,
                 'status' => $response['status']
             ];
         }
@@ -121,7 +106,8 @@ foreach($countries as $country)
     writeData(APP_PATH . 'logs/importCountryStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
     writeData(APP_PATH . 'logs/importCountryFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
-    echo "\nProcessed Country. [" . ($index + 1) . "/" . count($countries) . "]\n";
+    echo "\n\tProcessed Country. [" . ($index + 1) . "/" . count($countries) . "]\n";
     $index++;
 }
 
+echo "\nImported Countries\n";
