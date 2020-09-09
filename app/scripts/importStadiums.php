@@ -24,19 +24,7 @@ $stats = [
 
 $failures = [];
 
-function getCountries()
-{
-    global $apiHelper;
-    $countries = [];
-    
-    $apiResponse = $apiHelper->get('cricbuzz/countries', 'CRICBUZZ');
-    if($apiResponse['status'] === 200)
-    {
-        $countries = json_decode($apiResponse['result'], true);
-    }
-
-    return $countries;
-}
+$countries = [];
 
 function getStadiums()
 {
@@ -73,75 +61,63 @@ function addStadium($payload)
     return $apiHelper->post('cricbuzz/stadiums', $payload, 'CRICBUZZ');
 }
 
-function createCountryMap()
-{
-    $countryMap = [];
-    $countries = getCountries();
-    foreach($countries as $country)
-    {
-        $countryMap[$country['name']] = $country['id'];
-    }
-    return $countryMap;
-}
 
-function getCountryId($name, $countryMap)
+function getCountryId($name)
 {
     $id = null;
 
-    if(array_key_exists($name, $countryMap))
+    global $apiHelper;
+    global $countries;
+
+    if(array_key_exists($name, $countries))
     {
-        $id = $countryMap[$name];
+        $id = $countries[$name];
+    }
+    else
+    {
+        $response = $apiHelper->get('cricbuzz/countries/name/' . urlencode($name), 'CRICBUZZ');
+        if(200 === $response['status'])
+        {
+            $decodedResponse = json_decode($response['result'], true);
+            $id = $decodedResponse['id'];
+            $countries[$name] = $id;
+        }
     }
 
     return $id;
 }
 
-function getExistingStadiums()
-{
-    global $apiHelper;
-    $stadiums = [];
-    $response = $apiHelper->get('cricbuzz/stadiums', 'CRICBUZZ');
-    if(200 === $response['status'])
-    {
-        $decodedResponse = json_decode($response['result'], true);
-        foreach($decodedResponse as $stadium)
-        {
-            $stadiums[] = $stadium['name'] . '_' . $stadium['country']['id'];
-        }
-    }
 
-    return $stadiums;
-}
-
+echo "\nImporting Stadiums\n";
 $stadiums = getStadiums();
-$countryMap = createCountryMap();
-
-$existingStadiums = getExistingStadiums();
 
 $index = 0;
 foreach($stadiums as $stadium)
 {
     if($index > 0)
     {
-        echo "\n---------------------------------------------\n";
+        echo "\n\t---------------------------------------------\n";
     }
 
-    echo "\nProcessing Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
+    echo "\n\tProcessing Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
 
-    if(in_array($stadium['name'] . '_' . getCountryId($stadium['country'], $countryMap), $existingStadiums))
+    $payload = [
+        'name' => $stadium['name'],
+        'countryId' => getCountryId($stadium['country']),
+        'city' => $stadium['city']
+    ];
+
+    $response = addStadium($payload);
+    if(200 === $response['status'])
     {
         $stats['success']++;
     }
     else
     {
-        $payload = [
-            'name' => $stadium['name'],
-            'countryId' => getCountryId($stadium['country'], $countryMap),
-            'city' => $stadium['city']
-        ];
-
-        $response = addStadium($payload);
-        if(200 === $response['status'])
+        $decodedResponse = json_decode($response['result'], true);
+        $errorCode = $decodedResponse['code'];
+        $description = $decodedResponse['description'];
+        if($errorCode === 4004)
         {
             $stats['success']++;
         }
@@ -151,7 +127,7 @@ foreach($stadiums as $stadium)
             $failures[] = [
                 'name' => $stadium['name'],
                 'payload' => json_encode($payload),
-                'response' => $response['result'],
+                'error' => $description,
                 'status' => $response['status']
             ];
         }
@@ -161,7 +137,8 @@ foreach($stadiums as $stadium)
     writeData(APP_PATH . 'logs/importStadiumStats.txt', json_encode($stats, JSON_PRETTY_PRINT));
     writeData(APP_PATH . 'logs/importStadiumFailures.txt', json_encode($failures, JSON_PRETTY_PRINT));
 
-    echo "\nProcessed Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
+    echo "\n\tProcessed Stadium. [" . ($index + 1) . "/" . count($stadiums) . "]\n";
     $index++;
 }
 
+echo "\nImported Stadiums\n";

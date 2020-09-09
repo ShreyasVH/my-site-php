@@ -72,7 +72,10 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                 if(array_key_exists('stadium', $matchDetails))
                 {
                     $stadium = $matchDetails['stadium'];
-                    $stadiums[$stadium['name']] = $stadium;
+                    if(array_key_exists('name', $stadium))
+                    {
+                        $stadiums[$stadium['name']] = $stadium;
+                    }
                 }
 
                 echo "\n\t\t\t\tProcessed match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
