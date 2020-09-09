@@ -13,14 +13,16 @@ $yearFolders = array_values($yearFolders);
 
 $playerData = [];
 
+echo "\nParsing Players\n";
+
 foreach($yearFolders as $yearIndex => $yearFolder)
 {
     if($yearIndex > 0)
     {
-        echo "\n-----------------------------------------------------------\n";
+        echo "\n\t-----------------------------------------------------------\n";
     }
 
-    echo "\nProcessing year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
+    echo "\n\tProcessing year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 
     $tourFolders = scandir($dataDirectory . '/' . $yearFolder . '/tours');
     $tourFolders = array_filter($tourFolders, function($file){
@@ -32,9 +34,9 @@ foreach($yearFolders as $yearIndex => $yearFolder)
     {
         if($tourIndex > 0)
         {
-            echo "\n\t............................................................\n";
+            echo "\n\t\t............................................................\n";
         }
-        echo "\n\tProcessing tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
+        echo "\n\t\tProcessing tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
 
         $gameTypeFolders = scandir($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series');
         $gameTypeFolders = array_filter($gameTypeFolders, function($file){
@@ -46,10 +48,10 @@ foreach($yearFolders as $yearIndex => $yearFolder)
         {
             if($gameTypeIndex > 0)
             {
-                echo "\n\t\t---------------------------------------------------\n";
+                echo "\n\t\t\t---------------------------------------------------\n";
             }
 
-            echo "\n\t\tProcessing " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
+            echo "\n\t\t\tProcessing " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
 
             $matchFiles = scandir($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType);
             $matchFiles = array_filter($matchFiles, function($file){
@@ -61,11 +63,11 @@ foreach($yearFolders as $yearIndex => $yearFolder)
             {
                 if($matchIndex > 0)
                 {
-                    echo "\n\t\t\t...................................\n";
+                    echo "\n\t\t\t\t...................................\n";
                 }
 
                 $matchDetails = json_decode(file_get_contents($dataDirectory . '/' . $yearFolder . '/tours/' . $tourFolder . '/series/' . $gameType . '/' . $matchFile), true);
-                echo "\n\t\t\tProcessing match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
+                echo "\n\t\t\t\tProcessing match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
 
                 $players = [];
 
@@ -107,20 +109,20 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                     }
                     else
                     {
-//                        echo "\n##########################################" . $matchDetails['name'] . ' - ' . $playerName . "\n";
+//                        echo "\n\t##########################################" . $matchDetails['name'] . ' - ' . $playerName . "\n\t";
                     }
                 }
 
-                echo "\n\t\t\tProcessed match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
+                echo "\n\t\t\t\tProcessed match - " . $matchDetails['name'] . " [" . ($matchIndex + 1) . "/" . count($matchFiles) . "]\n";
             }
 
-            echo "\n\t\tProcessed " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
+            echo "\n\t\t\tProcessed " . $gameType . " series. [" . ($gameTypeIndex + 1) . "/" . count($gameTypeFolders) . "]\n";
         }
 
-        echo "\n\tProcessed tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
+        echo "\n\t\tProcessed tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
     }
 
-    echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
+    echo "\n\tProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 }
 
 foreach($playerData as $team => $players)
@@ -134,3 +136,5 @@ foreach($playerData as $team => $players)
 uksort($playerData, 'strcasecmp');
 
 file_put_contents(APP_PATH . 'app/documents/cricbuzz/players.json', json_encode($playerData, JSON_PRETTY_PRINT));
+
+echo "\nParsed players\n";
