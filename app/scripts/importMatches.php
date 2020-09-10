@@ -399,10 +399,6 @@ foreach($yearFolders as $yearIndex => $yearFolder)
     echo "\nProcessing year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
 
     $tourListFilePath = $yearFolderPath . DIRECTORY_SEPARATOR . 'tourList.json';
-    if(file_exists($tourListFilePath))
-    {
-        unlink($tourListFilePath);
-    }
 
     $tourFolders = getFiles($yearFolderPath . DIRECTORY_SEPARATOR . 'tours');
 
@@ -416,10 +412,6 @@ foreach($yearFolders as $yearIndex => $yearFolder)
         echo "\n\tProcessing tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
 
         $tourDetailsFilePath = $tourFolderPath . DIRECTORY_SEPARATOR . 'details.json';
-        if(file_exists($tourDetailsFilePath))
-        {
-            unlink($tourDetailsFilePath);
-        }
 
         $gameTypeFolders = getFiles($tourFolderPath . DIRECTORY_SEPARATOR . 'series');
 
@@ -640,19 +632,26 @@ foreach($yearFolders as $yearIndex => $yearFolder)
                 }
                 else
                 {
-                    $stats['failure']++;
-                    $failures[] = [
-                        'tour' => $tourName,
-                        'gameType' => $gameType,
-                        'match' => $matchName,
-                        'payload' => json_encode($payload),
-                        'response' => $response['result'],
-                        'status' => $response['status']
-                    ];
                     $decodedResponse = json_decode($response['result'], true);
-                    if(array_key_exists('description', $decodedResponse) && ($decodedResponse['description'] === 'Already Exists'))
+                    $errorCode = $decodedResponse['code'];
+                    $description = $decodedResponse['description'];
+
+                    if(4004 === $errorCode)
                     {
+                        $stats['success']++;
                         unlink($matchFilePath);
+                    }
+                    else
+                    {
+                        $stats['failure']++;
+                        $failures[] = [
+                            'tour' => $tourName,
+                            'gameType' => $gameType,
+                            'match' => $matchName,
+                            'payload' => json_encode($payload),
+                            'error' => $description,
+                            'status' => $response['status']
+                        ];
                     }
                 }
 
@@ -674,15 +673,26 @@ foreach($yearFolders as $yearIndex => $yearFolder)
         if(count($files) === 0)
         {
             rmdir($tourFolderPath . DIRECTORY_SEPARATOR . 'series');
+            if(file_exists($tourDetailsFilePath))
+            {
+                unlink($tourDetailsFilePath);
+            }
             rmdir($tourFolderPath);
         }
         echo "\n\tProcessed tour - " . $tourFolder . " [" . ($tourIndex + 1) . "/" . count($tourFolders) . "]\n";
     }
 
     $files = getFiles($yearFolderPath . DIRECTORY_SEPARATOR . 'tours');
+    $files = array_filter($files, function($fileName) {
+        return ($fileName !== 'tourList.json');
+    });
     if(count($files) === 0)
     {
         rmdir($yearFolderPath . DIRECTORY_SEPARATOR . 'tours');
+        if(file_exists($tourListFilePath))
+        {
+            unlink($tourListFilePath);
+        }
         rmdir($yearFolderPath);
     }
     echo "\nProcessed year " . $yearFolder . " [" . ($yearIndex + 1) . "/" . count($yearFolders) . "]\n";
