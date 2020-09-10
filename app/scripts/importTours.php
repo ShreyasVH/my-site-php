@@ -23,6 +23,7 @@ $stats = [
 ];
 
 $failures = [];
+$years = [];
 
 function getTours()
 {
@@ -32,6 +33,24 @@ function getTours()
     {
         $tours = json_decode($content, true);
     }
+
+    global $years;
+    foreach($tours as $tour)
+    {
+        $startTime = $tour['startTime'];
+        $year = (int) date('Y', $startTime / 1000);
+        if(!in_array($year, $years))
+        {
+            $years[] = $year;
+        }
+    }
+    if(!empty($years))
+    {
+        $min = $years[0];
+        $years[] = ($min - 1);
+    }
+    sort($years);
+
     return $tours;
 }
 
@@ -62,9 +81,10 @@ function addTour($payload)
 function getExistingTours()
 {
     global $apiHelper;
+    global $years;
     $tours = [];
 
-    for($year = 1890; $year <= date('Y'); $year++)
+    foreach($years as $year)
     {
         $payload = [
             'year' => $year,
@@ -75,7 +95,7 @@ function getExistingTours()
         if($apiResponse['status'] === 200)
         {
             $decodedResponse = json_decode($apiResponse['result'], true);
-            $tours = array_merge($tours, array_column($decodedResponse, 'name'));
+            $tours[$year] = array_column($decodedResponse, 'name');
         }
         else
         {
@@ -99,7 +119,9 @@ foreach($tours as $tour)
 
     echo "\nProcessing Tour. [" . ($index + 1) . "/" . count($tours) . "]\n";
 
-    if(in_array($tour['name'], $existingTours))
+    $year = date('Y', $tour['startTime'] / 1000);
+
+    if(array_key_exists($year, $existingTours) && in_array($tour['name'], $existingTours[$year]))
     {
         $stats['success']++;
     }
