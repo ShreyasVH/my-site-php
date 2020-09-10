@@ -23,6 +23,7 @@ $stats = [
 ];
 
 $failures = [];
+$years = [];
 
 function getTeams()
 {
@@ -41,9 +42,10 @@ function getTeams()
 function getTours()
 {
     global $apiHelper;
+    global $years;
     $tours = [];
 
-    for($year = 1890; $year <= date('Y'); $year++)
+    foreach($years as $year)
     {
         $payload = [
             'year' => $year,
@@ -54,14 +56,14 @@ function getTours()
         if($apiResponse['status'] === 200)
         {
             $decodedResponse = json_decode($apiResponse['result'], true);
-            $tours = array_merge($tours, $decodedResponse);
+            $tours[$year] = array_column($decodedResponse, 'name');
         }
         else
         {
             echo "\nTour loading failed - " . $year . "\n";
         }
     }
-    
+
     return $tours;
 }
 
@@ -73,6 +75,25 @@ function getSeries()
     {
         $series = json_decode($content, true);
     }
+
+
+    global $years;
+    foreach($series as $seriesObject)
+    {
+        $startTime = $seriesObject['startTime'];
+        $year = (int) date('Y', $startTime / 1000);
+        if(!in_array($year, $years))
+        {
+            $years[] = $year;
+        }
+    }
+    if(!empty($years))
+    {
+        $min = $years[0];
+        $years[] = ($min - 1);
+    }
+    sort($years);
+
     return $series;
 }
 
