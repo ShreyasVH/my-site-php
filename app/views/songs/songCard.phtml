@@ -8,7 +8,7 @@ use app\models\Song;
 
 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 movie-card song-card">
     <div class="card">
-        <img src="<?php echo AssetHelper::getImage($song->movie->id, Constants::CONTEXT_MOVIE); ?>" class="img-thumbnail" alt="<?php echo $song->movie->name; ?>">
+        <img src="<?php echo $song->movie->imageUrl; ?>" class="img-thumbnail" alt="<?php echo $song->movie->name; ?>">
         <div class="card-img-overlay">
             <div class="movie-details">
                 <p class="movie-year">
