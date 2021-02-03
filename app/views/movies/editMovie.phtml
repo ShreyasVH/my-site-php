@@ -107,7 +107,7 @@
 								<div class="col-md-12">
 									<select class="form-control" name="movie-language" tabindex="1">
 										<?php foreach(Language::getAllLanguages() as $language): ?>
-											<?php $selected = (($movie->language->id == $language->id) ? 'selected' : ''); ?>
+											<?php $selected = (($movie->language == $language->id) ? 'selected' : ''); ?>
 											<option value="<?php echo $language->id; ?>" <?php echo $selected; ?>>
 												<?php echo $language->name; ?>
 											</option>
@@ -133,7 +133,7 @@
 								<div class="col-md-12">
 									<select class="form-control" name="movie-format" tabindex="1">
 										<?php foreach(Format::getAllFormats() as $format): ?>
-											<?php $selected = (($movie->format->id == $format->id) ? 'selected' : ''); ?>
+											<?php $selected = (($movie->format == $format->id) ? 'selected' : ''); ?>
 											<option value="<?php echo $format->id; ?>" <?php echo $selected; ?>>
 												<?php echo $format->name; ?>
 											</option>
