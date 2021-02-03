@@ -342,12 +342,12 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		<?php foreach($movie->actors as $actor): ?>
-			Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($actor->name); ?>', '<?php echo $actor->id; ?>', 'actor');
+		<?php foreach($movie->actors as $index => $actorId): ?>
+			Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($movie->actorNames[$index]); ?>', '<?php echo $actorId; ?>', 'actor');
 		<?php endforeach; ?>
 
-		<?php foreach($movie->directors as $director): ?>
-			Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($director->name); ?>', '<?php echo $director->id; ?>', 'director');
+		<?php foreach($movie->directors as $index => $directorId): ?>
+			Suggestions.pickSuggestion('<?php echo CommonUtils::formatStringWithEscapeChars($movie->directorNames[$index]); ?>', '<?php echo $directorId; ?>', 'director');
 		<?php endforeach; ?>
 
 		$(document).on('submit', 'form[name="edit-movie-form"]', function(e) {
