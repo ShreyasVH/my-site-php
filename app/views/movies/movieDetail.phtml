@@ -47,23 +47,23 @@ use app\helpers\AssetHelper;
             </td>
 			<td class="col-sm-10 col-md-10">
 				<div class="row actor-list">
-					<?php foreach($movie->directors as $director): ?>
+					<?php for($i = 0; $i < count($movie->directors); $i++): ?>
 						<div class="col-md-2 actor-info">
 							<img
                                 class="img-thumbnail hidden-xs"
-                                src="<?php echo $director->imageUrl; ?>"
+                                src="<?php echo $movie->directorImageUrls[$i]; ?>"
                             >
 							<a
                                 class="actor-name"
-                                href="<?php echo '/movies/browseMovies?directors[]=' . $director->id . '&order=year DESC'; ?>"
+                                href="<?php echo '/movies/browseMovies?directors[]=' . $movie->directors[$i] . '&order=year DESC'; ?>"
                                 target="_blank"
                             >
 								<p>
-                                    <?php echo $director->name; ?>
+                                    <?php echo $movie->directorNames[$i]; ?>
                                 </p>
 							</a>
 						</div>
-					<?php endforeach; ?>
+					<?php endfor; ?>
 				</div>
 			</td>
 		</tr>
@@ -73,23 +73,23 @@ use app\helpers\AssetHelper;
             </td>
 			<td class="col-sm-10 col-md-10">
 				<div class="row actor-list">
-					<?php foreach($movie->actors as $actor): ?>
-						<div class="col-md-2 col-sm-4 actor-info">
-							<img
-                                class="img-thumbnail hidden-xs"
-                                src="<?php echo $actor->imageUrl; ?>"
+                    <?php for($i = 0; $i < count($movie->actors); $i++): ?>
+                        <div class="col-md-2 actor-info">
+                            <img
+                                    class="img-thumbnail hidden-xs"
+                                    src="<?php echo $movie->actorImageUrls[$i]; ?>"
                             >
-							<a
-                                class="actor-name"
-                                href="<?php echo '/movies/browseMovies?actors[]=' . $actor->id . '&order=year DESC'; ?>"
-                                target="_blank"
+                            <a
+                                    class="actor-name"
+                                    href="<?php echo '/movies/browseMovies?actors[]=' . $movie->actors[$i] . '&order=year DESC'; ?>"
+                                    target="_blank"
                             >
-								<p>
-                                    <?php echo $actor->name; ?>
+                                <p>
+                                    <?php echo $movie->actorNames[$i]; ?>
                                 </p>
-							</a>
-						</div>
-					<?php endforeach; ?>
+                            </a>
+                        </div>
+                    <?php endfor; ?>
 				</div>
 			</td>
 		</tr>
@@ -122,7 +122,7 @@ use app\helpers\AssetHelper;
                 Format:
             </td>
 			<td class="col-sm-10 col-md-10">
-                <?php echo $movie->format->name; ?>
+                <?php echo $movie->formatName; ?>
             </td>
 		</tr>
 
