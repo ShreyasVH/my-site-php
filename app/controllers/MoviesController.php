@@ -123,21 +123,21 @@ class MoviesController extends BaseController
             'basename' => [],
             'subtitles' => [
                 [
-                    'id' => 1,
+                    'id' => 'true',
                     'name' => 'Yes'
                 ],
                 [
-                    'id' => 0,
+                    'id' => 'false',
                     'name' => 'No'
                 ]
             ],
             'seen_in_theatre' => [
                 [
-                    'id' => 1,
+                    'id' => 'true',
                     'name' => 'Yes'
                 ],
                 [
-                    'id' => 0,
+                    'id' => 'false',
                     'name' => 'No'
                 ]
             ],
