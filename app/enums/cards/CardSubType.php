@@ -24,4 +24,5 @@ class CardSubType extends BaseEnum
     const CONTINUOUS = 13;
     const QUICK_PLAY = 14;
     const COUNTER = 15;
+    const XYZ = 16;
 }
