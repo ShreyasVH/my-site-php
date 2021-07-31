@@ -9,6 +9,7 @@
 .filters .filters-header-wrap {
     margin: 10px 0;
     border-bottom: 2px solid #c2c2c2;
+    position: relative;
 }
 
 .filters .filters-header-wrap .filters-header {
@@ -22,7 +23,8 @@
 
 .filters .clear-filter {
     color: #E74C3C;
-    float: right;
+    position: absolute;
+    right: 0;
 }
 
 .filters .range-slider, .filters .apply-filters {
@@ -52,4 +54,11 @@
 .sort-display {
     display: inline !important;
     color: #00AEFF;
+}
+
+.filters .actions {
+    margin-bottom: 5px;
+    color: blue;
+    font-weight: bold;
+    position: relative;
 }
