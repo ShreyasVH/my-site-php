@@ -16,7 +16,7 @@
     <div id="<?php echo 'filters_' . $filterName; ?>" class="panel-collapse collapse jsSuggestionWrap">
         <div class="panel-body">
             <?php
-                $this->partial('shared/filters/clearFilter');
+                $this->partial('shared/filters/actions');
                 $this->partial('shared/filters/filter' . ucfirst($filterSnippet['filterType']) . 'Block');
             ?>
         </div>

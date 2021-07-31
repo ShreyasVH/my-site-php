@@ -31,6 +31,7 @@ class CardsController extends BaseController
                         return ("" != $v);
                     }));
             });
+            $andFilterKeys = $this->request->getQuery('andFilterKeys', null, []);
             $order = $this->request->getQuery('order', null, Constants::DEFAULT_ORDER_CARDS);
 
             $currentOffset = $this->request->getQuery('offset', null, Constants::DEFAULT_OFFSET);
@@ -42,12 +43,14 @@ class CardsController extends BaseController
                         return ("" != $v);
                     }));
             });
+            $andFilterKeys = $this->request->getPost('andFilterKeys', null, []);
             $order = $this->request->getPost('order', null, Constants::DEFAULT_ORDER_CARDS);
 
             $currentOffset = $this->request->getPost('offset', null, Constants::DEFAULT_OFFSET);
         }
 
         $filters = [];
+        $andFilters = [];
         $rangeFilters = [];
 
         foreach($filterParams as $key => $valueList)
@@ -66,7 +69,14 @@ class CardsController extends BaseController
             }
             else
             {
-                $filters[$key] = $valueList;
+                if(in_array($key, $andFilterKeys))
+                {
+                    $andFilters[$key] = $valueList;
+                }
+                else
+                {
+                    $filters[$key] = $valueList;
+                }
             }
         }
 
@@ -93,6 +103,11 @@ class CardsController extends BaseController
             $payload['filters'] = $filters;
         }
 
+        if(isset($andFilters) && !empty($andFilters))
+        {
+            $payload['andFilters'] = $andFilters;
+        }
+
         if(isset($rangeFilters) && !empty($rangeFilters))
         {
             $payload['rangeFilters'] = $rangeFilters;
@@ -107,6 +122,7 @@ class CardsController extends BaseController
         $this->view->totalCount = $totalCount;
         $this->view->cardList = $cardList;
         $this->view->filters = $filterParams;
+        $this->view->andFilterKeys = $andFilterKeys;
 
         $filterValues = [
             Constants::CARD_ATTRIBUTE_LEVEL => [
@@ -158,7 +174,8 @@ class CardsController extends BaseController
                 'sortMap' => $sortMap,
                 'count' => $totalCount,
                 'offset' => $offset,
-                'view' => $this->view->getPartial('cards/browse')
+                'view' => $this->view->getPartial('cards/browse'),
+                'andFilterKeys' => $andFilterKeys
             ];
 
             $this->response->setContentType('application/json', 'UTF-8');
