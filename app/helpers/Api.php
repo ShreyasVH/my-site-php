@@ -200,14 +200,15 @@ class Api extends BaseHelper
     public function uploadImage($file, $folder, $fileName, $fileExtension)
     {
         $url = '';
-        if(CommonUtils::isLocalEnv())
-        {
-            $url = $this->uploadImageLocal($file, $folder, $fileName, $fileExtension);
-        }
-        else
-        {
-            $url = $this->uploadImageProd($file, $folder, $fileName);
-        }
+        // if(CommonUtils::isLocalEnv())
+        // {
+        //     $url = $this->uploadImageLocal($file, $folder, $fileName, $fileExtension);
+        // }
+        // else
+        // {
+        //     $url = $this->uploadImageProd($file, $folder, $fileName);
+        // }
+        $url = $this->uploadImageProd($file, $folder, $fileName);
         return $url;
     }
 

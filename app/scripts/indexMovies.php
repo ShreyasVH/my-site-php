@@ -22,7 +22,7 @@ require_once APP_PATH . 'app/config/services.inc.php';
 /** @var Api $apiHelper */
 $apiHelper = $di->get('api');
 
-$movieIds = explode("\n", file_get_contents(APP_PATH . 'app/documents/movieIds.csv'));
+$movieIds = explode("\r\n", file_get_contents(APP_PATH . 'app/documents/movieIds.csv'));
 $movieCount = count($movieIds);
 
 foreach($movieIds as $index => $movieId)

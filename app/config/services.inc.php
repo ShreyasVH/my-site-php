@@ -13,11 +13,11 @@ use app\helpers\AssetHelper;
 use Phalcon\Logger\Adapter\File as FileAdapter;
 use Phalcon\Session\Adapter\Files as Session;
 
-if(file_exists(APP_PATH . '.env'))
-{
-    $dotenv = Dotenv\Dotenv::createImmutable(APP_PATH);
-    $dotenv->load();
-}
+// if(file_exists(APP_PATH . '.env'))
+// {
+//     $dotenv = Dotenv\Dotenv::createImmutable(APP_PATH);
+//     $dotenv->load();
+// }
 
 $di->set('view', function() {
     $view = new View();
