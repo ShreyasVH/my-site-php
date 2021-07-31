@@ -3,12 +3,13 @@ use app\constants\Constants;
 ?>
 
 <?php if($filterSnippet['filterType'] === Constants::FILTER_TYPE_CHECKBOX): ?>
+    <?php $checked = ((in_array($filterName, $andFilterKeys)) ? 'checked' : ''); ?>
     <input
         type="checkbox"
         name="andFilterKeys[]"
         value="<?php echo $filterName; ?>"
         class="and-filter jsAndFilter"
-        checked="<?php echo json_encode(in_array($filterName, $andFilterKeys)); ?>"
+        <?php echo $checked; ?>
     />
     &nbsp;Combined
 <?php endif; ?>
