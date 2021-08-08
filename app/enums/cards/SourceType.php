@@ -20,4 +20,5 @@ class SourceType extends BaseEnum
     const STRUCTURE_DECK = 9;
     const SPECIAL_DEAL = 10;
     const CAMPAIGN = 11;
+    const SELECTION_BOX = 12;
 }
