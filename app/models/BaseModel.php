@@ -9,7 +9,7 @@ namespace app\models;
 
 
 use app\helpers\Api;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Mvc\Model;
 
 class BaseModel extends Model

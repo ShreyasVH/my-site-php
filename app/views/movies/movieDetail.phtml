@@ -47,23 +47,23 @@ use app\helpers\AssetHelper;
             </td>
 			<td class="col-sm-10 col-md-10">
 				<div class="row actor-list">
-					<?php for($i = 0; $i < count($movie->directors); $i++): ?>
+					<?php foreach($movie->directors as $director): ?>
 						<div class="col-md-2 actor-info">
 							<img
                                 class="img-thumbnail hidden-xs"
-                                src="<?php echo $movie->directorImageUrls[$i]; ?>"
+                                src="<?php echo $director->imageUrl; ?>"
                             >
 							<a
                                 class="actor-name"
-                                href="<?php echo '/movies/browseMovies?directors[]=' . $movie->directors[$i] . '&order=year DESC'; ?>"
+                                href="<?php echo '/movies/browseMovies?directorIds[]=' . $director->id . '&order=year DESC'; ?>"
                                 target="_blank"
                             >
 								<p>
-                                    <?php echo $movie->directorNames[$i]; ?>
+                                    <?php echo $director->name; ?>
                                 </p>
 							</a>
 						</div>
-					<?php endfor; ?>
+					<?php endforeach; ?>
 				</div>
 			</td>
 		</tr>
@@ -73,23 +73,23 @@ use app\helpers\AssetHelper;
             </td>
 			<td class="col-sm-10 col-md-10">
 				<div class="row actor-list">
-                    <?php for($i = 0; $i < count($movie->actors); $i++): ?>
+                    <?php foreach($movie->actors as $actor): ?>
                         <div class="col-md-2 actor-info">
                             <img
                                     class="img-thumbnail hidden-xs"
-                                    src="<?php echo $movie->actorImageUrls[$i]; ?>"
+                                    src="<?php echo $actor->imageUrl; ?>"
                             >
                             <a
                                     class="actor-name"
-                                    href="<?php echo '/movies/browseMovies?actors[]=' . $movie->actors[$i] . '&order=year DESC'; ?>"
+                                    href="<?php echo '/movies/browseMovies?actorIds[]=' . $actor->id . '&order=year DESC'; ?>"
                                     target="_blank"
                             >
                                 <p>
-                                    <?php echo $movie->actorNames[$i]; ?>
+                                    <?php echo $actor->name; ?>
                                 </p>
                             </a>
                         </div>
-                    <?php endfor; ?>
+                    <?php endforeach; ?>
 				</div>
 			</td>
 		</tr>

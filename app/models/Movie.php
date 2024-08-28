@@ -37,7 +37,7 @@ class Movie extends BaseModel
             'totalCount' => 0,
             'offset' => Constants::DEFAULT_OFFSET
         ];
-        $response = self::getAPISource()->post('movies/moviesWithFilter', $filterRequest);
+        $response = self::getAPISource()->post('movies/filter', $filterRequest);
         if($response['status'] == 200)
         {
             $response = json_decode($response['result']);
@@ -66,7 +66,7 @@ class Movie extends BaseModel
     public static function getMovieById($id)
     {
         $movie = null;
-        $response = self::getAPISource()->get('movies/movie/id/' . $id);
+        $response = self::getAPISource()->get('movies/' . $id);
         if($response['status'] == 200)
         {
             $movie = json_decode($response['result']);

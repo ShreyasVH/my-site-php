@@ -87,6 +87,7 @@ class Api extends BaseHelper
     public function get($url, $type = 'DEFAULT')
     {
         $url = $this->_getEndpoint($type) . $url;
+//        var_dump($url);die;
         if(CommonUtils::isDebugMode() && 'LOGGER' !== $type)
         {
             Logger::debug('Calling GET API. URL : ' . $url);

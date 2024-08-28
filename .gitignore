@@ -8,3 +8,4 @@ TODO.txt
 .DS_Store
 app/documents/
 logs/
+.envrc

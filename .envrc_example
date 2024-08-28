@@ -1,0 +1,7 @@
+export ENDPOINT_NORMAL=
+export ENDPOINT_MINIMAL=
+
+# php 8.2.4 path
+export PATH=
+
+export PORT=

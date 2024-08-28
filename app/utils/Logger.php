@@ -5,10 +5,10 @@ namespace app\utils;
 
 
 use app\helpers\Api;
-use Phalcon\Di;
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Di;
+use Phalcon\Di\Injectable;
 
-class Logger extends Component
+class Logger extends Injectable
 {
     private static function log($content, $type)
     {

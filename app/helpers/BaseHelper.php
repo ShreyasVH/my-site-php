@@ -7,9 +7,9 @@
 
 namespace app\helpers;
 
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 
-class BaseHelper extends Component
+class BaseHelper extends Injectable
 {
 
 }

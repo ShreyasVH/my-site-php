@@ -8,11 +8,11 @@
 namespace app\utils;
 
 use app\enums\cards\ViewMode;
-use Phalcon\Di;
-use Phalcon\Session\Adapter\Files as Session;
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Di;
+//use Phalcon\Session\Adapter\Files as Session;
+use Phalcon\Di\Injectable;
 
-class CommonUtils extends Component
+class CommonUtils extends Injectable
 {
     const SCREEN_SIZE_XS = 'xs';
 
@@ -57,14 +57,15 @@ class CommonUtils extends Component
     public static function getCurrentMode()
     {
         $di = Di::getDefault();
-        $mode = getenv('DEFAULT_MODE');
+//        $mode = getenv('DEFAULT_MODE');
+        $mode = 'NORMAL';
 
-        /** @var Session $session */
-        $session = $di->get('session');
-        if($session->has('mode'))
-        {
-            $mode = $session->get('mode');
-        }
+//        /** @var Session $session */
+//        $session = $di->get('session');
+//        if($session->has('mode'))
+//        {
+//            $mode = $session->get('mode');
+//        }
         return $mode;
     }
 

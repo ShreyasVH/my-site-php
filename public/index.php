@@ -5,9 +5,11 @@
  * Time: 6:34 PM
  */
 
+//var_dump('hello');die;
 
 use Phalcon\Mvc\Application;
 use Phalcon\Di\FactoryDefault;
+
 
 define('APP_PATH', realpath('..') . '/');
 
@@ -24,7 +26,7 @@ try
     $application = new Application($di);
 
     // Handle the request
-    $response = $application->handle();
+    $response = $application->handle($_SERVER["REQUEST_URI"]);
 
     $response->send();
 

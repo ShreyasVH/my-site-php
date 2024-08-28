@@ -76,11 +76,13 @@ class MoviesController extends BaseController
 
         if(isset($filters) && !empty($filters))
         {
-            $payload['filters'] = $filters;
+            $payload['andFilters'] = $filters;
         }
 
+//        echo json_encode($payload, JSON_PRETTY_PRINT);die;
+
         $response = Movie::getMoviesWithFilter($payload);
-        $movieList = $response->movies;
+        $movieList = $response->list;
         $movie_count = $response->totalCount;
         $offset = $response->offset;
 
@@ -93,7 +95,7 @@ class MoviesController extends BaseController
                     'id' => 'DESC'
                 ]
             ];
-            $carousel_movies = Movie::getMoviesWithFilter($payload)->movies;
+            $carousel_movies = Movie::getMoviesWithFilter($payload)->list;
             $carousel_src = array();
             foreach($carousel_movies as $index => $movie)
             {
@@ -107,6 +109,7 @@ class MoviesController extends BaseController
         $this->view->order = $order;
         $this->view->movieList = $movieList;
         $this->view->filters = $filters;
+        $this->view->andFilterKeys = [];
         $filterValues = [
             'language' => json_decode(json_encode(Language::getAllLanguages()), true),
             'format' => json_decode(json_encode(Format::getAllFormats()), true),
@@ -366,6 +369,7 @@ class MoviesController extends BaseController
         {
             $id = $this->request->getQuery('id');
             $movie = Movie::getMovieById($id);
+//            var_dump($movie);die;
             $this->view->title = $movie->name . ' - Movie Mania';
             $this->view->movie = $movie;
         }

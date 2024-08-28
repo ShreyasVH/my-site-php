@@ -9,6 +9,7 @@ namespace app\controllers;
 
 use app\helpers\Api;
 use app\helpers\AssetHelper;
+use app\models\CssSnippet;
 use app\models\Resource;
 use app\utils\CommonUtils;
 use Phalcon\Mvc\Controller;
@@ -29,28 +30,34 @@ class BaseController extends Controller
         $js_files = $this->assetHelper->getJsFiles($dispatcher->getControllerName(), $dispatcher->getActionName());
 
         $headerCss = $this->assets->collection('header');
-        $headerCss->setPrefix(CommonUtils::getProtocol() . $this->request->getServerName());
+//        $headerCss->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
 
         $bodyJs = $this->assets->collection('body');
-        $bodyJs->setPrefix(CommonUtils::getProtocol() . $this->request->getServerName());
+//        $bodyJs->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
 
         $footerJs = $this->assets->collection('footer');
-        $footerJs->setPrefix(CommonUtils::getProtocol() . $this->request->getServerName());
+//        $footerJs->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
 
+
+
+        /**
+         * @var CssSnippet $index
+         * @var  $file
+         */
         foreach($css_files as $index => $file)
         {
-            $headerCss->addCss($file->getPath(), $file->getLocal(), $file->getFilter());
+            $headerCss->addCss($file->getPath(), $file->isLocal(), $file->getFilter());
         }
 
         foreach($js_files as $index => $file)
         {
             if($file->getPosition() == Resource::POSITION_BODY)
             {
-                $bodyJs->addJs($file->getPath(), $file->getLocal(), $file->getFilter());
+                $bodyJs->addJs($file->getPath(), $file->isLocal(), $file->getFilter());
             }
             else
             {
-                $footerJs->addJs($file->getPath(), $file->getLocal(), $file->getFilter());
+                $footerJs->addJs($file->getPath(), $file->isLocal(), $file->getFilter());
             }
         }
     }

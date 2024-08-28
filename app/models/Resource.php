@@ -7,8 +7,9 @@
 
 namespace app\models;
 
+use Phalcon\Assets\Asset;
 
-class Resource extends \Phalcon\Assets\Resource
+class Resource extends Asset
 {
     protected $footprint;
 
@@ -32,8 +33,12 @@ class Resource extends \Phalcon\Assets\Resource
      * @param boolean $filter
      * @param mixed[]|null $attributes
      */
-    public function __construct($type, $position, $footprint, $path, $local, $filter, $attributes)
+    public function __construct($type, $position, $footprint, $path, $local, $filter, $attributes = [])
     {
+        if (is_null($attributes))
+        {
+            $attributes = [];
+        }
         $this->footprint = $footprint;
         $this->position = $position;
         parent::__construct($type, $path, $local, $filter, $attributes);

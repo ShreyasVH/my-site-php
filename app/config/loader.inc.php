@@ -10,7 +10,7 @@ require APP_PATH . 'vendor/autoload.php';
 /**
  * This file is meant to be included / required in the bootstrap file.
  **/
-use Phalcon\Loader;
+use Phalcon\Autoload\Loader;
 
  // Register an autoloader
 $loader = new Loader();
@@ -25,7 +25,7 @@ $directories = [
     APP_PATH . 'app/utils/'
 ];
 
-$loader->registerDirs($directories)->register();
+$loader->setDirectories($directories)->register();
 
 $namespaces = [
     'app\\config' => APP_PATH . 'app/config',
@@ -37,4 +37,4 @@ $namespaces = [
     'app\\utils' => APP_PATH . 'app/utils'
 ];
 
-$loader->registerNamespaces($namespaces)->register();
+$loader->setNamespaces($namespaces)->register();
