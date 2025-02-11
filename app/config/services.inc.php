@@ -11,7 +11,11 @@ use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use app\helpers\AssetHelper;
 use Phalcon\Logger\Adapter\File as FileAdapter;
-use Phalcon\Session\Adapter\Files as Session;
+use Phalcon\Session\Adapter\Stream as Session;
+use Phalcon\Flash\FlashSession;
+use Phalcon\Flash\Direct;
+use Phalcon\Session\Manager;
+//use Phalcon\Flash\SessionFactory;
 
 // if(file_exists(APP_PATH . '.env'))
 // {
@@ -32,8 +36,13 @@ $di->set('dispatcher', function () {
 });
 
 $di->setShared('session', function () {
-    $session = new Session();
+    $session = new Manager();
+    $files = new Session([
+        'savePath' => '/tmp', // Adjust the path as needed
+    ]);
+    $session->setAdapter($files);
     $session->start();
+
     return $session;
 });
 

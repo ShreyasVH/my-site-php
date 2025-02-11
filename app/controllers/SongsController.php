@@ -46,42 +46,45 @@ class SongsController extends BaseController
 
             $skip = ($page - 1) * Constants::DEFAULT_SONGS_PER_PAGE;
 
-            $songs_count = Song::getSongCount($language->id);
-
-            $totalPages = ceil($songs_count / Constants::DEFAULT_SONGS_PER_PAGE);
-
             $payload = [
                 'filters' => [
-                    'language' => [
-                        $language->id
+                    'movieLanguageName' => [
+                        $language_name
                     ]
                 ],
                 'sortMap' => $sortMap,
                 'count' => Constants::DEFAULT_SONGS_PER_PAGE,
                 'offset' => $skip
             ];
-            $songsList = Song::getSongsFromFilter($payload);
+            $songs_response = Song::getSongsFromFilter($payload);
+//            var_dump($songs_response);die;
+            $songsList = $songs_response->list;
+
+            $songs_count = $songs_response->totalCount;
+
+            $totalPages = ceil($songs_count / Constants::DEFAULT_SONGS_PER_PAGE);
 
             $payload = [
                 'filters' => [
-                    'language' => [
-                        $language->id
+                    'movieLanguageName' => [
+                        $language_name
                     ]
                 ],
                 'sortMap' => [
-                    'year' => 'DESC',
+                    'movieReleaseDate' => 'DESC',
                     'id' => 'DESC'
                 ],
                 'count' => 5,
                 'offset' => 0
             ];
-            $carousel_songs = Song::getSongsFromFilter($payload);
+            $carousel_songs_response = Song::getSongsFromFilter($payload);
+            $carousel_songs = $carousel_songs_response->list;
 
             $carousel_src = [];
 
             foreach($carousel_songs as $song)
             {
-                $carousel_src[] = '/images/movies/' . $song->movie->id . '.jpg';
+                $carousel_src[] = $song->movieImageUrl;
             }
 
             $this->view->totalPages = $totalPages;
@@ -90,7 +93,7 @@ class SongsController extends BaseController
             $this->view->order = $order;
             $this->view->songsList = $songsList;
             $this->view->carousel_src = $carousel_src;
-            $this->view->language = $language;
+            $this->view->language_name = $language_name;
         }
     }
 
@@ -278,24 +281,20 @@ class SongsController extends BaseController
 
     public function addSongAction()
     {
-        if($this->request->isGet())
-        {
-            $this->view->title = 'Add Song - Audio Box';
-        }
-        elseif($this->request->isPost())
+        if($this->request->isPost())
         {
             $payload = [
                 'name' => trim($this->request->getPost('name')),
-                'movie_id' => $this->request->getPost('movies')[0],
+                'movieId' => $this->request->getPost('movies')[0],
                 'size' => str_replace(',', '', $this->request->getPost('size')),
-                'singer_ids' => $this->request->getPost('singers'),
-                'composer_ids' => $this->request->getPost('composers'),
-                'lyricist_ids' => $this->request->getPost('lyricists')
+                'singerIds' => $this->request->getPost('singers'),
+                'composerIds' => $this->request->getPost('composers'),
+                'lyricistIds' => $this->request->getPost('lyricists')
             ];
 
             $response = $this->api->post('songs/song', $payload);
 
-            if($response['status'] == 200)
+            if($response['status'] === 201)
             {
                 $song = json_decode($response['result']);
                 // $this->logger->info($song->name . ' added. Id : ' . $song->id);
@@ -307,6 +306,7 @@ class SongsController extends BaseController
                 $this->flashSession->error('Error adding song. Error: ' . $response['result']);
             }
         }
+        $this->view->title = 'Add Song - Audio Box';
     }
 
     public function editSongAction()

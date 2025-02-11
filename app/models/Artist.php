@@ -60,7 +60,7 @@ class Artist extends BaseModel
     public static function getArtistsByKeyword($keyword)
     {
         $artists = [];
-        $response = self::getAPISource()->get('artists/artists/keyword/' . urlencode($keyword));
+        $response = self::getAPISource()->get('artists/keyword/' . urlencode($keyword));
         if($response['status'] == 200)
         {
             $artists = json_decode($response['result']);

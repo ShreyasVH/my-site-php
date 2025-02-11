@@ -23,7 +23,7 @@ class ArtistsController extends BaseController
                 'imageUrl' => getenv('ARTISTS_DEFAULT_IMAGE_URL_' . $this->request->getPost('gender'))
             );
 
-            $response = $this->api->post('artists/artist', $payload);
+            $response = $this->api->post('artists', $payload);
 
             if($response['status'] == 200)
             {

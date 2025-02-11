@@ -32,7 +32,7 @@ class Song extends BaseModel
     public static function getSongById($id)
     {
         $song = null;
-        $response = self::getAPISource()->get('songs/song/id/' . $id);
+        $response = self::getAPISource()->get('songs/' . $id);
         if($response['status'] == 200)
         {
             $song = json_decode($response['result']);
@@ -47,7 +47,7 @@ class Song extends BaseModel
     public static function getSongsFromFilter($filterRequest)
     {
         $songs = [];
-        $response = self::getAPISource()->post('songs/songsWithFilter', $filterRequest);
+        $response = self::getAPISource()->post('songs/filter', $filterRequest);
         if($response['status'] == 200)
         {
             $songs = json_decode($response['result']);

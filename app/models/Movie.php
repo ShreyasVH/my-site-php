@@ -99,7 +99,7 @@ class Movie extends BaseModel
     public static function getMoviesByKeyword($keyword)
     {
         $movies = [];
-        $response = self::getAPISource()->get('movies/movies/keyword/' . $keyword);
+        $response = self::getAPISource()->get('movies/keyword/' . $keyword);
         if($response['status'] == 200)
         {
             $movies = json_decode($response['result']);
