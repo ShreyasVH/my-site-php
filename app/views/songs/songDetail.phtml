@@ -12,8 +12,8 @@ use app\helpers\AssetHelper;
             <li><a href="/">Home</a></li>
             <li><a href="/songs/dashboard">Audio Box</a></li>
             <li>
-                <a href="<?php echo '/songs/browseSongs?language=' . $song->movie->language->name; ?>">
-                    <?php echo $song->movie->language->name . ' Songs Database'; ?>
+                <a href="<?php echo '/songs/browseSongs?language=' . $song->movieLanguageName; ?>">
+                    <?php echo $song->movieLanguageName . ' Songs Database'; ?>
                 </a>
             </li>
             <li class="active">
@@ -30,7 +30,7 @@ use app\helpers\AssetHelper;
 
     <div class="row">
         <div class="col-md-3 col-lg-3">
-            <img class="img-rounded" src="<?php echo AssetHelper::getImage($song->movie->id, Constants::CONTEXT_MOVIE); ?>" style="max-height:390px;max-width:260px">
+            <img class="img-rounded" src="<?php echo $song->movieImageUrl; ?>" style="max-height:390px;max-width:260px">
             <div class="action-btns">
                 <a class="btn btn-primary" href="#audiobox" data-toggle="modal" data-id="<?php echo $song->id; ?>">
                     <i class="glyphicon glyphicon-play-circle"></i>
@@ -52,9 +52,9 @@ use app\helpers\AssetHelper;
                                 <span class="attribute-key">
                                     Movie :
                                 </span>
-                                <a href="<?php echo '/movies/movieDetail?id=' . $song->movie->id; ?>" target="_blank">
+                                <a href="<?php echo '/movies/movieDetail?id=' . $song->movieId; ?>" target="_blank">
                                     <span class="">
-                                        <?php echo $song->movie->name; ?>
+                                        <?php echo $song->movieName; ?>
                                     </span>
                                 </a>
                             </p>
@@ -74,9 +74,9 @@ use app\helpers\AssetHelper;
                                 <span class="attribute-key">
                                     Language :
                                 </span>
-                                <a href="<?php echo '/songs/browseSongs?language=' . $song->movie->language->name; ?>" target="_blank">
+                                <a href="<?php echo '/songs/browseSongs?language=' . $song->movieLanguageName; ?>" target="_blank">
                                     <span class="">
-                                        <?php echo $song->movie->language->name; ?>
+                                        <?php echo $song->movieLanguageName; ?>
                                     </span>
                                 </a>
                             </p>
@@ -86,16 +86,17 @@ use app\helpers\AssetHelper;
                                 <span class="attribute-key">
                                     Year :
                                 </span>
-                                <a href="<?php echo '/songs/yearSongs?year=' . $song->movie->year; ?>" target="_blank">
+                                <?php $year = date('Y', $song->movieReleaseDate / 1000); ?>
+                                <a href="<?php echo '/songs/yearSongs?year=' . $year; ?>" target="_blank">
                                     <span class="">
-                                    <?php echo $song->movie->year; ?>
+                                    <?php echo $year; ?>
                                 </span>
                                 </a>
                             </p>
                         </div>
                     </div>
                 </div>
-                <?php if(isset($song->singers) && !empty($song->singers)): ?>
+                <?php if(isset($song->singerIds) && !empty($song->singerIds)): ?>
                     <div class="col-md-12 col-lg-12 artists">
                         <div class="row">
                             <div class="col-md-12 col-lg-12">
@@ -105,14 +106,14 @@ use app\helpers\AssetHelper;
                                     </span>
                                 </p>
                             </div>
-                            <?php foreach($song->singers as $index => $singer): ?>
+                            <?php foreach($song->singerIds as $index => $singerId): ?>
                                 <div class="col-md-2 col-lg-2 attribute-value">
                                     <div class="" style="">
-                                        <img class="img-thumbnail hidden-xs" src="<?php echo AssetHelper::getImage($singer->id, Constants::CONTEXT_ARTIST, ['gender' => $singer->gender]); ?>">
+                                        <img class="img-thumbnail hidden-xs" src="<?php echo $song->singerImageUrls[$index]; ?>">
                                     </div>
-                                    <a class="actor-name" href="<?php echo '/songs/singerSongs?id=' . $singer->id; ?>" target="_blank">
+                                    <a class="actor-name" href="<?php echo '/songs/singerSongs?id=' . $singerId; ?>" target="_blank">
                                         <span>
-                                            <?php echo $singer->name; ?>
+                                            <?php echo $song->singerNames[$index]; ?>
                                         </span>
                                     </a>
                                 </div>
@@ -120,7 +121,7 @@ use app\helpers\AssetHelper;
                         </div>
                     <?php endif; ?>
                     <div class="row">
-                        <?php if(isset($song->composers) && !empty($song->composers)): ?>
+                        <?php if(isset($song->composerIds) && !empty($song->composerIds)): ?>
                             <div class="col-md-6 col-lg-6">
                                 <div class="row">
                                     <div class="col-md-12 col-lg-12">
@@ -130,14 +131,14 @@ use app\helpers\AssetHelper;
                                             </span>
                                         </p>
                                     </div>
-                                    <?php foreach($song->composers as $index => $composer): ?>
+                                    <?php foreach($song->composerIds as $index => $composerId): ?>
                                         <div class="col-md-4 col-lg-4 attribute-value">
                                             <div class="" style="">
-                                                <img class="img-thumbnail hidden-xs" src="<?php echo AssetHelper::getImage($composer->id, Constants::CONTEXT_ARTIST, ['gender' => $composer->gender]); ?>">
+                                                <img class="img-thumbnail hidden-xs" src="<?php echo $song->composerImageUrls[$index] ?>">
                                             </div>
-                                            <a class="actor-name" href="<?php echo '/songs/composerSongs?id=' . $composer->id; ?>" target="_blank">
+                                            <a class="actor-name" href="<?php echo '/songs/composerSongs?id=' . $composerId; ?>" target="_blank">
                                                 <span>
-                                                    <?php echo $composer->name; ?>
+                                                    <?php echo $song->composerNames[$index]; ?>
                                                 </span>
                                             </a>
                                         </div>
@@ -146,7 +147,7 @@ use app\helpers\AssetHelper;
                             </div>
                         <?php endif; ?>
 
-                        <?php if(isset($song->lyricists) && !empty($song->lyricists)): ?>
+                        <?php if(isset($song->lyricistIds) && !empty($song->lyricistIds)): ?>
                             <div class="col-md-6 col-lg-6">
                                 <div class="row">
                                     <div class="col-md-12 col-lg-12">
@@ -156,14 +157,14 @@ use app\helpers\AssetHelper;
                                             </span>
                                         </p>
                                     </div>
-                                    <?php foreach($song->lyricists as $index => $lyricist): ?>
+                                    <?php foreach($song->lyricistIds as $index => $lyricistId): ?>
                                         <div class="col-md-4 col-lg-4 attribute-value">
                                             <div class="" style="">
-                                                <img class="img-thumbnail hidden-xs" src="<?php echo AssetHelper::getImage($lyricist->id, Constants::CONTEXT_ARTIST, ['gender' => $lyricist->gender]); ?>">
+                                                <img class="img-thumbnail hidden-xs" src="<?php echo $song->lyricistImageUrls[$index]; ?>">
                                             </div>
-                                            <a class="actor-name" href="<?php echo '/songs/lyricistSongs?id=' . $lyricist->id; ?>" target="_blank">
+                                            <a class="actor-name" href="<?php echo '/songs/lyricistSongs?id=' . $lyricistId; ?>" target="_blank">
                                                 <span>
-                                                    <?php echo $lyricist->name; ?>
+                                                    <?php echo $song->lyricistNames[$index]; ?>
                                                 </span>
                                             </a>
                                         </div>
