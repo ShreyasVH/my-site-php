@@ -315,6 +315,6 @@ class AssetHelper extends BaseHelper
      */
     public static function getSongUrl($song)
     {
-        return DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $song->movie->language->name . DIRECTORY_SEPARATOR . $song->name . '.mp3';
+        return DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR . $song->movieLanguageName . DIRECTORY_SEPARATOR . $song->name . '.mp3';
     }
 }

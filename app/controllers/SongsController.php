@@ -112,11 +112,11 @@ class SongsController extends BaseController
             else
             {
                 $output['title'] = $song->name;
-                $output['image_src'] = AssetHelper::getImage($song->movie->id, Constants::CONTEXT_MOVIE);
+                $output['image_src'] = $song->movieImageUrl;
                 $output['audio_src'] = AssetHelper::getSongUrl($song);
-                $output['singers'] = array_column($song->singers, 'name');
-                $output['composers'] = array_column($song->composers, 'name');
-                $output['lyricists'] = array_column($song->lyricists, 'name');
+                $output['singers'] = $song->singerNames;
+                $output['composers'] = $song->composerNames;
+                $output['lyricists'] = $song->lyricistNames;
             }
             $this->response->setContentType('application/json', 'UTF-8');
             $ouput_content = json_encode($output, JSON_UNESCAPED_SLASHES);

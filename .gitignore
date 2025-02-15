@@ -9,3 +9,5 @@ TODO.txt
 app/documents/
 logs/
 .envrc
+public/audio
+composerInstall.log
