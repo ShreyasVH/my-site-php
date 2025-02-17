@@ -39,7 +39,7 @@
                 <?php $size = round((float)$movieDb->size / (1024*1024*1024) , 3); ?>
                 <tr class="row">
                     <th>
-                        <a href="<?php echo '/movies/browseMovies?language[]=' . $movieDb->language_id; ?>" title="<?php echo $movieDb->language . ' Movie Database'; ?>">
+                        <a href="<?php echo '/movies/browseMovies?languageId[]=' . $movieDb->language_id; ?>" title="<?php echo $movieDb->language . ' Movie Database'; ?>">
                             <?php echo $movieDb->language; ?>
                         </a>
                     </th>

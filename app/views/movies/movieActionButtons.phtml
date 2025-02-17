@@ -5,7 +5,7 @@ use app\models\Movie;
 
 /** @var Movie $movie */
 ?>
-<?php if(Status::fromString($movie->status) != Status::DELETED): ?>
+<?php if($movie->active): ?>
     <a class="btn btn-warning edit-movie" href="<?php echo '/movies/editMovie?id=' . $movie->id; ?>" target="_blank">
         <i class="glyphicon glyphicon-pencil"></i>
     </a>
