@@ -11,3 +11,4 @@ logs/
 .envrc
 public/audio
 composerInstall.log
+server.log
