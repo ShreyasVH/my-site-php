@@ -100,18 +100,18 @@
             <div class="page-no container">
                 <span><strong style="padding:10px;">Go to Page: </strong></span>
                 <?php if($page != 1): ?>
-                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language->name . '&order=' . $order . '&page=1'; ?>"> &lt;&lt; First</a>
-                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language->name . '&order=' . $order . '&page=' . ($page - 1); ?>">&lt; Prev</a>
+                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language_name . '&order=' . $order . '&page=1'; ?>"> &lt;&lt; First</a>
+                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language_name . '&order=' . $order . '&page=' . ($page - 1); ?>">&lt; Prev</a>
                 <?php endif; ?>
                 <?php for($pageCount = 1; $pageCount <= $totalPages; $pageCount++): ?>
                     <?php $pageClass = ($pageCount == $page) ? 'present-page' : ''; ?>
-                    <a class="<?php echo 'btn ' . (($pageCount == $page) ? 'present-page' : 'other-page'); ?>" href="<?php echo 'browseMovies?language=' . $language->name . '&order=' . $order . '&page=' . $pageCount; ?>">
+                    <a class="<?php echo 'btn ' . (($pageCount == $page) ? 'present-page' : 'other-page'); ?>" href="<?php echo 'browseSongs?language=' . $language_name . '&order=' . $order . '&page=' . $pageCount; ?>">
                         <?php echo $pageCount; ?>
                     </a>
                 <?php endfor; ?>
                 <?php if($page < $totalPages): ?>
-                    <a class="btn other-page" href="<?php echo 'browseMovies?language=' . $language->name . '&order=' . $order . '&page=' . ($page + 1); ?>"> Next &gt;</a>
-                    <a class="btn other-page" href="<?php echo 'browseMovies?language=' . $language->name . '&order=' . $order . '&page=' . $totalPages; ?>"> Last &gt;&gt;</a>
+                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language_name . '&order=' . $order . '&page=' . ($page + 1); ?>"> Next &gt;</a>
+                    <a class="btn other-page" href="<?php echo 'browseSongs?language=' . $language_name . '&order=' . $order . '&page=' . $totalPages; ?>"> Last &gt;&gt;</a>
                 <?php endif; ?>
             </div>
         </div>

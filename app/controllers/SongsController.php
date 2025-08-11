@@ -47,7 +47,7 @@ class SongsController extends BaseController
             $skip = ($page - 1) * Constants::DEFAULT_SONGS_PER_PAGE;
 
             $payload = [
-                'filters' => [
+                'andFilters' => [
                     'movieLanguageName' => [
                         $language_name
                     ]
@@ -148,17 +148,18 @@ class SongsController extends BaseController
             $this->view->singer = $singer;
             $this->view->title = 'Songs by ' . $singer->name . ' - Audio Box';
             $payload = [
-                'filters' => [
-                    'singers' => [
+                'andFilters' => [
+                    'singerIds' => [
                         $id
                     ]
                 ],
                 'sortMap' => [
-                    'year' => 'DESC',
+                    'movieReleaseDate' => 'DESC',
                     'id' => 'DESC'
                 ]
             ];
-            $this->view->songList = Song::getSongsFromFilter($payload);
+            $songs_response = Song::getSongsFromFilter($payload);
+            $this->view->songList = $songs_response->list;
         }
     }
 
@@ -181,21 +182,23 @@ class SongsController extends BaseController
         if($this->request->isget())
         {
             $id = $this->request->getQuery('id');
-            $composer = Artist::getArtistById($id);;
+            $composer = Artist::getArtistById($id);
             $this->view->composer = $composer;
             $this->view->title = 'Songs by ' . $composer->name. ' - Audio Box';
             $payload = [
-                'filters' => [
-                    'composers' => [
+                'andFilters' => [
+                    'composerIds' => [
                         $id
                     ]
                 ],
                 'sortMap' => [
-                    'year' => 'DESC',
+                    'movieReleaseDate' => 'DESC',
                     'id' => 'DESC'
                 ]
             ];
-            $this->view->songList = Song::getSongsFromFilter($payload);
+
+            $songs_response = Song::getSongsFromFilter($payload);
+            $this->view->songList = $songs_response->list;
         }
     }
 
@@ -222,17 +225,18 @@ class SongsController extends BaseController
             $this->view->lyricist = $lyricist;
             $this->view->title = 'Songs by ' . $lyricist->name . ' - Audio Box';
             $payload = [
-                'filters' => [
-                    'lyricists' => [
+                'andFilters' => [
+                    'lyricistIds' => [
                         $id
                     ]
                 ],
                 'sortMap' => [
-                    'year' => 'DESC',
+                    'movieReleaseDate' => 'DESC',
                     'id' => 'DESC'
                 ]
             ];
-            $this->view->songList = Song::getSongsFromFilter($payload);
+            $songs_response = Song::getSongsFromFilter($payload);
+            $this->view->songList = $songs_response->list;
         }
     }
 

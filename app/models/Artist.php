@@ -45,7 +45,7 @@ class Artist extends BaseModel
     public static function getArtistById($id)
     {
         $artist = null;
-        $response = self::getAPISource()->get('artists/artist/id/' . $id);
+        $response = self::getAPISource()->get('artists/' . $id);
         if($response['status'] == 200)
         {
             $artist = json_decode($response['result']);
