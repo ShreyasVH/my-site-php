@@ -325,16 +325,15 @@ class SongsController extends BaseController
         {
             $id = $this->request->getPost('id');
             $payload = [
-                'id' => $id,
                 'name' => trim($this->request->getPost('name')),
-                'movie_id' => $this->request->getPost('movies')[0],
+                'movieId' => $this->request->getPost('movies')[0],
                 'size' => str_replace(',', '', $this->request->getPost('size')),
-                'singer_ids' => $this->request->getPost('singers'),
-                'composer_ids' => $this->request->getPost('composers'),
-                'lyricist_ids' => $this->request->getPost('lyricists')
+                'singerIds' => $this->request->getPost('singers'),
+                'composerIds' => $this->request->getPost('composers'),
+                'lyricistIds' => $this->request->getPost('lyricists')
             ];
 
-            $response = $this->api->put('songs/song', $payload);
+            $response = $this->api->put('songs/song/' . $id, $payload);
 
             if($response['status'] == 200)
             {
@@ -347,7 +346,7 @@ class SongsController extends BaseController
                 // $this->logger->critical('Error editing song. Song Id : ' . $id . ' . Error: ' . $response['result']);
                 $this->flashSession->error('Error editing song. Error: ' . $response['result']);
             }
-            $this->response->redirect('/songs/editSong?id=' . $id);
+            $this->response->redirect('/songDetail?id=' . $id);
         }
     }
 
