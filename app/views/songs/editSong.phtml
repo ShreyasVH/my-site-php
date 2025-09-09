@@ -15,8 +15,8 @@ use app\models\Song;
         <li><a href="/">Home</a></li>
         <li><a href="/songs/dashboard">Audio Box</a></li>
         <li>
-            <a href="<?php echo '/songs/browseSongs?language=' . $song->movie->language->name; ?>">
-                <?php echo $song->movie->language->name . ' Songs Database'; ?>
+            <a href="<?php echo '/songs/browseSongs?language=' . $song->movieLanguageName; ?>">
+                <?php echo $song->movieLanguageName . ' Songs Database'; ?>
             </a>
         </li>
         <li class="active">Edit Song</li>
@@ -192,18 +192,18 @@ use app\models\Song;
 <script>
     $(document).ready(function() {
 
-        Suggestions.pickSuggestion('<?php echo $song->movie->name; ?>', <?php echo $song->movie->id; ?>, 'movie');
+        Suggestions.pickSuggestion('<?php echo $song->movieName; ?>', <?php echo $song->movieId; ?>, 'movie');
 
-        <?php foreach($song->singers as $singer): ?>
-            Suggestions.pickSuggestion('<?php echo $singer->name; ?>', '<?php echo $singer->id; ?>', 'singer');
+        <?php foreach($song->singerIds as $index => $singerId): ?>
+            Suggestions.pickSuggestion('<?php echo $song->singerNames[$index]; ?>', '<?php echo $singerId; ?>', 'singer');
         <?php endforeach; ?>
 
-        <?php foreach($song->composers as $composer): ?>
-            Suggestions.pickSuggestion('<?php echo $composer->name; ?>', '<?php echo $composer->id; ?>', 'composer');
+        <?php foreach($song->composerIds as $index => $composerId): ?>
+            Suggestions.pickSuggestion('<?php echo $song->composerNames[$index]; ?>', '<?php echo $composerId; ?>', 'composer');
         <?php endforeach; ?>
 
-        <?php foreach($song->lyricists as $lyricist): ?>
-            Suggestions.pickSuggestion('<?php echo $lyricist->name; ?>', '<?php echo $lyricist->id; ?>', 'lyricist');
+        <?php foreach($song->lyricistIds as $index => $lyricistId): ?>
+            Suggestions.pickSuggestion('<?php echo $song->lyricistNames[$index]; ?>', '<?php echo $lyricistId; ?>', 'lyricist');
         <?php endforeach; ?>
 
         $(document).on('submit', 'form[name="edit-song-form"]', function(e) {
