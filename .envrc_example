@@ -1,7 +1,8 @@
-export ENDPOINT_NORMAL=
-export ENDPOINT_MINIMAL=
-
-# php 8.2.4 path
+# php 8.4.17 path
 export PATH=
 
+export ENDPOINT_NORMAL=
 export PORT=
+
+export ARTISTS_DEFAULT_IMAGE_URL_M=
+export ARTISTS_DEFAULT_IMAGE_URL_F=
