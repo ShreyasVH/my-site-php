@@ -1,6 +1,6 @@
 {
   "require": {
-    "vlucas/phpdotenv": "^v5.6.3",
+    "vlucas/phpdotenv": "^v5.6.4",
     "ext-curl": "*",
     "ext-json": "*",
     "cloudinary/cloudinary_php": "^1.15"
