@@ -7,6 +7,7 @@
 
 use app\constants\Constants;
 use app\helpers\Api;
+use Cloudinary\Configuration\Configuration;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\Dispatcher;
 use app\helpers\AssetHelper;
@@ -63,8 +64,13 @@ $di->set('logger', function() {
     return $logger;
 });
 
-Cloudinary::config(array(
-    'cloud_name' => getenv('CLOUDINARY_NAME'),
-    'api_key' => getenv('CLOUDINARY_KEY'),
-    'api_secret' => getenv('CLOUDINARY_SECRET')
-));
+Configuration::instance([
+    'cloud' => [
+        'cloud_name' => 'dyoxubvbg',
+        'api_key'    => '488511299236237',
+        'api_secret' => '0OdBhSYSmt70YlrXYHv083cxF04'
+    ],
+    'url' => [
+        'secure' => true
+    ]
+]);

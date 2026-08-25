@@ -16,10 +16,10 @@ class Format extends BaseModel
     public static function getAllFormats()
     {
         $formats = [];
-        $response = self::getAPISource()->get('movies/formats');
+        $response = self::getAPISource()->get('formats');
         if($response['status'] == 200)
         {
-            $formats = json_decode($response['result'])->formats;
+            $formats = json_decode($response['result']);
         }
         return $formats;
     }

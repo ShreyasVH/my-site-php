@@ -222,19 +222,19 @@ class MoviesController extends BaseController
                 'size' => str_replace(",","",$this->request->getPost('movie-size')),
                 'formatId' => $this->request->getPost('movie-format'),
                 'quality' => $this->request->getPost('movie-quality'),
-                'year' => ((int) $this->request->getPost('movie-year')),
+                'releaseDate' => $this->request->getPost('movie-release-date'),
                 'subtitles' => filter_var($this->request->getPost('movie-subtitles'), FILTER_VALIDATE_BOOLEAN),
                 'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
                 'basename' => explode('.txt', $this->request->getPost('movie-basename'))[0],
-                'actorIds' => $this->request->getPost('actors'),
-                'directorIds' => $this->request->getPost('directors'),
+                'actors' => $this->request->getPost('actors'),
+                'directors' => $this->request->getPost('directors'),
                 'imageUrl' => getenv('MOVIES_DEFAULT_IMAGE_URL')
             );
 
-            $response = $this->api->post('movies/movie', $payload);
+            $response = $this->api->post('movies', $payload);
 
             $redirectUrl = '/movies/addMovie';
-            if($response['status'] == 200)
+            if($response['status'] == 201)
             {
                 $movie = json_decode($response['result']);
                 // $this->logger->info($movie->name . ' added. Id : ' . $movie->id);
@@ -282,19 +282,17 @@ class MoviesController extends BaseController
                     'size' => str_replace(",", "", $this->request->getPost('movie-size')),
                     'formatId' => $this->request->getPost('movie-format'),
                     'quality' => $this->request->getPost('movie-quality'),
-                    'year' => ((int)$this->request->getPost('movie-year')),
+                    'releaseDate' => $this->request->getPost('movie-release-date'),
                     'subtitles' => filter_var($this->request->getPost('movie-subtitles'), FILTER_VALIDATE_BOOLEAN),
                     'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
                     'basename' => explode('.txt', $this->request->getPost('movie-basename'))[0],
-                    'actorIds' => $this->request->getPost('actors'),
-                    'directorIds' => $this->request->getPost('directors')
+                    'actors' => $this->request->getPost('actors'),
+                    'directors' => $this->request->getPost('directors')
                 );
             }
             else
             {
-                $payload = [
-                    'id' => $id,
-                ];
+                $payload = [];
             }
 
             $imageUrl = '';
@@ -320,7 +318,7 @@ class MoviesController extends BaseController
                 $payload['imageUrl'] = $imageUrl;
             }
 
-            $response = $this->api->put('movies/movie', $payload);
+            $response = $this->api->put('movies/' . $id, $payload);
 
             if($response['status'] == 200)
             {
