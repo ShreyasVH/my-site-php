@@ -144,12 +144,12 @@ var forms = {
 				errorsPresent = true;
 			}
 
-			if(form.find('input[name="directors[]"]').length == 0)
+			if(form.find('input[name="directorIds[]"]').length == 0)
 			{
 				form.find('.picked-item-list[data-type="director"]').closest('.form-field').addClass('error');
 				errorsPresent = true;
 			}
-			if(form.find('input[name="actors[]"]').length == 0)
+			if(form.find('input[name="actorIds[]"]').length == 0)
 			{
 				form.find('.picked-item-list[data-type="actor"]').closest('.jsSuggestionWrap').find('.form-field').addClass('error');
 				errorsPresent = true;
@@ -196,10 +196,19 @@ var forms = {
 				form.find('input[name="movie-name"]').closest('.form-field').addClass('error');
 				errorsPresent = true;
 			}
-			if(form[0].classList.contains('obtained-movie') && forms.Validation.isInputFieldEmpty(form.find('input[name="movie-size"]')))
+			if(form[0].classList.contains('obtained-movie'))
 			{
-				form.find('input[name="movie-size"]').closest('.form-field').addClass('error');
-				errorsPresent = true;
+				if (forms.Validation.isInputFieldEmpty(form.find('input[name="movie-size"]')))
+				{
+					form.find('input[name="movie-size"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
+
+				if(forms.Validation.isSelectFieldEmpty(form.find('select[name="movie-format"]')))
+				{
+					form.find('select[name="movie-format"]').closest('.form-field').addClass('error');
+					errorsPresent = true;
+				}
 			}
 
 			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="movie-language"]')))
@@ -207,24 +216,21 @@ var forms = {
 				form.find('select[name="movie-language"]').closest('.form-field').addClass('error');
 				errorsPresent = true;
 			}
-			if(forms.Validation.isSelectFieldEmpty(form.find('select[name="movie-format"]')))
+
+			if(forms.Validation.isDateFieldInvalid(form.find('input[name="movie-release-date"]')))
 			{
-				form.find('select[name="movie-format"]').closest('.form-field').addClass('error');
+				form.find('input[name="movie-release-date"]').closest('.form-field').addClass('error');
 				errorsPresent = true;
 			}
-			// if(forms.Validation.isInputFieldEmpty(form.find('input[name="movie-year"]')))
-			// {
-			// 	form.find('input[name="movie-year"]').closest('.form-field').addClass('error');
-			// 	errorsPresent = true;
-			// }
-			if(form.find('input[name="directors[]"]').length == 0)
+
+			if(form.find('input[name="directorIds[]"]').length == 0)
 			{
-				form.find('.picked-item-list[data-type="director"]').closest('.form-field').addClass('error');
+				form.find('.picked-item-list[data-type="directorId"]').closest('.form-field').addClass('error');
 				errorsPresent = true;
 			}
-			if(form.find('input[name="actors[]"]').length == 0)
+			if(form.find('input[name="actorIds[]"]').length == 0)
 			{
-				form.find('.picked-item-list[data-type="actor"]').closest('.jsSuggestionWrap').find('.form-field').addClass('error');
+				form.find('.picked-item-list[data-type="actorId"]').closest('.jsSuggestionWrap').find('.form-field').addClass('error');
 				errorsPresent = true;
 			}
 

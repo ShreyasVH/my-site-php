@@ -248,8 +248,8 @@ class MoviesController extends BaseController
                 'languageId' => $language_id,
                 'releaseDate' => $release_date,
                 'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
-                'actors' => $this->request->getPost('actors'),
-                'directors' => $this->request->getPost('directors'),
+                'actors' => $this->request->getPost('actorIds'),
+                'directors' => $this->request->getPost('directorIds'),
                 'imageUrl' => getenv('MOVIES_DEFAULT_IMAGE_URL')
             );
 
@@ -305,8 +305,8 @@ class MoviesController extends BaseController
                 'languageId' => $this->request->getPost('movie-language'),
                 'releaseDate' => $this->request->getPost('movie-release-date'),
                 'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
-                'actors' => $this->request->getPost('actors'),
-                'directors' => $this->request->getPost('directors'),
+                'actors' => $this->request->getPost('actorIds'),
+                'directors' => $this->request->getPost('directorIds'),
                 'obtained' => $obtained
             );
 
