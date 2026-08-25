@@ -19,7 +19,7 @@
 			Add Movie
 		</li>
 	</ul>
-	<form class="form-horizontal add-movie-form add-form" name="add-movie-form" method="POST" action="/movies/addMovie">
+	<form class="form-horizontal add-movie-form add-form" name="add-movie-form" method="POST" action="/movies/addMovie" enctype="multipart/form-data">
 		<div class="">
 			<div class="title">
 				<h2>Add Movie</h2>
@@ -47,82 +47,65 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
 								<span class="label-title">
-									Size:
+									Language:
 								</span>
-								<span class="mandatory-label"></span>
-								<span class="label-description">
-									Enter the size of the movie in bits (Ex:12,345,678)
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Select the language of the movie.
 								</span>
-								<span class="errorMsg">
-				                	Please enter valid size
+                                <span class="errorMsg">
+				                	Please select language
 				                </span>
-							</label>
-				            <div class="col-md-12">
-				                <input type="text" name="movie-size" class="form-control" autocomplete="off" tabindex="1">
-				            </div>
-						</div>
+                            </label>
+                            <div class="col-md-12">
+                                <select class="form-control" name="movie-language" tabindex="1">
+                                    <option value="default">
+                                        -- Select Language --
+                                    </option>
+                                    <?php foreach(Language::getAllLanguages() as $language): ?>
+                                        <?php $selected = ((($this->request->hasQuery('language')) && !empty($this->request->getQuery('language')) && ($this->request->getQuery('language') == $language->name)) ? 'selected' : ''); ?>
+                                        <option value="<?php echo $language->id; ?>" <?php echo $selected; ?>>
+                                            <?php echo $language->name; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
 								<span class="label-title">
-									Language:
+									Release Date:
 								</span>
-								<span class="mandatory-label"></span>
-								<span class="label-description">
-									Select the language of the movie.
+                                <span class="mandatory-label"></span>
+                                <span class="label-description">
+									Enter the release date of the movie
 								</span>
-								<span class="errorMsg">
-				                	Please select language
+                                <span class="errorMsg">
+				                	Please enter valid date
 				                </span>
-							</label>
-				            <div class="col-md-12">
-				                <select class="form-control" name="movie-language" tabindex="1">
-				                	<option value="default">
-				                		-- Select Language --
-				                	</option>
-									<?php foreach(Language::getAllLanguages() as $language): ?>
-										<?php $selected = ((($this->request->hasQuery('language')) && !empty($this->request->getQuery('language')) && ($this->request->getQuery('language') == $language->name)) ? 'selected' : ''); ?>
-				                		<option value="<?php echo $language->id; ?>" <?php echo $selected; ?>>
-				                			<?php echo $language->name; ?>
-				                		</option>
-				                	<?php endforeach; ?>
-				                </select>
-				            </div>
-						</div>
+                            </label>
+                            <div class="col-md-12">
+                                <input type="date" name="movie-release-date" class="form-control" autocomplete="off" tabindex="1">
+                            </div>
+                        </div>
 					</div>
-					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
+					<div class="col-md-3">
+                        <div class="form-group form-field">
+                            <label class="control-label col-md-12">
 								<span class="label-title">
-									Format:
+									Viewed:
 								</span>
-								<span class="mandatory-label"></span>
-								<span class="label-description">
-									Select the format of the movie.
-								</span>
-								<span class="errorMsg">
-				                	Please select format
-				                </span>
-							</label>
-				            <div class="col-md-12">
-				                <select class="form-control" name="movie-format" tabindex="1">
-				                	<option value="default">
-				                		-- Select Format --
-				                	</option>
-									<?php foreach(Format::getAllFormats() as $format): ?>
-				                		<option value="<?php echo $format->id; ?>">
-				                			<?php echo $format->name; ?>
-				                		</option>
-				                	<?php endforeach; ?>
-				                </select>
-				            </div>
-						</div>
+
+                                <input type="checkbox" name="movie-seen" tabindex="1">
+                            </label>
+                        </div>
 					</div>
 				</div>
 				<div class="row">
@@ -150,23 +133,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
-								<span class="label-title">
-									Year of release:
-								</span>
-								<span class="mandatory-label"></span>
-								<span class="label-description">
-									Enter the year of release of the movie
-								</span>
-								<span class="errorMsg">
-				                	Please enter valid year
-				                </span>
-							</label>
-				            <div class="col-md-12">
-				                <input type="number" name="movie-year" class="form-control" autocomplete="off" tabindex="1">
-				            </div>
-						</div>
+
 					</div>
 				</div>
 				<div class="row jsSuggestionWrap">
@@ -197,95 +164,20 @@
 				</div>
 				<div class="row">
 					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
-								<span class="label-title">
-									Subtitles:
-								</span>
-								<span class="label-description">
-									Does the movie have subtitles?
-								</span>
-							</label>
-							<div class="col-md-12">
-								<div class="radio">
-				                	<label class="radio-inline">
-				                		<input type="radio" name="movie-subtitles" value="1" tabindex="1">
-				                		Yes
-				                	</label>
-				                	<label class="radio-inline">
-				                		<input type="radio" name="movie-subtitles" value="0" tabindex="1" checked>
-				                		No
-				                	</label>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
-								<span class="label-title">
-									Viewed:
-								</span>
-								<span class="label-description">
-									Is the movie seen by me?
-								</span>
-							</label>
-							<div class="col-md-12">
-								<div class="radio">
-				                	<label class="radio-inline">
-				                		<input type="radio" name="movie-seen" value="1" tabindex="1">
-				                		Yes
-				                	</label>
-				                	<label class="radio-inline">
-				                		<input type="radio" name="movie-seen" value="0" tabindex="1" checked>
-				                		No
-				                	</label>
-				                </div>
-							</div>
-						</div>
+                        <?php $this->partial('shared/fileUpload', [
+                                'name' => 'movie-image',
+                                'id' => 'imageUpload',
+                                'label' => 'Cover Image',
+                                'description' => 'Enter the image for the movie',
+                                'uploadText' => 'Upload',
+                                'errorMsg' => 'Image should be of .jpg with max size 300kb.',
+                                'maxFileSize' => (300 * 1024 * 1024),
+                                'allowedExtensions' => 'jpg',
+                                'fileName' => ''
+                        ]); ?>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
-								<span class="label-title">
-									Quality:
-								</span>
-								<span class="label-description">
-									What is the quality of the print of the movie?
-								</span>
-							</label>
-							<div class="col-md-12">
-								<div class="radio">
-				                	<label class="radio-inline">
-				                		<input type="radio" name="movie-quality" value="good" tabindex="1">
-				                		Good
-				                	</label>
-				                	<label class="radio-inline">
-				                		<input type="radio" name="movie-quality" value="normal" tabindex="1" checked>
-				                		Normal
-				                	</label>
-				                </div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group form-field">
-							<label class="control-label col-md-12">
-								<span class="label-title">
-									Basename:
-								</span>
-								<span class="label-description">
-									Enter the basename of the movie
-								</span>
-							</label>
-				            <div class="col-md-12">
-				                <input type="text" name="movie-basename" class="form-control" autocomplete="off" tabindex="1">
-				            </div>
-						</div>
-					</div>
-				</div>
+
 				<div class="row">
 					<div class="form-group form-field action-btns">
 						<div class="col-md-3">

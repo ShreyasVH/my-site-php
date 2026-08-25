@@ -79,3 +79,11 @@ form .title h2 {
 .add-movie-form .action-btns {
     padding: 20px 0px;
 }
+
+.add-movie-form .conditional-field {
+    display: none;
+}
+
+.add-movie-form.obtained-movie .conditional-field {
+    display: block;
+}

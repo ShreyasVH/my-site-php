@@ -15,7 +15,7 @@ var dataManipulation = {
             if(type == 'scroll')
             {
                 loadType = 'append';
-                nextOffset = offset;
+                nextOffset = offset + pageSize;
             }
             else
             {
@@ -39,6 +39,7 @@ var dataManipulation = {
                     dataManipulation.primaryFunctions.updateUrl(url, data.filters, data.sortMap);
                     dataManipulation.primaryFunctions.updateJsVariables(data);
                     Miscellaneous.hideLoader();
+                    loading = false;
                 }
             });
         },
@@ -96,7 +97,7 @@ var dataManipulation = {
         updateUrl : function(url, filters, sortMap)
         {
             var sort = {
-                'order': Object.keys(sortMap)[0] + ' ' + sortMap[Object.keys(sortMap)[0]].toUpperCase()
+                'order': Object.keys(sortMap)[0] + ' ' + sortMap[Object.keys(sortMap)[0]]
             };
             var params = $.extend({}, filters, sort);
             Miscellaneous.replaceUrl(url, params);
@@ -199,8 +200,9 @@ $(document).ready(function() {
     });
 
     $(window).scroll(function() {
-        if(($(window).scrollTop() + $(window).height() >= $(document).height()) && (offset < totalCount))
+        if(($(window).scrollTop() + $(window).height() >= ($(document).height() - 100)) && ((offset + pageSize) < totalCount) && !loading)
         {
+            loading = true;
             dataManipulation.primaryFunctions.updateData(location.pathname, '.jsMovieContainer', 'scroll');
         }
     });
