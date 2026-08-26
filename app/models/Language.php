@@ -17,10 +17,10 @@ class Language extends BaseModel
     public static function getAllLanguages()
     {
         $languages = [];
-        $response = self::getAPISource()->get('movies/languages');
+        $response = self::getAPISource()->get('languages');
         if($response['status'] == 200)
         {
-            $languages = json_decode($response['result'])->languages;
+            $languages = json_decode($response['result']);
         }
         return $languages;
     }

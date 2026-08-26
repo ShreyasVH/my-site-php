@@ -111,8 +111,8 @@ class MoviesController extends BaseController
         $this->view->filters = $filters;
         $this->view->andFilterKeys = [];
         $filterValues = [
-            'language' => json_decode(json_encode(Language::getAllLanguages()), true),
-            'format' => json_decode(json_encode(Format::getAllFormats()), true),
+            'languageId' => json_decode(json_encode(Language::getAllLanguages()), true),
+            'formatId' => json_decode(json_encode(Format::getAllFormats()), true),
             'year' => [
                 'min' => 1930,
                 'max' => date('Y'),
@@ -134,7 +134,7 @@ class MoviesController extends BaseController
                     'name' => 'No'
                 ]
             ],
-            'seen_in_theatre' => [
+            'seenInTheatre' => [
                 [
                     'id' => 'true',
                     'name' => 'Yes'
@@ -154,36 +154,36 @@ class MoviesController extends BaseController
                     'name' => 'Normal'
                 ]
             ],
-            'actors' => [
+            'actorIds' => [
                 'entityPrimaryType' => 'artist',
-                'entitySecondaryType' => 'actor'
+                'entitySecondaryType' => 'actorId'
             ],
-            'directors' => [
+            'directorIds' => [
                 'entityPrimaryType' => 'artist',
-                'entitySecondaryType' => 'director'
+                'entitySecondaryType' => 'directorId'
             ]
         ];
 
         if(!$this->request->isAjax())
         {
-            if(isset($filters['actors']) && !empty($filters['actors']))
+            if(isset($filters['actorIds']) && !empty($filters['actorIds']))
             {
                 $actors = [];
-                foreach($filters['actors'] as $aIndex => $actorId)
+                foreach($filters['actorIds'] as $aIndex => $actorId)
                 {
                     $actors[] = Artist::getArtistById($actorId);
                 }
-                $filterValues['actors'] = array_merge($filterValues['actors'], ['values' => $actors]);
+                $filterValues['actorIds'] = array_merge($filterValues['actorIds'], ['values' => $actors]);
             }
 
-            if(isset($filters['directors']) && !empty($filters['directors']))
+            if(isset($filters['directorIds']) && !empty($filters['directorIds']))
             {
                 $directors = [];
-                foreach($filters['directors'] as $dIndex => $directorId)
+                foreach($filters['directorIds'] as $dIndex => $directorId)
                 {
                     $directors[] = Artist::getArtistById($directorId);
                 }
-                $filterValues['directors'] = array_merge($filterValues['directors'], ['values' => $directors]);
+                $filterValues['directorIds'] = array_merge($filterValues['directorIds'], ['values' => $directors]);
             }
         }
 
@@ -216,30 +216,57 @@ class MoviesController extends BaseController
         }
         elseif($this->request->isPost())
         {
+            $imageUrl = getenv('MOVIES_DEFAULT_IMAGE_URL');
+
+            $movie_name = $this->request->getPost('movie-name');
+            $release_date = $this->request->getPost('movie-release-date');
+            $all_languages = Language::getAllLanguages();
+            $language_map = array_combine(array_map(function($language){ return $language->id; }, $all_languages), array_map(function($language){ return $language->name; }, $all_languages));
+            $language_id = $this->request->getPost('movie-language');
+            $language_name = $language_map[$language_id];
+
+            if($this->request->hasFiles())
+            {
+                /** @var File[] $uploaded_files */
+                $uploaded_files = $this->request->getUploadedFiles();
+                $file = $uploaded_files[0];
+
+                $filename = strtolower(str_replace(
+                        ['&', '/', ':', ' ', '-'],
+                        ['and', '_', '_', '_', '_'],
+                        $movie_name
+                    ))
+                    . '_'
+                    . (new \DateTime($release_date))->format('Y')
+                    . '_'
+                    . strtolower($language_name);
+                $imageUrl = $this->api->uploadImage($file->getTempName(), 'movies', $filename, $file->getExtension());
+            }
+
             $payload = array(
-                'name' => $this->request->getPost('movie-name'),
-                'languageId' => $this->request->getPost('movie-language'),
-                'size' => str_replace(",","",$this->request->getPost('movie-size')),
-                'formatId' => $this->request->getPost('movie-format'),
-                'quality' => $this->request->getPost('movie-quality'),
-                'year' => ((int) $this->request->getPost('movie-year')),
-                'subtitles' => filter_var($this->request->getPost('movie-subtitles'), FILTER_VALIDATE_BOOLEAN),
+                'name' => $movie_name,
+                'languageId' => $language_id,
+                'releaseDate' => $release_date,
                 'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
-                'basename' => explode('.txt', $this->request->getPost('movie-basename'))[0],
-                'actorIds' => $this->request->getPost('actors'),
-                'directorIds' => $this->request->getPost('directors'),
+                'actors' => $this->request->getPost('actorIds'),
+                'directors' => $this->request->getPost('directorIds'),
                 'imageUrl' => getenv('MOVIES_DEFAULT_IMAGE_URL')
             );
 
-            $response = $this->api->post('movies/movie', $payload);
+            if(!empty($imageUrl))
+            {
+                $payload['imageUrl'] = $imageUrl;
+            }
+
+            $response = $this->api->post('movies', $payload);
 
             $redirectUrl = '/movies/addMovie';
-            if($response['status'] == 200)
+            if($response['status'] == 201)
             {
                 $movie = json_decode($response['result']);
                 // $this->logger->info($movie->name . ' added. Id : ' . $movie->id);
                 $this->flashSession->success('Movie added to the database');
-                $redirectUrl = '/movies/editMovie?id=' . $movie->id . '&source=addMovie';
+                $redirectUrl = '/movies/movieDetail?id=' . $movie->id;
             }
             else
             {
@@ -247,7 +274,6 @@ class MoviesController extends BaseController
                 $this->flashSession->error('Error adding movie. Error: ' . $response['result']);
             }
 
-            $language = Language::getLanguageById($this->request->getPost('movie-language'));
             $this->response->redirect($redirectUrl);
         }
     }
@@ -273,35 +299,26 @@ class MoviesController extends BaseController
             $id = $this->request->getPost('id');
             $source = $this->request->getPost('source');
 
-            if('addMovie' != $source)
-            {
-                $payload = array(
-                    'id' => (int)$id,
-                    'name' => $this->request->getPost('movie-name'),
-                    'languageId' => $this->request->getPost('movie-language'),
-                    'size' => str_replace(",", "", $this->request->getPost('movie-size')),
-                    'formatId' => $this->request->getPost('movie-format'),
-                    'quality' => $this->request->getPost('movie-quality'),
-                    'year' => ((int)$this->request->getPost('movie-year')),
-                    'subtitles' => filter_var($this->request->getPost('movie-subtitles'), FILTER_VALIDATE_BOOLEAN),
-                    'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
-                    'basename' => explode('.txt', $this->request->getPost('movie-basename'))[0],
-                    'actorIds' => $this->request->getPost('actors'),
-                    'directorIds' => $this->request->getPost('directors')
-                );
-            }
-            else
-            {
-                $payload = [
-                    'id' => $id,
-                ];
+            $obtained = filter_var($this->request->getPost('movie-obtained'), FILTER_VALIDATE_BOOLEAN);
+            $payload = array(
+                'name' => $this->request->getPost('movie-name'),
+                'languageId' => $this->request->getPost('movie-language'),
+                'releaseDate' => $this->request->getPost('movie-release-date'),
+                'seenInTheatre' => filter_var($this->request->getPost('movie-seen'), FILTER_VALIDATE_BOOLEAN),
+                'actors' => $this->request->getPost('actorIds'),
+                'directors' => $this->request->getPost('directorIds'),
+                'obtained' => $obtained
+            );
+
+            if ($obtained) {
+                $payload['size'] = str_replace(",", "", $this->request->getPost('movie-size'));
+                $payload['formatId'] = $this->request->getPost('movie-format');
+                $payload['quality'] = $this->request->getPost('movie-quality');
+                $payload['subtitles'] = filter_var($this->request->getPost('movie-subtitles'), FILTER_VALIDATE_BOOLEAN);
+                $payload['basename'] = explode('.txt', $this->request->getPost('movie-basename'))[0];
             }
 
             $imageUrl = '';
-            if('addMovie' === $source)
-            {
-                $imageUrl = getenv('MOVIES_DEFAULT_IMAGE_URL');
-            }
 
             if($this->request->hasFiles())
             {
@@ -320,7 +337,7 @@ class MoviesController extends BaseController
                 $payload['imageUrl'] = $imageUrl;
             }
 
-            $response = $this->api->put('movies/movie', $payload);
+            $response = $this->api->put('movies/' . $id, $payload);
 
             if($response['status'] == 200)
             {
@@ -335,7 +352,7 @@ class MoviesController extends BaseController
             }
 
 
-            $redirectUrl = (('addMovie' == $source) ? ('/movies/addMovie') : ('/movies/editMovie?id=' . $id));
+            $redirectUrl = '/movies/movieDetail?id=' . $id;
 
             $this->response->redirect($redirectUrl);
         }

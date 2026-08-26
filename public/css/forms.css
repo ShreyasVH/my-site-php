@@ -37,11 +37,11 @@ form .auto-suggest-input {
     background-color: #34495E;
 }
 
-.picked-item-list[data-type="actor"] .picked-item{
+.picked-item-list[data-type="actorId"] .picked-item{
     background-color: #00AD7C;
 }
 
-.picked-item-list[data-type="director"] .picked-item{
+.picked-item-list[data-type="directorId"] .picked-item{
     background-color: #FF7F50;
 }
 

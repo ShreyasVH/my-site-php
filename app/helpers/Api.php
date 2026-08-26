@@ -10,6 +10,7 @@ namespace app\helpers;
 
 use app\utils\CommonUtils;
 use app\utils\Logger;
+use Cloudinary\Api\Upload\UploadApi;
 use Cloudinary\Uploader;
 
 class Api extends BaseHelper
@@ -217,14 +218,21 @@ class Api extends BaseHelper
     {
         $fileUrl = '';
 
-        $response = Uploader::upload($file, [
-            'folder' => $folder,
-            'public_id' => $fileName
-        ]);
-        if(array_key_exists('secure_url', $response))
-        {
-            $fileUrl = $response['secure_url'];
+        $upload = new UploadApi();
+
+        try {
+            $response = $upload->upload($file, [
+                'folder' => $folder,
+                'public_id' => $fileName
+            ])->getArrayCopy();
+            if(array_key_exists('secure_url', $response))
+            {
+                $fileUrl = $response['secure_url'];
+            }
+        } catch (\Exception $exception) {
+
         }
+
         return $fileUrl;
     }
 

@@ -30,13 +30,13 @@ class BaseController extends Controller
         $js_files = $this->assetHelper->getJsFiles($dispatcher->getControllerName(), $dispatcher->getActionName());
 
         $headerCss = $this->assets->collection('header');
-//        $headerCss->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
+        $headerCss->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
 
         $bodyJs = $this->assets->collection('body');
-//        $bodyJs->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
+        $bodyJs->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
 
         $footerJs = $this->assets->collection('footer');
-//        $footerJs->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
+        $footerJs->setPrefix(CommonUtils::getProtocol() . $this->request->getHttpHost());
 
 
 

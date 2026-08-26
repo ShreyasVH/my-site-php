@@ -37,17 +37,18 @@ class Constants
 
     const MOVIE_ATTRIBUTE_ID = 'id';
     const MOVIE_ATTRIBUTE_NAME = 'name';
-    const MOVIE_ATTRIBUTE_LANGUAGE = 'language';
+    const MOVIE_ATTRIBUTE_LANGUAGE = 'languageId';
     const MOVIE_ATTRIBUTE_SIZE = 'size';
-    const MOVIE_ATTRIBUTE_FORMAT = 'format';
+    const MOVIE_ATTRIBUTE_FORMAT = 'formatId';
     const MOVIE_ATTRIBUTE_QUALITY = 'quality';
     const MOVIE_ATTRIBUTE_SUBTITLES = 'subtitles';
     const MOVIE_ATTRIBUTE_YEAR = 'year';
-    const MOVIE_ATTRIBUTE_SEEN = 'seen_in_theatre';
+    const MOVIE_ATTRIBUTE_SEEN = 'seenInTheatre';
     const MOVIE_ATTRIBUTE_BASENAME = 'basename';
     const MOVIE_ATTRIBUTE_STATUS = 'status';
-    const MOVIE_ATTRIBUTE_ACTORS = 'actors';
-    const MOVIE_ATTRIBUTE_DIRECTORS = 'directors';
+    const MOVIE_ATTRIBUTE_ACTORS = 'actorIds';
+    const MOVIE_ATTRIBUTE_DIRECTORS = 'directorIds';
+    const MOVIE_ATTRIBUTE_RELEASE_DATE = 'releaseDate';
 
     const CARD_ATTRIBUTE_ID = 'id';
     const CARD_ATTRIBUTE_NAME = 'name';
@@ -131,7 +132,12 @@ class Constants
             'filterLabel' => 'Status',
             'filterType' => self::FILTER_TYPE_CHECKBOX,
             'isFilterEnabled' => false
-        ]
+        ],
+        self::MOVIE_ATTRIBUTE_RELEASE_DATE => [
+            'isFilterEnabled' => false,
+            'isSortEnabled' => true,
+            'sortLabel' => 'Release Date'
+        ],
     ];
 
     private static $cardAttributes = [
