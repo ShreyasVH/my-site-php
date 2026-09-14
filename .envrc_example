@@ -1,4 +1,5 @@
-# php 8.5.9 path
+# php 8.5.10 path
+export PATH=
 export PATH=
 
 export ENDPOINT_NORMAL=
@@ -6,3 +7,4 @@ export PORT=
 
 export ARTISTS_DEFAULT_IMAGE_URL_M=
 export ARTISTS_DEFAULT_IMAGE_URL_F=
+export MOVIES_DEFAULT_IMAGE_URL=
